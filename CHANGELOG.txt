@@ -1,0 +1,27 @@
+DQXI 3DS English patch - changelog
+==================================
+
+0.1.2
+  * A decrypted .3ds can now be converted to an installable .cia (pick the output
+    format in the tool).
+  * HOME-menu banner shows "Echoes of an Elusive Age" instead of the Japanese
+    subtitle; game title text is English.
+
+0.1.1
+  * One-click Windows tool (DQXIEnglishPatcher.exe): pick your .cia/.3ds, pick the
+    output location; the result is named "Dragon Quest XI English.cia/.3ds".
+  * Patches both .cia and .3ds files (decrypted input).
+  * 2D mode: dialogue now wraps at word boundaries (narrower 2D font, line breaks
+    fitted to both 2D and 3D fonts); battle command window fits (Attack / Spells /
+    Defend / Ability / Items / Equip).
+  * Official PS4/Switch monster names (Needler, Healslime, Mal./Vic. variants ...).
+  * Camp menu: Items / Magic / Misc.; battle menu: Fight / Plan / Swap / Flee.
+  * Character epithets shortened to fit the status panel; Luki is now Sandy.
+  * Verified working on real 3DS hardware (.cia) and Citra/Azahar (.3ds).
+
+0.1.0  (first public build)
+  * Full UI, menus, battle, items, monsters, NPC and story text translated; map
+    labels and town banners redrawn.
+  * Official logo, Yes/No prompts, official character names.
+  Known gaps: a few skipped NPC strings, the "Link available" texture, and some
+  long monster names may overflow narrow boxes.

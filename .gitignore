@@ -1,0 +1,12 @@
+*.cia
+*.3ds
+*.cci
+*.cxi
+*.bin
+!dqxi_en.dqp
+__pycache__/
+*.pyc
+exe_build/
+exe_dist/
+dist/
+*.log
