@@ -1,6 +1,10 @@
 DQXI 3DS English patch - changelog
 ==================================
 
+0.1.4
+  * Clear message when the input .cia/.3ds is still encrypted (instead of a cryptic
+    "not an NCCH" error), with the GodMode9 decrypt steps.
+
 0.1.3
   * Shop screens: "Buy" / "Sell" choices and the "Owned" label are now English.
   * About 1,500 remaining Japanese default labels in the layouts translated

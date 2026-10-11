@@ -187,6 +187,9 @@ def patch(src,dst,patchfile,ips_file,keep_code=False,log=print):
             parts.append((o*MU,s*MU))
         c0=dict(off=parts[0][0],size=parts[0][1])
         cia=None
+        f.seek(c0['off']);ncch_ok=f.read(0x200)[0x100:0x104]==b'NCCH'
+        if not ncch_ok:
+            log('This .3ds is not a readable game image (no NCCH header). It is probably encrypted, compressed (.z3ds)');log('or not a full cartridge dump. Use a decrypted .3ds/.cci, or decrypt it first with GodMode9.');return 2
         nc=Ncch(f,c0['off'],c0['size'])
         if not nc.decrypted:
             log('This .3ds is still encrypted. Decrypt it first (GodMode9: select the file ->');log('  "NCSD image options" -> "Decrypt file (SD output)"), or use a decrypted dump.');return 2
@@ -198,6 +201,11 @@ def patch(src,dst,patchfile,ips_file,keep_code=False,log=print):
     else:
         cia=CIA(f)
         c0=cia.chunks[0]
+        f.seek(c0['off']);ncch_ok=f.read(0x200)[0x100:0x104]==b'NCCH'
+        if not ncch_ok:
+            log('This CIA is encrypted (its content is still locked with the title key), so it cannot be patched yet.')
+            log('Decrypt it first with GodMode9: select the .cia -> "CIA image options" -> "Decrypt file (SD output)",')
+            log('then patch the decrypted file it produces.');return 2
         nc=Ncch(f,c0['off'],c0['size'])
         if not nc.decrypted:
             log('This CIA is still encrypted (NCCH). Decrypt it first, e.g. with GodMode9:');log('  select the .cia -> "CIA image options" -> "Decrypt file (SD output)"');return 2
