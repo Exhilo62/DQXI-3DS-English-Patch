@@ -1,6 +1,12 @@
 DQXI 3DS English patch - changelog
 ==================================
 
+0.1.3
+  * Shop screens: "Buy" / "Sell" choices and the "Owned" label are now English.
+  * About 1,500 remaining Japanese default labels in the layouts translated
+    (item details, forge, StreetPass/Yocchi menus, profile, records, regions ...).
+  * 2D fonts tightened; battle command window and 2D dialogue fit better.
+
 0.1.2
   * A decrypted .3ds can now be converted to an installable .cia (pick the output
     format in the tool).
