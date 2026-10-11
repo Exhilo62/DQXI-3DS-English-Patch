@@ -1,6 +1,22 @@
 DQXI 3DS English patch - changelog
 ==================================
 
+0.1.5
+  * Battle results now read like the Switch version: "Eleven receives 6 experience
+    points! / Eleven acquires 6 gold coins!", "Defeated the Slimes!", "The Slime
+    drops a treasure chest!", "... puts the item in the item bag for safekeeping."
+  * Field pickups: "(name) acquires <item>!" / "... 2 gold coins!" for chests, pots
+    and barrels.
+  * Item description strip in battle no longer overflows (smaller text, 52 long
+    descriptions shortened).
+  * Camp menu labels fit (Pray at Statue / Merchant); battle Plan menu "Party" row.
+  * Level-up banner: "UP!!" spacing tightened.
+  * Fixed stray line breaks after names ("Gemma / 's your childhood friend",
+    "Gemma / ... ", "Cobblestone / .").
+  * Animal cries (chicken, horse, dog ...) that were still Japanese are translated.
+  * Movement hint reads "Top Screen: Use the Circle Pad to move. / Bottom Screen:
+    Use the D-Pad to move."
+
 0.1.4
   * Clear message when the input .cia/.3ds is still encrypted (instead of a cryptic
     "not an NCCH" error), with the GodMode9 decrypt steps.
