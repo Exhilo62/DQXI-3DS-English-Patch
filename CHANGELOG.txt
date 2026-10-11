@@ -1,6 +1,12 @@
 DQXI 3DS English patch - changelog
 ==================================
 
+0.1.6
+  * REAL 3DS FIX: some menu layouts were stored with section sizes that were not
+    a multiple of 4 (introduced in 0.1.3). Emulators tolerated this, but a real
+    3DS crashed with an "alignment" exception at startup. All 3,507 layouts are
+    now aligned exactly like the original game.
+
 0.1.5
   * Battle results now read like the Switch version: "Eleven receives 6 experience
     points! / Eleven acquires 6 gold coins!", "Defeated the Slimes!", "The Slime
