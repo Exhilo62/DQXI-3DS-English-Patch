@@ -18,6 +18,14 @@ and story – using the official PS4/Switch names where they are known.
 
 **Watch the showcase video:** https://youtu.be/JagQnseBXvo
 
+## Community and support
+
+Questions, bug reports, or just want to follow progress? Join the Discord:
+**https://discord.gg/w2DSajEUx**
+
+Please report problems with a screenshot, the patch version, where you were in the game, and whether you play on a real 3DS
+or an emulator (2D or 3D mode). Bugs can also be filed as [GitHub issues](../../issues).
+
 ## Download
 
 Get **`DQXI_3DS_English_Patch_vX.Y.Z.zip`** from the [Releases](../../releases) page, extract it, and run
