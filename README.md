@@ -12,6 +12,12 @@ and story – using the official PS4/Switch names where they are known.
 > hardware. As with any machine-assisted translation, some lines may be awkward or wrong – please report them
 > in the [issues](../../issues).
 
+## Showcase
+
+[![Watch the showcase video](https://img.youtube.com/vi/JagQnseBXvo/maxresdefault.jpg)](https://youtu.be/JagQnseBXvo)
+
+**Watch the showcase video:** https://youtu.be/JagQnseBXvo
+
 ## Download
 
 Get **`DQXI_3DS_English_Patch_vX.Y.Z.zip`** from the [Releases](../../releases) page, extract it, and run
