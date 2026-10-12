@@ -31,6 +31,10 @@ or an emulator (2D or 3D mode). Bugs can also be filed as [GitHub issues](../../
 Get **`DQXI_3DS_English_Patch_vX.Y.Z.zip`** from the [Releases](../../releases) page, extract it, and run
 **`DQXIEnglishPatcher.exe`**.
 
+## Known issues
+
+See the pinned "Known issues" entry on the Issues tab for the current list. Currently: a crash in the shop after selling many items in a row on Azahar/Citra is being investigated.
+
 ## How to use
 
 1. Make sure your game file is **decrypted** (one-time step, see below).
