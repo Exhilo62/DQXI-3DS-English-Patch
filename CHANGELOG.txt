@@ -1,6 +1,20 @@
 DQXI 3DS English patch - changelog
 ==================================
 
+0.1.8
+  * Item command window (Use / Give / Equip / Discard / Cancel + "What will you
+    do?") is wider, so labels no longer clip or wrap onto each other.
+  * Bottom-screen item description uses a smaller font so lines no longer break
+    in the middle of words.
+  * "Owned" box in shops has padding inside its border.
+  * Bottom-screen item description no longer breaks a word in half
+    ("A village greatsword").
+  * FIX: crash in the shop Sell > Who? > Item Bag flow (Azahar and real 3DS). The
+    item-detail panel layouts now keep their original sizes, and their small
+    header labels are shortened to fit ("Drops", "Found", "Rar", "Perk" ...).
+  * Confirmed on real 3DS hardware: shops (buy / sell, item bag) run without the
+    crash reported earlier (fixed by the memory-footprint change in 0.1.7).
+
 0.1.7
   * Much smaller memory footprint: the English text now reuses the space of the
     original Japanese text and shares identical strings, so the text tables are
@@ -8,6 +22,7 @@ DQXI 3DS English patch - changelog
     This is intended to fix the Heliodor 3D corruption (purple NPCs / black
     scene) reported on Azahar/Citra, and possible crashes on real 3DS hardware.
   * Campfire rest choice reads "AM" / "PM" (original-size window).
+  * Inn choices read "Stay" / "Rest" / "Cancel" so they no longer overlap.
 
 0.1.6
   * REAL 3DS FIX: some menu layouts were stored with section sizes that were not
