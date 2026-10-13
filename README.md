@@ -31,10 +31,6 @@ or an emulator (2D or 3D mode). Bugs can also be filed as [GitHub issues](../../
 Get **`DQXI_3DS_English_Patch_vX.Y.Z.zip`** from the [Releases](../../releases) page, extract it, and run
 **`DQXIEnglishPatcher.exe`**.
 
-## Known issues
-
-See the pinned "Known issues" entry on the Issues tab for the current list.
-
 ## How to use
 
 1. Make sure your game file is **decrypted** (one-time step, see below).
@@ -61,6 +57,7 @@ encrypted.
 - Works in both **3D** and **2D** mode (2D text re-fitted to the narrower window)
 
 ## Known issues
+- See the pinned "Known issues" entry on the Issues tab for the current list.
 - A few NPC strings and the "combo available" picture are still Japanese.
 - Some very long lines may still be tight in 2D mode – please report them.
 - Developed in the Azahar emulator; tested on real 3DS hardware (`.cia`) and Citra MMJ (`.3ds`).
