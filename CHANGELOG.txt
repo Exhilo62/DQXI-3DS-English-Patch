@@ -1,6 +1,17 @@
-﻿DQXI 3DS English patch - changelog
+DQXI 3DS English patch - changelog
 ==================================
 
+0.1.10
+  * FIX: "Create update folder" updates crashed on a real 3DS at the first battle
+    (after leaving the church with Erik). The update folder now ships a code patch
+    that the update mechanism (Luma LayeredFS) handles safely: it keeps the
+    original menu string loads and uses short labels (Fight / Plan / Run, Hit /
+    Spell / Guard / Art / Bag / Eq.). Patched .cia / .3ds files are unchanged and
+    keep the full labels (Attack / Spells / Defend / Ability / Items / Equip).
+  * The battle menu's third item and its pop-up now read "Swap" in update folders
+    too (fixed in the font, no code change).
+  * Known: the Plan menu's "Party" row is still unreadable in update folders; it
+    reads "Party" in a full patched .cia.
 0.1.9
   * FIX: crash in the Heliodor prison break with Erik (data abort on real 3DS).
     Two cutscene timing tables (a_020_cs_060, a_170_cs_050) had a value written over

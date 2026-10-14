@@ -124,7 +124,7 @@ class App(tk.Tk):
         t0=time.time()
         try:
             self.say('Reading %s ...'%Path(s).name)
-            rc=cia_patcher.patch(s,None,str(res('dqxi_en.dqp')),str(res('code.ips')),log=self.say,export_dir=out)
+            rc=cia_patcher.patch(s,None,str(res('dqxi_en.dqp')),str(res('code_layered.ips')),log=self.say,export_dir=out)
             if rc==0:self.say('Finished in %d seconds.'%(time.time()-t0))
             self.q.put(('done',rc))
         except Exception as e:

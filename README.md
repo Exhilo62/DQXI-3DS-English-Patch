@@ -55,6 +55,7 @@ After a new version, you don't have to rebuild and reinstall the whole game:
    `load/mods/0004000000199200/` folder.
 
 The update folder is about 150 MB and contains only changed files; it overrides what is installed.
+Update folders use shorter battle menu labels (Hit / Spell / Guard / Art / Bag / Eq.) than a full patched .cia, and the Plan menu's "Party" row is unreadable there.
 
 ### Decrypting your file (once)
 With **GodMode9** on your 3DS: select the file →
@@ -69,6 +70,7 @@ encrypted.
 
 ## Known issues
 - A few NPC strings and the "combo available" picture are still Japanese.
+- Update folders (LayeredFS) use shorter battle labels and the Plan menu "Party" row is unreadable; a full patched .cia has both.
 - Some very long lines may still be tight in 2D mode – please report them.
 - Developed in the Azahar emulator; tested on real 3DS hardware (`.cia`) and Citra MMJ (`.3ds`).
 

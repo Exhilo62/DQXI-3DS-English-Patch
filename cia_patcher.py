@@ -473,7 +473,7 @@ if __name__=='__main__':
         dst=str(Path(src).with_name('Dragon Quest XI - Echoes of an Elusive Age'+('.cia' if want_cia else ' (English).3ds')))
     if '--export' in sys.argv:         # --export <folder>: LayeredFS update folder instead of a new game file
         i=sys.argv.index('--export');out=sys.argv[i+1] if i+1<len(sys.argv) else 'dqxi_update'
-        sys.exit(patch(src,None,HERE/'dqxi_en.dqp',HERE/'code.ips',export_dir=out))
+        sys.exit(patch(src,None,HERE/'dqxi_en.dqp',HERE/'code_layered.ips',export_dir=out))
     keep='--identity' in sys.argv      # rebuild without any change (self-test)
     pf=None if keep else HERE/'dqxi_en.dqp'
     sys.exit(patch(src,dst,pf,None if keep else HERE/'code.ips',keep_code=keep))
