@@ -170,12 +170,12 @@ def load_templates():
     base=Path(getattr(sys,'_MEIPASS',HERE))
     return json.loads(zlib.decompress((base/'cia_templates.bin').read_bytes()))
 
-def patch(src,dst,patchfile,ips_file,keep_code=False,log=print):
+def patch(src,dst,patchfile,ips_file,keep_code=False,log=print,export_dir=None):
     t0=time.time()
     f=open(src,'rb')
     f.seek(0x100);ncsd=f.read(4)==b'NCSD'
-    to_cia=Path(dst).suffix.lower()=='.cia'
-    if not ncsd and not to_cia:
+    to_cia=Path(dst).suffix.lower()=='.cia' if dst else False
+    if not ncsd and not to_cia and not export_dir:
         log('A .cia can only be patched to a .cia (choose a .cia output name).');return 2
     if ncsd:
         # ---- .3ds / .cci (NCSD) container
@@ -249,6 +249,20 @@ def patch(src,dst,patchfile,ips_file,keep_code=False,log=print):
         repl[e['path']]=new
     if bad:log('%d problem file(s); aborting.'%bad);return 3
     log('patched files ready: %d (%.0fs)'%(len(repl),time.time()-t0))
+    if export_dir:
+        # update folder for an already patched game: only the changed romfs files + code.ips, loaded by LayeredFS
+        tid=hdr.get('title_id','0004000000199200')
+        root=Path(export_dir)/'luma'/'titles'/tid
+        restore=[x for x in os.environ.get('DQXI_RESTORE_PREFIXES','').split(',') if x]     # diagnostics: write the ORIGINAL file for these prefixes
+        for pth,new in sorted(repl.items()):
+            if restore and any(pth.startswith(x) for x in restore):
+                ent=rfs.by_path.get(pth)
+                if ent is not None:new=rfs.read(ent)
+            t=root/'romfs'/pth;t.parent.mkdir(parents=True,exist_ok=True);t.write_bytes(new)
+        if ips_file:
+            (root/'code.ips').write_bytes(Path(ips_file).read_bytes())
+        log('wrote %d files to %s (%.0fs)'%(len(repl),root,time.time()-t0))
+        return 0
     # ---- exefs / code
     exh=bytearray(nc.rd(0x200,0x800))
     new_exefs=old_exefs;new_exh_hash=nc.hdr[0x160:0x180]
@@ -449,6 +463,7 @@ def patch(src,dst,patchfile,ips_file,keep_code=False,log=print):
 
 if __name__=='__main__':
     args=[a for a in sys.argv[1:] if not a.startswith('--')]
+    if '--export' in sys.argv:args=args[:1]
     if not args:print(__doc__);sys.exit(1)
     src=args[0]
     ext=Path(src).suffix.lower()
@@ -456,6 +471,9 @@ if __name__=='__main__':
     else:
         want_cia='--cia' in sys.argv or ext=='.cia'      # --cia converts a .3ds into an installable .cia
         dst=str(Path(src).with_name('Dragon Quest XI - Echoes of an Elusive Age'+('.cia' if want_cia else ' (English).3ds')))
+    if '--export' in sys.argv:         # --export <folder>: LayeredFS update folder instead of a new game file
+        i=sys.argv.index('--export');out=sys.argv[i+1] if i+1<len(sys.argv) else 'dqxi_update'
+        sys.exit(patch(src,None,HERE/'dqxi_en.dqp',HERE/'code.ips',export_dir=out))
     keep='--identity' in sys.argv      # rebuild without any change (self-test)
     pf=None if keep else HERE/'dqxi_en.dqp'
     sys.exit(patch(src,dst,pf,None if keep else HERE/'code.ips',keep_code=keep))

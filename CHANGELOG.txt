@@ -1,5 +1,20 @@
-DQXI 3DS English patch - changelog
+﻿DQXI 3DS English patch - changelog
 ==================================
+
+0.1.9
+  * FIX: crash in the Heliodor prison break with Erik (data abort on real 3DS).
+    Two cutscene timing tables (a_020_cs_060, a_170_cs_050) had a value written over
+    an ID field; restored. Confirmed on real 3DS hardware.
+  * FIX: Records > Monster List showed almost nothing seen / empty log. A stray
+    "text" at the start of every text table was being relocated, corrupting the
+    monster data. All text tables are now rebuilt without it.
+  * Monster List: descriptions re-wrapped to fit the box (smaller font, no more
+    mid-word breaks), "Gold:" / "Defeated:" / "Items:" colons sit next to the
+    labels, the Japanese counter after the defeat count now shows "X", and the
+    "Other" habitat label fits.
+  * NEW: "Create update folder (already patched game)" button. Make a small
+    LayeredFS update (about 150 MB, copied to the SD card) instead of rebuilding and
+    reinstalling the whole game. See README.
 
 0.1.8
   * Item command window (Use / Give / Equip / Discard / Cancel + "What will you

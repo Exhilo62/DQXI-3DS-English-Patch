@@ -24,7 +24,7 @@ class App(tk.Tk):
         super().__init__()
         self.title('Dragon Quest XI English Patcher  v'+VERSION)
         self.geometry('640x430');self.minsize(560,380)
-        self.q=queue.Queue();self.busy=False
+        self.q=queue.Queue();self.busy=False;self.exporting=None
         pad=dict(padx=14,pady=4)
         ttk.Label(self,text='Dragon Quest XI (3DS) - English Patch',font=('Segoe UI',14,'bold')).pack(anchor='w',padx=14,pady=(12,0))
         ttk.Label(self,text='Select your Japanese game file, choose where to save the English version, then press Patch.',
@@ -44,7 +44,9 @@ class App(tk.Tk):
         self.dst=tk.StringVar()
         ttk.Entry(f2,textvariable=self.dst).pack(side='left',fill='x',expand=True,padx=(8,4),pady=8)
         ttk.Button(f2,text='Browse...',command=self.pick_dst).pack(side='right',padx=(4,8),pady=8)
-        self.btn=ttk.Button(self,text='Patch',command=self.start);self.btn.pack(pady=8,ipadx=24,ipady=4)
+        bf=ttk.Frame(self);bf.pack(pady=8)
+        self.btn=ttk.Button(bf,text='Patch',command=self.start);self.btn.pack(side='left',padx=6,ipadx=24,ipady=4)
+        self.btn2=ttk.Button(bf,text='Create update folder (already patched game)',command=self.start_export);self.btn2.pack(side='left',padx=6,ipady=4)
         self.bar=ttk.Progressbar(self,mode='indeterminate');self.bar.pack(fill='x',padx=14)
         self.log=tk.Text(self,height=9,state='disabled',wrap='word',font=('Consolas',9));self.log.pack(fill='both',expand=True,padx=14,pady=(8,12))
         self.after(150,self.poll)
@@ -57,8 +59,9 @@ class App(tk.Tk):
                 if k=='log':
                     self.log.config(state='normal');self.log.insert('end',v+'\n');self.log.see('end');self.log.config(state='disabled')
                 elif k=='done':
-                    self.busy=False;self.bar.stop();self.btn.config(state='normal')
-                    if v==0:messagebox.showinfo('Done','The English game was created:\n\n'+self.dst.get())
+                    self.busy=False;self.bar.stop();self.btn.config(state='normal');self.btn2.config(state='normal')
+                    if v==0 and self.exporting:messagebox.showinfo('Done','The update folder was created:\n\n'+self.exporting+'\n\nCopy its "luma" folder to the root of your 3DS SD card (see the README).')
+                    elif v==0:messagebox.showinfo('Done','The English game was created:\n\n'+self.dst.get())
                     elif v==-1:messagebox.showerror('Error','Something went wrong - see the log for details.')
                     else:messagebox.showwarning('Could not patch','The file could not be patched - see the log for details.')
         except queue.Empty:pass
@@ -103,9 +106,29 @@ class App(tk.Tk):
             messagebox.showerror('Location error',str(e));return
         if d.exists() and not messagebox.askyesno('Replace file','"%s" already exists. Replace it?'%d.name):return
         self.dst.set(str(d))
-        self.busy=True;self.btn.config(state='disabled');self.bar.start(12)
+        self.exporting=None
+        self.busy=True;self.btn.config(state='disabled');self.btn2.config(state='disabled');self.bar.start(12)
         self.log.config(state='normal');self.log.delete('1.0','end');self.log.config(state='disabled')
         threading.Thread(target=self.work,args=(str(s),str(d)),daemon=True).start()
+    def start_export(self):
+        if self.busy:return
+        s=Path(self.src.get().strip().strip('"'))
+        if not s.is_file():messagebox.showerror('Missing file','Please select your original (decrypted) Japanese .cia or .3ds file in step 1 first.');return
+        o=filedialog.askdirectory(title='Where should the update folder be created?',initialdir=str(s.parent))
+        if not o:return
+        self.exporting=str(Path(o)/'DQXI_English_Update')
+        self.busy=True;self.btn.config(state='disabled');self.btn2.config(state='disabled');self.bar.start(12)
+        self.log.config(state='normal');self.log.delete('1.0','end');self.log.config(state='disabled')
+        threading.Thread(target=self.work_export,args=(str(s),self.exporting),daemon=True).start()
+    def work_export(self,s,out):
+        t0=time.time()
+        try:
+            self.say('Reading %s ...'%Path(s).name)
+            rc=cia_patcher.patch(s,None,str(res('dqxi_en.dqp')),str(res('code.ips')),log=self.say,export_dir=out)
+            if rc==0:self.say('Finished in %d seconds.'%(time.time()-t0))
+            self.q.put(('done',rc))
+        except Exception as e:
+            self.say('ERROR: %s'%e);self.say(traceback.format_exc());self.q.put(('done',-1))
     def work(self,s,d):
         t0=time.time()
         try:

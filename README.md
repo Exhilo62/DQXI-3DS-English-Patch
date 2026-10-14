@@ -45,6 +45,17 @@ Get **`DQXI_3DS_English_Patch_vX.Y.Z.zip`** from the [Releases](../../releases) 
 | `.cia` | Install with FBI on a 3DS with custom firmware (Luma3DS). Same title ID as the Japanese game, saves carry over. |
 | `.3ds` | Emulators (Azahar / Citra) and cartridge-dump workflows. |
 
+### Updating an already patched game (no reinstall)
+After a new version, you don't have to rebuild and reinstall the whole game:
+1. Open `DQXIEnglishPatcher.exe`, choose the **same decrypted Japanese file** as before (top box), then press
+   **Create update folder (already patched game)** and pick where to save it.
+2. **Real 3DS:** copy the created `luma` folder to the root of the SD card (replace files). Turn on
+   *Enable game patching* once in the Luma config (hold SELECT while powering on).
+3. **Azahar / Citra:** copy the contents of `luma/titles/0004000000199200/` into the emulator's
+   `load/mods/0004000000199200/` folder.
+
+The update folder is about 150 MB and contains only changed files; it overrides what is installed.
+
 ### Decrypting your file (once)
 With **GodMode9** on your 3DS: select the file →
 `CIA image options` / `NCSD image options` → **Decrypt file (SD output)**.
@@ -57,7 +68,6 @@ encrypted.
 - Works in both **3D** and **2D** mode (2D text re-fitted to the narrower window)
 
 ## Known issues
-- See the pinned "Known issues" entry on the Issues tab for the current list.
 - A few NPC strings and the "combo available" picture are still Japanese.
 - Some very long lines may still be tight in 2D mode – please report them.
 - Developed in the Azahar emulator; tested on real 3DS hardware (`.cia`) and Citra MMJ (`.3ds`).
