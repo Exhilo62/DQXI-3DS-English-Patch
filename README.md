@@ -51,7 +51,7 @@ Download the separate **Linux** zip (DQXI_3DS_English_Patch_Linux_v*.zip), extra
 chmod +x patch.sh
 ./patch.sh                                  # opens the window (needs python3-tk)
 ./patch.sh game.cia output.cia             # or patch from the terminal
-```n
+```
 The window also shows the patch notes for each version.
 
 ### Updating an already patched game (no reinstall)
