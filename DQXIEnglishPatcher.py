@@ -59,11 +59,29 @@ class App(tk.Tk):
         # patch notes (CHANGELOG.txt shipped next to the tool) and the progress log
         nf=ttk.LabelFrame(self,text="What's new (patch notes)");nf.pack(fill='both',expand=True,padx=14,pady=(8,0))
         sb=ttk.Scrollbar(nf,orient='vertical')
-        self.notes=tk.Text(nf,height=11,wrap='word',font='TkFixedFont',yscrollcommand=sb.set)
+        self.notes=tk.Text(nf,height=11,wrap='word',font=('Segoe UI',10),yscrollcommand=sb.set,padx=8,pady=6,spacing1=2,spacing3=2)
         sb.config(command=self.notes.yview);sb.pack(side='right',fill='y');self.notes.pack(side='left',fill='both',expand=True,padx=(6,0),pady=6)
-        self.notes.insert('1.0',load_notes());self.notes.config(state='disabled')
+        self.render_notes(load_notes());self.notes.config(state='disabled')
         self.log=tk.Text(self,height=6,state='disabled',wrap='word',font='TkFixedFont');self.log.pack(fill='x',padx=14,pady=(8,12))
         self.after(150,self.poll)
+    def render_notes(self,text):
+        """Reflow the plain-text changelog: version headings stand out, bullets get a hanging indent and the
+        hard line breaks inside a bullet are joined so the text wraps to whatever width the window has."""
+        t=self.notes
+        t.tag_configure('title',font=('Segoe UI',11,'bold'))
+        t.tag_configure('ver',font=('Segoe UI',11,'bold'),foreground='#1a4f9c',spacing1=12,spacing3=3)
+        t.tag_configure('bul',lmargin1=10,lmargin2=26,spacing1=3)
+        import re
+        items=[]   # (kind,text)
+        for ln in text.splitlines():
+            s=ln.rstrip()
+            if not s.strip() or set(s.strip())=={'='}:continue
+            if re.match(r'^\d+\.\d+\.\d+',s.strip()) and not s.startswith(' '):items.append(('ver',s.strip()))
+            elif s.lstrip().startswith('* '):items.append(('bul','• '+s.lstrip()[2:]))
+            elif items and items[-1][0]=='bul' and s.startswith(' '):items[-1]=('bul',items[-1][1]+' '+s.strip())
+            else:items.append(('title' if not items else 'bul',s.strip()))
+        for i,(k,s) in enumerate(items):
+            t.insert('end',s+'\n',k)
     # ---- helpers
     def say(self,msg):self.q.put(('log',str(msg)))
     def poll(self):

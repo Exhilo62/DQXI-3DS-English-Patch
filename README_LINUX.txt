@@ -23,3 +23,5 @@ Notes
  * This download contains no game data - only the differences from the original.
  * Made with AI assistance (Anthropic's Claude) and the author's direction and testing.
    File-format tooling is based on dqxi-format-tools by Kenzie-1377 (MIT).
+
+Note: an update folder (--export) cannot include the game-code edits (Link label, equip headers, result wording, 2D object names, full battle labels); a full patched .cia/.3ds has them. Use the full patch if you can.

@@ -64,7 +64,15 @@ After a new version, you don't have to rebuild and reinstall the whole game:
    `load/mods/0004000000199200/` folder.
 
 The update folder is about 150 MB and contains only changed files; it overrides what is installed.
-Update folders use shorter battle menu labels (Hit / Spell / Guard / Art / Bag / Eq.) than a full patched .cia, and the Plan menu's "Party" row is unreadable there.
+
+> **Update folder vs full patch:** an update folder (Luma folder / emulator mod) can only replace data files;
+> changing the game's program code that way crashes real 3DS hardware, so it is left out. With an update folder only:
+> - battle menu labels are the shorter ones (Hit / Spell / Guard / Art / Bag / Eq.)
+> - the Plan menu "Party" row is unreadable
+> - the "Link" battle command, the equip-window headers (L.H. / Items / Equip), the group-battle result wording
+>   and the 2D "examined" object names stay Japanese-looking
+>
+> A full patched `.cia` / `.3ds` has all of these fixed, so use the full patch if you can.
 
 ### Decrypting your file (once)
 With **GodMode9** on your 3DS: select the file →
@@ -79,7 +87,7 @@ encrypted.
 
 ## Known issues
 - A few NPC strings and the "combo available" picture are still Japanese.
-- Update folders (LayeredFS) use shorter battle labels and the Plan menu "Party" row is unreadable; a full patched .cia has both.
+- Update folders (LayeredFS) cannot carry the game-code edits listed above; a full patched `.cia` / `.3ds` has them.
 - Some very long lines may still be tight in 2D mode – please report them.
 - Developed in the Azahar emulator; tested on real 3DS hardware (`.cia`) and Citra MMJ (`.3ds`).
 

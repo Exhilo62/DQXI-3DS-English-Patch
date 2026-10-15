@@ -1,6 +1,25 @@
 DQXI 3DS English patch - changelog
 ==================================
 
+0.1.12
+  * Quest list: long quest titles are shortened and the list font is smaller so they no
+    longer overflow the rows or wrap in the detail header; the leftover Japanese
+    "in progress" tag is hidden.
+  * Item detail panel: description text no longer wraps one letter onto the next line; the
+    dotted lines behind it are gone; the "Found" place text fits the box.
+  * Yes / No prompts read "OK" / "No" again (OK answers more kinds of questions).
+  * Equipment list: long item names (e.g. "Traveler's Clothes") no longer spill onto the next
+    row; slot labels and item names use the same size.
+  * Skill panel info box: label/value text re-aligned and sized like the description.
+  * Battle: "tripped" and the HP auto-recovery messages fit on screen; Link move
+    description re-wrapped; the target name ("Bodkin Archer") fits its box.
+  * Adventure guide box text is centred vertically.
+  * Full patched .cia / .3ds only (not update folders): equip-window title reads "Eq."
+    instead of "Sw1", plus the equip headers (L.H. / Items / Equip), Link label, group
+    result wording ("<name>'s team receives ...") and 2D object names. Update folders
+    cannot carry these code edits (Luma LayeredFS crashes on real hardware).
+  * The patcher's patch-notes panel reflows to the window size.
+
 0.1.11
   * Text overflow fixes: stats-menu title ("Equipment Effects"), item command
     window title ("What to do?"), skill descriptions (critical rate / "when
@@ -20,6 +39,9 @@ DQXI 3DS English patch - changelog
     dialogue boxes not open (e.g. Manolo's apology in Cobblestone) and similar glitches.
   * The patcher window now shows these patch notes.
   * Linux / Steam Deck / macOS: new "Linux" download (Python launcher, see README_LINUX.txt).
+  * 21 battle messages that were still Japanese (tripping, elemental guards, regained HP, ...)
+    are now English; the quest-detail dotted rows are gone.
+  * Adventure-guide message box and quest-detail text re-fitted (smaller font, wider wrap).
   * Silent NPC lines ("......") were drawn as "____"; they now show "...".
   * Map scroll label reads "Scrolling" instead of Japanese letters.
   * Known gaps in update folders (LayeredFS): the battle "Link" command label, the
