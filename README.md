@@ -45,6 +45,15 @@ Get **`DQXI_3DS_English_Patch_vX.Y.Z.zip`** from the [Releases](../../releases) 
 | `.cia` | Install with FBI on a 3DS with custom firmware (Luma3DS). Same title ID as the Japanese game, saves carry over. |
 | `.3ds` | Emulators (Azahar / Citra) and cartridge-dump workflows. |
 
+### Linux / Steam Deck / macOS
+Download the separate **Linux** zip (DQXI_3DS_English_Patch_Linux_v*.zip), extract it, then:
+```bash
+chmod +x patch.sh
+./patch.sh                                  # opens the window (needs python3-tk)
+./patch.sh game.cia output.cia             # or patch from the terminal
+```n
+The window also shows the patch notes for each version.
+
 ### Updating an already patched game (no reinstall)
 After a new version, you don't have to rebuild and reinstall the whole game:
 1. Open `DQXIEnglishPatcher.exe`, choose the **same decrypted Japanese file** as before (top box), then press

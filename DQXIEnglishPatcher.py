@@ -14,6 +14,14 @@ import cia_patcher
 VERSION='?'
 try:VERSION=res('VERSION').read_text().strip()
 except Exception:pass
+def load_notes():
+    """CHANGELOG.txt (bundled in the exe / next to the script), newest version first."""
+    for p in (res('CHANGELOG.txt'),Path(__file__).parent/'CHANGELOG.txt'):
+        try:
+            t=p.read_text(encoding='utf-8-sig').strip()
+            if t:return t
+        except Exception:pass
+    return 'Patch notes are not available in this copy.'
 AUTONAME='Dragon Quest XI - Echoes of an Elusive Age'
 def autoname(ext):
     # the .cia keeps the shorter name (easier to read in FBI / HOME menu lists)
@@ -23,7 +31,7 @@ class App(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title('Dragon Quest XI English Patcher  v'+VERSION)
-        self.geometry('640x430');self.minsize(560,380)
+        self.geometry('680x720');self.minsize(600,620)
         self.q=queue.Queue();self.busy=False;self.exporting=None
         pad=dict(padx=14,pady=4)
         ttk.Label(self,text='Dragon Quest XI (3DS) - English Patch',font=('Segoe UI',14,'bold')).pack(anchor='w',padx=14,pady=(12,0))
@@ -48,7 +56,13 @@ class App(tk.Tk):
         self.btn=ttk.Button(bf,text='Patch',command=self.start);self.btn.pack(side='left',padx=6,ipadx=24,ipady=4)
         self.btn2=ttk.Button(bf,text='Create update folder (already patched game)',command=self.start_export);self.btn2.pack(side='left',padx=6,ipady=4)
         self.bar=ttk.Progressbar(self,mode='indeterminate');self.bar.pack(fill='x',padx=14)
-        self.log=tk.Text(self,height=9,state='disabled',wrap='word',font=('Consolas',9));self.log.pack(fill='both',expand=True,padx=14,pady=(8,12))
+        # patch notes (CHANGELOG.txt shipped next to the tool) and the progress log
+        nf=ttk.LabelFrame(self,text="What's new (patch notes)");nf.pack(fill='both',expand=True,padx=14,pady=(8,0))
+        sb=ttk.Scrollbar(nf,orient='vertical')
+        self.notes=tk.Text(nf,height=11,wrap='word',font='TkFixedFont',yscrollcommand=sb.set)
+        sb.config(command=self.notes.yview);sb.pack(side='right',fill='y');self.notes.pack(side='left',fill='both',expand=True,padx=(6,0),pady=6)
+        self.notes.insert('1.0',load_notes());self.notes.config(state='disabled')
+        self.log=tk.Text(self,height=6,state='disabled',wrap='word',font='TkFixedFont');self.log.pack(fill='x',padx=14,pady=(8,12))
         self.after(150,self.poll)
     # ---- helpers
     def say(self,msg):self.q.put(('log',str(msg)))

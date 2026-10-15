@@ -1,6 +1,31 @@
 DQXI 3DS English patch - changelog
 ==================================
 
+0.1.11
+  * Text overflow fixes: stats-menu title ("Equipment Effects"), item command
+    window title ("What to do?"), skill descriptions (critical rate / "when
+    attacking with ..."), Link description in battle, quest-log text no longer
+    runs under the Reward bar, "Bodkin Archer" on the bottom screen.
+  * Overhead speech bubbles: hand-typed "|" separators were drawn as "!" and are
+    now real line breaks; about 70 bubbles re-wrapped to two lines.
+  * Quest log descriptions fit above the Reward bar (smaller font, re-wrapped).
+  * Item/forge command window title reads "What to do?" so it no longer wraps.
+  * FIX (crash on real 3DS): opening the chest in the well near the tavern in Heliodor
+    Castle Town (and anything that shows the Mystic Nut by name) crashed. A data field in
+    the item table that merely looked like a text pointer was being overwritten by
+    the patcher.
+  * "Seed of Deftness" was wrongly named "Seed of Skill"; the skill-point seed is now "Seed of Skill".
+  * FIX: about 600 spots in NPC dialogue and map tables had a data value (for example 0xFF00)
+    overwritten by the patcher because it looked like a text pointer. This could make some
+    dialogue boxes not open (e.g. Manolo's apology in Cobblestone) and similar glitches.
+  * The patcher window now shows these patch notes.
+  * Linux / Steam Deck / macOS: new "Linux" download (Python launcher, see README_LINUX.txt).
+  * Silent NPC lines ("......") were drawn as "____"; they now show "...".
+  * Map scroll label reads "Scrolling" instead of Japanese letters.
+  * Known gaps in update folders (LayeredFS): the battle "Link" command label, the
+    equip-window headers (L.H. / Items / Equip), the group-battle result wording
+    ("<name>'s team receives ...") and 2D "examined" object names are still
+    Japanese-looking. Changing these crashes real hardware when loaded this way.
 0.1.10
   * FIX: "Create update folder" updates crashed on a real 3DS at the first battle
     (after leaving the church with Erik). The update folder now ships a code patch
