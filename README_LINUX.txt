@@ -13,6 +13,7 @@ Nothing to install except Python 3 (and tkinter if you want the window).
        Arch:   sudo pacman -S tk        Fedora: sudo dnf install python3-tkinter
 4. From the terminal (no window needed):
        ./patch.sh "Dragon Quest XI (Japan).cia" "Dragon Quest XI - Echoes of an Elusive Age.cia"
+       ./patch.sh "game.3ds"                               (.3ds -> "... (English).3ds", for emulator frontends)
        ./patch.sh "game.3ds" "English.cia" --cia         (.3ds -> installable .cia)
        ./patch.sh "game.cia" --export ~/dqxi_update       (small update folder, see README.txt)
 
@@ -25,3 +26,5 @@ Notes
    File-format tooling is based on dqxi-format-tools by Kenzie-1377 (MIT).
 
 Note: an update folder (--export) cannot include the game-code edits (Link label, equip headers, result wording, 2D object names, full battle labels); a full patched .cia/.3ds has them. Use the full patch if you can.
+
+No window library? The patcher also runs without tkinter: python3 DQXIEnglishPatcher.py "game.3ds" (writes "... (English).3ds"), or ./patch.sh with the game file as shown in step 4.

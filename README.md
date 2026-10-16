@@ -51,7 +51,11 @@ Download the separate **Linux** zip (DQXI_3DS_English_Patch_Linux_v*.zip), extra
 chmod +x patch.sh
 ./patch.sh                                  # opens the window (needs python3-tk)
 ./patch.sh game.cia output.cia             # or patch from the terminal
+./patch.sh game.3ds                        # a .3ds in gives a "... (English).3ds" out (emulator frontends can list it)
 ```
+The output type follows the input: a decrypted `.3ds` gives a `.3ds`, a `.cia` gives a `.cia` (an installed `.cia` does not show up in
+emulator frontends such as EmuDeck / ES-DE). `--cia` only turns a `.3ds` into an installable `.cia`; a `.cia` cannot become a `.3ds`.
+The window needs `python3-tk`; without it, the command-line form above still works.
 The window also shows the patch notes for each version.
 
 ### Updating an already patched game (no reinstall)

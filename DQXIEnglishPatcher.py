@@ -1,9 +1,15 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """Dragon Quest XI (3DS) English Patcher - simple GUI around cia_patcher."""
 import os,sys,threading,queue,shutil,time,traceback
 from pathlib import Path
-import tkinter as tk
-from tkinter import ttk,filedialog,messagebox
+try:
+    import tkinter as tk
+    from tkinter import ttk,filedialog,messagebox
+    HAVE_TK=True
+except Exception:      # no window library (e.g. python3-tk missing on Linux): command-line use still works
+    HAVE_TK=False
+    class _NoTk: Tk=object
+    tk=_NoTk();ttk=filedialog=messagebox=None
 
 def res(name):
     base=Path(getattr(sys,'_MEIPASS',Path(__file__).parent))
@@ -99,7 +105,7 @@ class App(tk.Tk):
             s=ln.rstrip()
             if not s.strip() or set(s.strip())=={'='}:continue
             if re.match(r'^\d+\.\d+\.\d+',s.strip()) and not s.startswith(' '):items.append(('ver',s.strip()))
-            elif s.lstrip().startswith('* '):items.append(('bul','â€¢ '+s.lstrip()[2:]))
+            elif s.lstrip().startswith('* '):items.append(('bul','\u2022 '+s.lstrip()[2:]))
             elif items and items[-1][0]=='bul' and s.startswith(' '):items[-1]=('bul',items[-1][1]+' '+s.strip())
             else:items.append(('title' if not items else 'bul',s.strip()))
         for i,(k,s) in enumerate(items):
@@ -205,10 +211,38 @@ class App(tk.Tk):
             except Exception:pass
             self.q.put(('done',-1))
 
+def cli(argv):
+    """Command line (no window needed): <input> [<output>] [--cia] [--export <folder>]
+    The output follows the input (.3ds -> .3ds, .cia -> .cia); --cia turns a .3ds into an installable .cia."""
+    flags=[a for a in argv if a.startswith('--')]
+    args=[a for a in argv if not a.startswith('--')]
+    if sys.stdout is None:     # windowed .exe has no console: write the log next to the output instead
+        lf=open(str(Path(args[1] if len(args)>1 else args[0]).with_suffix('.log')),'w',encoding='utf-8')
+        print=lambda m:(lf.write(str(m)+'\n'),lf.flush())
+    else:
+        import builtins;print=builtins.print
+    if not args or not os.path.exists(args[0]):
+        print('Game file not found: %s'%(args[0] if args else '(none given)'))
+        return 2
+    if '--export' in argv:
+        i=argv.index('--export');out=argv[i+1] if i+1<len(argv) else 'dqxi_update'
+        args=[a for a in args if a!=out][:1]
+        return cia_patcher.patch(args[0],None,str(res('dqxi_en.dqp')),str(res('code_layered.ips')),export_dir=out,log=print)
+    src=args[0]
+    if len(args)>1:
+        dst=args[1]
+    else:
+        want_cia='--cia' in flags or Path(src).suffix.lower()=='.cia'
+        dst=str(Path(src).with_name('Dragon Quest XI - Echoes of an Elusive Age'+('.cia' if want_cia else ' (English).3ds')))
+    return cia_patcher.patch(src,dst,str(res('dqxi_en.dqp')),str(res('code.ips')),log=print)
+
 if __name__=='__main__':
-    if len(sys.argv)>=3:        # headless: DQXIEnglishPatcher.exe <input> <output>
-        logf=open(str(Path(sys.argv[2]).with_suffix('.log')),'w',encoding='utf-8')
-        rc=cia_patcher.patch(sys.argv[1],sys.argv[2],str(res('dqxi_en.dqp')),str(res('code.ips')),log=lambda m:(logf.write(str(m)+'\n'),logf.flush()))
-        sys.exit(rc)
+    if len(sys.argv)>=2:
+        sys.exit(cli(sys.argv[1:]))
+    if not HAVE_TK:
+        print('The window needs Python\'s tkinter (Debian/Ubuntu: sudo apt install python3-tk; Arch: sudo pacman -S tk).')
+        print('You can also run without it:  python3 DQXIEnglishPatcher.py "game.3ds"     (writes "... (English).3ds")')
+        print('                              python3 DQXIEnglishPatcher.py "game.cia" "out.cia"')
+        sys.exit(1)
     App().mainloop()
 

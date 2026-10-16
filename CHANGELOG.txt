@@ -5,6 +5,29 @@ DQXI 3DS English patch - changelog
     first battle or when opening some chests, and miss text fixes). A full patched .cia / .3ds
     from the newest version is the most complete: update folders cannot carry the code edits.
 
+0.1.14
+  * Names now match the official English game everywhere (dialogue, books, achievements,
+    quests, maps, story recaps): the world is "Erdrea" (it said "Rotozetasia"), the mountain is
+    "Cobblestone Tor" (was "Sacred Rock" / "Divine Rock"), its guardian is the "Spirit of the Land"
+    (was "earth spirit"), Teo's name is "Teo" everywhere (it said "Theo" in places), the
+    village is "Cobblestone" (a leftover "Ishi"), and Gemma's dog is "Sandy" (was "Luki").
+  * The coming-of-age rite is called a "ceremony" everywhere (it said "ritual" / "rite").
+  * Item List filters: weapon names (Swords, Knives, Wands, GrtSwrd, Boomrng, HvyWand, Spears,
+    Whips, Claws, Axes), armor (Shields, Clothes) and accessories (Arms, Hands, Feet) read
+    better and no longer overlap the next row. Monster families: "Undead" and "Nature".
+  * Mysterious Forge: the Japanese pop-ups are now English ("Great Success!!", "Success!!",
+    "Failure!!", "Special Charge!!") and "Temperature" reads "TEMP"; descriptions, the
+    materials header, the menu, "Switch display" and long material names (Dundrasil Copper
+    Coin) fit their boxes.
+  * Items: the "Drops" and "Found" lists use the same size; "Hand Over" is no longer cut off.
+  * The main menu entry and Record screen are called "Records"; the Records tutorial page was
+    reworded.
+  * Steam Deck / Linux: the README shows how to get a .3ds out of the patcher. The output
+    follows the input, so ./patch.sh "game.3ds" writes "... (English).3ds", which emulator
+    frontends (EmuDeck, ES-DE ...) can list; an installed .cia does not show up there.
+    --cia is only for turning a .3ds into an installable .cia (a .cia cannot become a .3ds).
+  * The patcher still works when Python's window library (tkinter) is missing: give it the
+    game file on the command line instead (see README_LINUX.txt).
 0.1.13
   * Tested on: a real New Nintendo 3DS (Luma3DS, patched .cia) and a Retroid Pocket Duo
     Lite running Citra MMJ (patched .3ds); developed in the Azahar emulator.
@@ -13,7 +36,8 @@ DQXI 3DS English patch - changelog
   * Item List / Bag: the dotted lines behind the description are hidden on this screen too.
   * Misc. menu: "Full" / "Nearly full" are now "Heal" / "Handy Heal" (the names used in the
     newer games), with shorter descriptions that fit the box; the matching tutorial text too.
-  * Church menu: "Switch to 2D Mode" was cut off; it now reads "2D Mode" / "3D Mode", and the\n    3D/2D mode window no longer cuts off "3D Mode" / "2D Mode".
+  * Church menu: "Switch to 2D Mode" was cut off; it now reads "2D Mode" / "3D Mode", and the
+    3D/2D mode window no longer cuts off "3D Mode" / "2D Mode".
   * Continue / save screen: long area names ("Heliodor Underground Waterway") fit on one
     line instead of running into the next save slot.
   * Map screen: long area names ("Heliodor Castle Town: Lower Level") fit the name plate.
