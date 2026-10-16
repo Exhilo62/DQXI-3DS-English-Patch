@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Dragon Quest XI (3DS) English Patcher - simple GUI around cia_patcher."""
 import os,sys,threading,queue,shutil,time,traceback
 from pathlib import Path
@@ -31,12 +31,21 @@ class App(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title('Dragon Quest XI English Patcher  v'+VERSION)
-        self.geometry('680x720');self.minsize(600,620)
+        self.geometry('700x800');self.minsize(620,700)
         self.q=queue.Queue();self.busy=False;self.exporting=None
         pad=dict(padx=14,pady=4)
-        ttk.Label(self,text='Dragon Quest XI (3DS) - English Patch',font=('Segoe UI',14,'bold')).pack(anchor='w',padx=14,pady=(12,0))
-        ttk.Label(self,text='Select your Japanese game file, choose where to save the English version, then press Patch.',
-                  wraplength=600).pack(anchor='w',padx=14,pady=(0,8))
+        # header: title + short help on the left, the Mage's Arcane Gazette logo on the right
+        hdr=ttk.Frame(self);hdr.pack(fill='x',padx=14,pady=(10,0))
+        self.logo=None
+        for p in (res('logo.png'),Path(__file__).parent/'logo.png'):
+            try:
+                self.logo=tk.PhotoImage(file=str(p));break
+            except Exception:pass
+        if self.logo:ttk.Label(hdr,image=self.logo).pack(side='right',padx=(8,0))
+        tf=ttk.Frame(hdr);tf.pack(side='left',fill='x',expand=True)
+        ttk.Label(tf,text='Dragon Quest XI (3DS) - English Patch',font=('Segoe UI',14,'bold')).pack(anchor='w',pady=(6,0))
+        ttk.Label(tf,text='Select your Japanese game file, choose where to save the English version, then press Patch.',
+                  wraplength=520).pack(anchor='w',pady=(0,8))
         f1=ttk.LabelFrame(self,text='1. Game file (.cia or .3ds, decrypted)');f1.pack(fill='x',**pad)
         self.src=tk.StringVar()
         ttk.Entry(f1,textvariable=self.src).pack(side='left',fill='x',expand=True,padx=(8,4),pady=8)
@@ -57,12 +66,25 @@ class App(tk.Tk):
         self.btn2=ttk.Button(bf,text='Create update folder (already patched game)',command=self.start_export);self.btn2.pack(side='left',padx=6,ipady=4)
         self.bar=ttk.Progressbar(self,mode='indeterminate');self.bar.pack(fill='x',padx=14)
         # patch notes (CHANGELOG.txt shipped next to the tool) and the progress log
+        # which version to use: this build is the recommended one; older update folders are listed as unsafe
+        ttk.Label(self,text='This is version %s - the recommended version. Update (Luma) folders are safe from 0.1.11 on; '
+                  'a full patched .cia/.3ds from the newest version is the most complete.'%VERSION,
+                  wraplength=630,foreground='#1a4f9c').pack(anchor='w',padx=14,pady=(8,0))
         nf=ttk.LabelFrame(self,text="What's new (patch notes)");nf.pack(fill='both',expand=True,padx=14,pady=(8,0))
         sb=ttk.Scrollbar(nf,orient='vertical')
         self.notes=tk.Text(nf,height=11,wrap='word',font=('Segoe UI',10),yscrollcommand=sb.set,padx=8,pady=6,spacing1=2,spacing3=2)
         sb.config(command=self.notes.yview);sb.pack(side='right',fill='y');self.notes.pack(side='left',fill='both',expand=True,padx=(6,0),pady=6)
         self.render_notes(load_notes());self.notes.config(state='disabled')
-        self.log=tk.Text(self,height=6,state='disabled',wrap='word',font='TkFixedFont');self.log.pack(fill='x',padx=14,pady=(8,12))
+        self.log=tk.Text(self,height=6,state='disabled',wrap='word',font='TkFixedFont');self.log.pack(fill='x',padx=14,pady=(8,4))
+        url='https://github.com/Exhilo62/DQXI-3DS-English-Patch'
+        link=tk.Label(self,text='Project page / downloads / bug reports:  '+url.replace('https://',''),fg='#1a4f9c',cursor='hand2',
+                      font=('Segoe UI',9,'underline'))
+        link.pack(pady=(0,10))
+        def open_link(_e=None):
+            try:
+                import webbrowser;webbrowser.open(url)
+            except Exception:pass
+        link.bind('<Button-1>',open_link)
         self.after(150,self.poll)
     def render_notes(self,text):
         """Reflow the plain-text changelog: version headings stand out, bullets get a hanging indent and the
@@ -77,7 +99,7 @@ class App(tk.Tk):
             s=ln.rstrip()
             if not s.strip() or set(s.strip())=={'='}:continue
             if re.match(r'^\d+\.\d+\.\d+',s.strip()) and not s.startswith(' '):items.append(('ver',s.strip()))
-            elif s.lstrip().startswith('* '):items.append(('bul','• '+s.lstrip()[2:]))
+            elif s.lstrip().startswith('* '):items.append(('bul','â€¢ '+s.lstrip()[2:]))
             elif items and items[-1][0]=='bul' and s.startswith(' '):items[-1]=('bul',items[-1][1]+' '+s.strip())
             else:items.append(('title' if not items else 'bul',s.strip()))
         for i,(k,s) in enumerate(items):
@@ -189,3 +211,4 @@ if __name__=='__main__':
         rc=cia_patcher.patch(sys.argv[1],sys.argv[2],str(res('dqxi_en.dqp')),str(res('code.ips')),log=lambda m:(logf.write(str(m)+'\n'),logf.flush()))
         sys.exit(rc)
     App().mainloop()
+

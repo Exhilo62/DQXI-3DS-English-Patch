@@ -1,5 +1,26 @@
 DQXI 3DS English patch - changelog
 ==================================
+  * RECOMMENDED: always use the newest version shown first below. For a Luma / update
+    folder, 0.1.11 is the oldest safe one (older update folders can crash on real 3DS at the
+    first battle or when opening some chests, and miss text fixes). A full patched .cia / .3ds
+    from the newest version is the most complete: update folders cannot carry the code edits.
+
+0.1.13
+  * Tested on: a real New Nintendo 3DS (Luma3DS, patched .cia) and a Retroid Pocket Duo
+    Lite running Citra MMJ (patched .3ds); developed in the Azahar emulator.
+  * The movie skip prompt on the bottom screen ("長押しでスキップ") now reads "Hold to skip"
+    (3D and 2D versions).
+  * Item List / Bag: the dotted lines behind the description are hidden on this screen too.
+  * Misc. menu: "Full" / "Nearly full" are now "Heal" / "Handy Heal" (the names used in the
+    newer games), with shorter descriptions that fit the box; the matching tutorial text too.
+  * Church menu: "Switch to 2D Mode" was cut off; it now reads "2D Mode" / "3D Mode", and the\n    3D/2D mode window no longer cuts off "3D Mode" / "2D Mode".
+  * Continue / save screen: long area names ("Heliodor Underground Waterway") fit on one
+    line instead of running into the next save slot.
+  * Map screen: long area names ("Heliodor Castle Town: Lower Level") fit the name plate.
+  * Opening: "Lotozetasia" is now "Erdrea" in the Ishi prayer and the village map scene;
+    the coming-of-age "custom" / "rite" is called a "ceremony" (matches the official text).
+  * The patcher shows the Mage's Arcane Gazette logo, a link to the project page and which
+    version is recommended.
 
 0.1.12
   * Quest list: long quest titles are shortened and the list font is smaller so they no

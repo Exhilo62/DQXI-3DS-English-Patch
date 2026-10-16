@@ -89,7 +89,8 @@ encrypted.
 - A few NPC strings and the "combo available" picture are still Japanese.
 - Update folders (LayeredFS) cannot carry the game-code edits listed above; a full patched `.cia` / `.3ds` has them.
 - Some very long lines may still be tight in 2D mode – please report them.
-- Developed in the Azahar emulator; tested on real 3DS hardware (`.cia`) and Citra MMJ (`.3ds`).
+- Developed in the Azahar emulator. **Tested on:** a real New Nintendo 3DS (Luma3DS, patched `.cia`) and a
+  Retroid Pocket Duo Lite running Citra MMJ (patched `.3ds`).
 
 ## Reporting problems
 Open an [issue](../../issues) with a **screenshot**, the **mode (2D/3D)**, and where it happened.
