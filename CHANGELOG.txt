@@ -5,6 +5,18 @@ DQXI 3DS English patch - changelog
     first battle or when opening some chests, and miss text fixes). A full patched .cia / .3ds
     from the newest version is the most complete: update folders cannot carry the code edits.
 
+0.1.15
+  * Gallopolis / Gondolia were swapped: the desert kingdom of Prince Faris (and its castle, region
+    and town) is now "Gallopolis", and the monster-arena town (and its arena) is "Gondolia"
+    (about 1,000 lines, plus the map labels and cutscenes).
+  * Prince Faris's name showed as "Fatuous" in his cutscenes; it is now "Faris".
+  * "Faris's Growth Journal" and Goliath's diary pages (Gallopolis / Heliodor) were still partly
+    Japanese; they are English now. A few other leftover Japanese lines are translated too (a
+    mermaid-cove villager, Serena's farewell, a lamp-lighter, a sleepy sentry, the "Smithing
+    God's Flame" description and the Nintendo terms-of-service message).
+  * Cobblestone's own line "We, Ishi folk" now says "Cobblestone", and the same fixes from 0.1.14
+    (Erdrea, Cobblestone Tor, Spirit of the Land, Teo, ceremony, Sandy) are in every place that
+    was missed.
 0.1.14
   * Names now match the official English game everywhere (dialogue, books, achievements,
     quests, maps, story recaps): the world is "Erdrea" (it said "Rotozetasia"), the mountain is
