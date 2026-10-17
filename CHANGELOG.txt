@@ -5,6 +5,18 @@ DQXI 3DS English patch - changelog
     first battle or when opening some chests, and miss text fixes). A full patched .cia / .3ds
     from the newest version is the most complete: update folders cannot carry the code edits.
 
+0.1.16
+  * IMPORTANT (install note): before installing a new full game (.cia / .3ds) on a 3DS, delete any old
+    update (luma) folder from the SD card (SD:/luma/titles/0004000000199200). Leftover files there,
+    especially a code.ips, override the new install, so text stays untranslated (the battle Plan menu
+    showed odd letters instead of "Party"). The patcher now shows this warning in its window and when it finishes.
+  * Names: "Darkspawn" (was Devil Child), "Luminary" (was Hero), the Sword of Light, "Derk" (was Deku),
+    "Cobblestone Tor" and the Spirit of the Land, "Teo", and the coming-of-age (and all other) rites and rituals are "ceremony".
+  * Fit fixes: Title List, in-game save menu place names, camp menu ("Records"), Stats screen, weapon, armor and monster
+    category names, a pixel re-check that re-wrapped every dialogue line that ran out of the text box.
+  * The battle Plan menu's last row reads "Party" in a full patched .cia / .3ds (update folders cannot change it).
+  * The Yocchi are now "Tockles" and Yocchi Village is "Tickington", the official English names (the StreetPass feature is "Tockle-tch").
+
 0.1.15
   * Gallopolis / Gondolia were swapped: the desert kingdom of Prince Faris (and its castle, region
     and town) is now "Gallopolis", and the monster-arena town (and its arena) is "Gondolia"

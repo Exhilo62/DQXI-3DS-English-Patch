@@ -12,6 +12,14 @@ HOW TO USE
                 .3ds  (emulators / cartridge dump)   or   .cia  (install on a 3DS with FBI)
  5. Press Patch and wait about a minute. When it says Done, your English game is ready.
 
+ !! BEFORE YOU INSTALL A NEW FULL GAME (.cia / .3ds) ON A 3DS:
+    If you ever used an update ("luma") folder, DELETE the old one from your SD card first:
+        SD:/luma/titles/0004000000199200
+    Files left there (especially a code.ips and old romfs files) override the new install, so
+    parts stay untranslated (for example the battle Plan menu shows odd letters instead of
+    "Party") even though the new game file is correct. To go back to a clean install, delete
+    that folder, install the new .cia, and only then add a newer update folder if you want one.
+
 INSTALLING / PLAYING
  .cia : copy to your 3DS SD card and install with FBI (needs custom firmware, e.g.
         Luma3DS). It keeps the same title ID as the Japanese game, so your saves

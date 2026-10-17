@@ -51,12 +51,18 @@ Download the separate **Linux** zip (DQXI_3DS_English_Patch_Linux_v*.zip), extra
 chmod +x patch.sh
 ./patch.sh                                  # opens the window (needs python3-tk)
 ./patch.sh game.cia output.cia             # or patch from the terminal
-./patch.sh game.3ds                        # a .3ds in gives a "... (English).3ds" out (emulator frontends can list it)
+./patch.sh game.3ds                        # .3ds in, "(English).3ds" out
 ```
 The output type follows the input: a decrypted `.3ds` gives a `.3ds`, a `.cia` gives a `.cia` (an installed `.cia` does not show up in
 emulator frontends such as EmuDeck / ES-DE). `--cia` only turns a `.3ds` into an installable `.cia`; a `.cia` cannot become a `.3ds`.
 The window needs `python3-tk`; without it, the command-line form above still works.
 The window also shows the patch notes for each version.
+
+> **Installing a new full `.cia` / `.3ds` on a 3DS? Delete any old update ("luma") folder from the SD card first**
+> (`SD:/luma/titles/0004000000199200`). Files left there, especially a `code.ips`, override the new install, so parts
+> stay untranslated (for example the battle Plan menu shows odd letters instead of "Party") even though the new
+> game file is correct. Clean install = delete that folder, install the new `.cia`, and only then add a newer update
+> folder if you want one.
 
 ### Updating an already patched game (no reinstall)
 After a new version, you don't have to rebuild and reinstall the whole game:

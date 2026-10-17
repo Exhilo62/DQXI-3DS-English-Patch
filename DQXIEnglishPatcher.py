@@ -72,6 +72,9 @@ class App(tk.Tk):
         self.btn2=ttk.Button(bf,text='Create update folder (already patched game)',command=self.start_export);self.btn2.pack(side='left',padx=6,ipady=4)
         self.bar=ttk.Progressbar(self,mode='indeterminate');self.bar.pack(fill='x',padx=14)
         # patch notes (CHANGELOG.txt shipped next to the tool) and the progress log
+        ttk.Label(self,text='Installing a new full game (.cia / .3ds) on a 3DS? Delete any old update folder from the SD card first: '
+                  'SD:/luma/titles/0004000000199200. Old files left there override the new install.',
+                  wraplength=630,foreground='#a33a00').pack(anchor='w',padx=14,pady=(8,0))
         # which version to use: this build is the recommended one; older update folders are listed as unsafe
         ttk.Label(self,text='This is version %s - the recommended version. Update (Luma) folders are safe from 0.1.11 on; '
                   'a full patched .cia/.3ds from the newest version is the most complete.'%VERSION,
@@ -121,7 +124,7 @@ class App(tk.Tk):
                 elif k=='done':
                     self.busy=False;self.bar.stop();self.btn.config(state='normal');self.btn2.config(state='normal')
                     if v==0 and self.exporting:messagebox.showinfo('Done','The update folder was created:\n\n'+self.exporting+'\n\nCopy its "luma" folder to the root of your 3DS SD card (see the README).')
-                    elif v==0:messagebox.showinfo('Done','The English game was created:\n\n'+self.dst.get())
+                    elif v==0:messagebox.showinfo('Done','The English game was created:\n\n'+self.dst.get()+'\n\nIMPORTANT before you install it on a 3DS: if you ever used an update ("luma") folder, delete the old one from your SD card first (SD:/luma/titles/0004000000199200). Leftover files there override this install, so some text stays untranslated (for example the battle Plan menu).')
                     elif v==-1:messagebox.showerror('Error','Something went wrong - see the log for details.')
                     else:messagebox.showwarning('Could not patch','The file could not be patched - see the log for details.')
         except queue.Empty:pass

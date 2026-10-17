@@ -28,3 +28,5 @@ Notes
 Note: an update folder (--export) cannot include the game-code edits (Link label, equip headers, result wording, 2D object names, full battle labels); a full patched .cia/.3ds has them. Use the full patch if you can.
 
 No window library? The patcher also runs without tkinter: python3 DQXIEnglishPatcher.py "game.3ds" (writes "... (English).3ds"), or ./patch.sh with the game file as shown in step 4.
+
+IMPORTANT: before installing a new full game (.cia/.3ds) on a 3DS, delete any old update (luma) folder from the SD card: SD:/luma/titles/0004000000199200. Leftover files there override the new install (some text stays untranslated, e.g. the battle Plan menu).
