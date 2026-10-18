@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Dragon Quest XI (3DS) English Patcher - simple GUI around cia_patcher."""
-import os,sys,threading,queue,shutil,time,traceback
+import os,sys,threading,queue,shutil,time,traceback,subprocess,json
 from pathlib import Path
 try:
     import tkinter as tk
@@ -18,6 +18,7 @@ sys.path.insert(0,str(Path(__file__).parent))
 import cia_patcher
 
 VERSION='?'
+UPDATE_FOLDERS=False   # Luma update folders are paused: patches change too often, so full .cia/.3ds only
 try:VERSION=res('VERSION').read_text().strip()
 except Exception:pass
 def load_notes():
@@ -28,6 +29,40 @@ def load_notes():
             if t:return t
         except Exception:pass
     return 'Patch notes are not available in this copy.'
+REPO='https://github.com/Exhilo62/DQXI-3DS-English-Patch'
+DISCORD='https://discord.gg/w2DSajEUx'
+def fs_name(path):
+    """file system of the drive holding `path` (Windows only; '' when unknown)"""
+    try:
+        import ctypes
+        if os.name!='nt':return ''
+        root=Path(path).resolve().anchor
+        buf=ctypes.create_unicode_buffer(64)
+        if ctypes.windll.kernel32.GetVolumeInformationW(ctypes.c_wchar_p(root),None,0,None,None,None,buf,64):return buf.value
+    except Exception:pass
+    return ''
+def settings_path():
+    base=Path(os.environ.get('APPDATA') or (Path.home()/'.config'))
+    return base/'DQXIEnglishPatch'/'settings.json'
+def load_settings():
+    try:return json.loads(settings_path().read_text(encoding='utf-8'))
+    except Exception:return {}
+def save_settings(d):
+    try:
+        p=settings_path();p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(d,indent=1),encoding='utf-8')
+    except Exception:pass
+def fmt_secs(s):
+    s=int(max(0,s))
+    return '%d s'%s if s<90 else '%d min %02d s'%(s//60,s%60)
+def redact(text):
+    """no user name / home folder in text people paste into bug reports"""
+    try:
+        home=str(Path.home())
+        text=text.replace(home,'~').replace(home.replace('\\','/'),'~')
+        user=Path.home().name
+        if len(user)>2:text=text.replace(user,'<user>')
+    except Exception:pass
+    return text
 AUTONAME='Dragon Quest XI - Echoes of an Elusive Age'
 def autoname(ext):
     # the .cia keeps the shorter name (easier to read in FBI / HOME menu lists)
@@ -37,8 +72,9 @@ class App(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title('Dragon Quest XI English Patcher  v'+VERSION)
-        self.geometry('700x800');self.minsize(620,700)
+        self.geometry('700x760');self.minsize(620,600)
         self.q=queue.Queue();self.busy=False;self.exporting=None
+        self.logbuf=[];self.runinfo={};self.settings=load_settings();self.t_start=0;self.phase=(0,1)
         pad=dict(padx=14,pady=4)
         # header: title + short help on the left, the Mage's Arcane Gazette logo on the right
         hdr=ttk.Frame(self);hdr.pack(fill='x',padx=14,pady=(10,0))
@@ -67,33 +103,45 @@ class App(tk.Tk):
         self.dst=tk.StringVar()
         ttk.Entry(f2,textvariable=self.dst).pack(side='left',fill='x',expand=True,padx=(8,4),pady=8)
         ttk.Button(f2,text='Browse...',command=self.pick_dst).pack(side='right',padx=(4,8),pady=8)
-        bf=ttk.Frame(self);bf.pack(pady=8)
-        self.btn=ttk.Button(bf,text='Patch',command=self.start);self.btn.pack(side='left',padx=6,ipadx=24,ipady=4)
-        self.btn2=ttk.Button(bf,text='Create update folder (already patched game)',command=self.start_export);self.btn2.pack(side='left',padx=6,ipady=4)
-        self.bar=ttk.Progressbar(self,mode='indeterminate');self.bar.pack(fill='x',padx=14)
-        # patch notes (CHANGELOG.txt shipped next to the tool) and the progress log
-        ttk.Label(self,text='Installing a new full game (.cia / .3ds) on a 3DS? Delete any old update folder from the SD card first: '
-                  'SD:/luma/titles/0004000000199200. Old files left there override the new install.',
-                  wraplength=630,foreground='#a33a00').pack(anchor='w',padx=14,pady=(8,0))
-        # which version to use: this build is the recommended one; older update folders are listed as unsafe
-        ttk.Label(self,text='This is version %s - the recommended version. Update (Luma) folders are safe from 0.1.11 on; '
-                  'a full patched .cia/.3ds from the newest version is the most complete.'%VERSION,
-                  wraplength=630,foreground='#1a4f9c').pack(anchor='w',padx=14,pady=(8,0))
-        nf=ttk.LabelFrame(self,text="What's new (patch notes)");nf.pack(fill='both',expand=True,padx=14,pady=(8,0))
-        sb=ttk.Scrollbar(nf,orient='vertical')
-        self.notes=tk.Text(nf,height=11,wrap='word',font=('Segoe UI',10),yscrollcommand=sb.set,padx=8,pady=6,spacing1=2,spacing3=2)
-        sb.config(command=self.notes.yview);sb.pack(side='right',fill='y');self.notes.pack(side='left',fill='both',expand=True,padx=(6,0),pady=6)
-        self.render_notes(load_notes());self.notes.config(state='disabled')
-        self.log=tk.Text(self,height=6,state='disabled',wrap='word',font='TkFixedFont');self.log.pack(fill='x',padx=14,pady=(8,4))
-        url='https://github.com/Exhilo62/DQXI-3DS-English-Patch'
+        # buttons that matter are all in this top row so they are always visible (Report a problem / diagnostics included)
+        bf=ttk.Frame(self);bf.pack(pady=(6,4))
+        self.btn=ttk.Button(bf,text='Patch',command=self.start);self.btn.pack(side='left',padx=5,ipadx=22,ipady=4)
+        self.btn_open=ttk.Button(bf,text='Open output folder',command=self.open_out,state='disabled');self.btn_open.pack(side='left',padx=5,ipady=4)
+        ttk.Button(bf,text='Report a problem...',command=self.report).pack(side='left',padx=5,ipady=4)
+        ttk.Button(bf,text='Copy diagnostics',command=self.copy_diag).pack(side='left',padx=5,ipady=4)
+        # update folders are paused: the button object stays (the code paths use it) but is not shown
+        self.btn2=ttk.Button(bf,text='Create update folder',command=self.start_export)
+        if not UPDATE_FOLDERS:self.btn2.config(state='disabled')
+        else:self.btn2.pack(side='left',padx=5,ipady=4)
+        self.verify=tk.BooleanVar(value=True)
+        ttk.Checkbutton(self,text='Check the new file when it is done (recommended, takes about a minute)',variable=self.verify).pack(anchor='w',padx=18)
+        self.bar=ttk.Progressbar(self,mode='determinate',maximum=100);self.bar.pack(fill='x',padx=14)
+        self.prog_lbl=ttk.Label(self,text='');self.prog_lbl.pack(anchor='w',padx=16)
+        # the bottom area (project link and log) is packed from the bottom BEFORE the patch notes, so a small screen
+        # shrinks the notes instead of pushing the log and the link out of the window
+        url=REPO
         link=tk.Label(self,text='Project page / downloads / bug reports:  '+url.replace('https://',''),fg='#1a4f9c',cursor='hand2',
                       font=('Segoe UI',9,'underline'))
-        link.pack(pady=(0,10))
+        link.pack(side='bottom',pady=(0,8))
         def open_link(_e=None):
             try:
                 import webbrowser;webbrowser.open(url)
             except Exception:pass
         link.bind('<Button-1>',open_link)
+        self.log=tk.Text(self,height=5,state='disabled',wrap='word',font='TkFixedFont');self.log.pack(side='bottom',fill='x',padx=14,pady=(6,6))
+        ttk.Label(self,text='Installing a new full game (.cia / .3ds) on a 3DS? Delete any old update folder from the SD card first: '
+                  'SD:/luma/titles/0004000000199200. Old files left there override the new install.',
+                  wraplength=630,foreground='#a33a00').pack(anchor='w',padx=14,pady=(6,0))
+        ttk.Label(self,text='This is version %s. Because the patch changes often, the best results come from making a NEW full patched .cia/.3ds and installing it each time. '
+                  'Update (Luma) folders are turned off for now and will come back in a future patch once the game is more stable.'%VERSION,
+                  wraplength=630,foreground='#1a4f9c').pack(anchor='w',padx=14,pady=(6,0))
+        nf=ttk.LabelFrame(self,text="What's new (patch notes)");nf.pack(fill='both',expand=True,padx=14,pady=(6,0))
+        sb=ttk.Scrollbar(nf,orient='vertical')
+        self.notes=tk.Text(nf,height=6,wrap='word',font=('Segoe UI',10),yscrollcommand=sb.set,padx=8,pady=6,spacing1=2,spacing3=2)
+        sb.config(command=self.notes.yview);sb.pack(side='right',fill='y');self.notes.pack(side='left',fill='both',expand=True,padx=(6,0),pady=6)
+        self.render_notes(load_notes());self.notes.config(state='disabled')
+        ls=self.settings.get('last_src')
+        if ls and Path(ls).is_file():self.set_src(ls)          # remember the last game file and output folder
         self.after(150,self.poll)
     def render_notes(self,text):
         """Reflow the plain-text changelog: version headings stand out, bullets get a hanging indent and the
@@ -114,32 +162,109 @@ class App(tk.Tk):
         for i,(k,s) in enumerate(items):
             t.insert('end',s+'\n',k)
     # ---- helpers
-    def say(self,msg):self.q.put(('log',str(msg)))
+    def say(self,msg):
+        self.logbuf.append(str(msg));self.q.put(('log',str(msg)))
+    def diag_text(self):
+        """a short, shareable description of this run (no user name or folder paths)"""
+        import platform
+        info=cia_patcher.read_patch_header(res('dqxi_en.dqp'))
+        ri=self.runinfo
+        lines=['DQXI English Patcher diagnostics',
+               'Patcher version: %s   patch data: v%s (built %s, %s files)'%(VERSION,info.get('version','?'),info.get('built','?'),info.get('files','?')),
+               'System: %s, Python %s%s, window library: %s'%(platform.platform(),platform.python_version(),' (exe)' if getattr(sys,'frozen',False) else '','yes' if HAVE_TK else 'no')]
+        if ri:
+            lines.append('Input: %s (%s, %.2f GB)   output: %s   check after patching: %s'%(ri.get('src','?'),ri.get('srcext','?'),ri.get('srcsize',0)/1e9,ri.get('dstext','?'),'on' if ri.get('verify') else 'off'))
+            lines.append('Output drive: %s free, file system %s'%('%.1f GB'%(ri['free']/1e9) if 'free' in ri else '?',ri.get('fs') or 'unknown'))
+            if 'rc' in ri:lines.append('Result code: %s   time: %s s'%(ri['rc'],ri.get('secs','?')))
+        else:lines.append('(no patch has been run yet)')
+        lines+=['','Log:']+self.logbuf[-60:]
+        return redact('\n'.join(lines))
+    def copy_diag(self):
+        try:
+            self.clipboard_clear();self.clipboard_append(self.diag_text());self.update()
+            messagebox.showinfo('Copied','The diagnostics were copied. Paste them into your bug report.\n(They contain no user name or folder paths.)')
+        except Exception as e:messagebox.showerror('Could not copy',str(e))
+    def report(self):
+        try:
+            self.clipboard_clear();self.clipboard_append(self.diag_text());self.update()
+        except Exception:pass
+        messagebox.showinfo('Report a problem','The diagnostics were copied to your clipboard.\n\n'
+            'Your browser will open the issue page - paste them there (Ctrl+V) and add a screenshot, the 2D/3D mode and where in the game it happened.\n\n'
+            'You can also ask on Discord: '+DISCORD.replace('https://',''))
+        try:
+            import webbrowser;webbrowser.open(REPO+'/issues/new')
+        except Exception:pass
+    def done_text(self):
+        """what to do with the finished file (short steps; differs for .cia and .3ds)"""
+        d=self.dst.get()
+        stamp='On the title screen look for  "English patch v%s"  under the logo - that confirms you are on this version.'%VERSION
+        if d.lower().endswith('.cia'):
+            steps=('1. FIRST delete the old update folder on your SD card, if you ever had one:\n'
+                   '    SD:/luma/titles/0004000000199200\n'
+                   '    (files left there override the new game and some text stays Japanese).\n'
+                   '2. Copy the .cia to your SD card and install it with FBI (Files > SD > the .cia > Install).\n'
+                   '3. Start the game from the HOME menu. Your saves carry over - back them up first to be safe.\n')
+        else:
+            steps=('1. Emulators (Azahar / Citra): open the .3ds. If you used a mods or load folder for this game before,\n'
+                   '    delete it (load/mods/0004000000199200) so old files do not override the new game.\n'
+                   '2. Real 3DS: use the .cia format instead (or a flashcart that runs decrypted .3ds files).\n')
+        return 'The English game was created:\n\n'+d+'\n\n'+steps+'\n'+stamp+'\n\nProblems? Use "Report a problem..." in this window.'
+    def save_log(self,dst):
+        """patch log next to the output (kept on failure too, so it can be attached to a bug report)"""
+        try:
+            Path(str(dst)).with_name(Path(str(dst)).stem+' - patch log.txt').write_text(self.diag_text(),encoding='utf-8')
+        except Exception:pass
     def poll(self):
         try:
             while True:
                 k,v=self.q.get_nowait()
                 if k=='log':
                     self.log.config(state='normal');self.log.insert('end',v+'\n');self.log.see('end');self.log.config(state='disabled')
+                elif k=='prog':
+                    frac,label=v
+                    el=time.time()-self.t_start
+                    eta='' if (frac<0.04 or el<4) else '  -  about %s left'%fmt_secs(el*(1-frac)/frac)
+                    self.bar.config(value=100*frac);self.prog_lbl.config(text='%s  -  %d%%%s'%(label,int(100*frac),eta))
                 elif k=='done':
-                    self.busy=False;self.bar.stop();self.btn.config(state='normal');self.btn2.config(state='normal')
+                    self.busy=False;self.bar.stop();self.bar.config(value=100 if v==0 else 0);self.btn.config(state='normal');self.btn2.config(state='normal' if UPDATE_FOLDERS else 'disabled')
+                    self.prog_lbl.config(text='Done - finished in %s.'%fmt_secs(time.time()-self.t_start) if v==0 else 'Stopped - see the log.')
+                    if v==0 and not self.exporting:self.btn_open.config(state='normal')
                     if v==0 and self.exporting:messagebox.showinfo('Done','The update folder was created:\n\n'+self.exporting+'\n\nCopy its "luma" folder to the root of your 3DS SD card (see the README).')
-                    elif v==0:messagebox.showinfo('Done','The English game was created:\n\n'+self.dst.get()+'\n\nIMPORTANT before you install it on a 3DS: if you ever used an update ("luma") folder, delete the old one from your SD card first (SD:/luma/titles/0004000000199200). Leftover files there override this install, so some text stays untranslated (for example the battle Plan menu).')
+                    elif v==0:messagebox.showinfo('Done',self.done_text())
                     elif v==-1:messagebox.showerror('Error','Something went wrong - see the log for details.')
+                    elif v==3:messagebox.showwarning('Not the original game','This file does not match the original Japanese game that the patch was made for (a different game revision or a modified dump).\n\nUse an unmodified, decrypted dump of the Japanese game. Details are in the log.')
+                    elif v==4:messagebox.showwarning('Not the Japanese game','This is not the Japanese Dragon Quest XI.\n\nThe patch only works on the Japanese 3DS game (title ID 0004000000199200). A different region, a demo or another game cannot be patched.')
+                    elif v==5:messagebox.showwarning('Already patched','This file looks like it is ALREADY PATCHED (by this or an older version).\n\nPatch your original, unpatched Japanese dump instead - a patched game cannot be patched again.')
+                    elif v==6:messagebox.showerror('Check failed','The new file did not pass the check, so it was deleted. Please try again, and if it happens again use "Report a problem..." and attach the diagnostics.')
                     else:messagebox.showwarning('Could not patch','The file could not be patched - see the log for details.')
         except queue.Empty:pass
         self.after(150,self.poll)
     def pick_src(self):
-        p=filedialog.askopenfilename(title='Select your Dragon Quest XI .cia or .3ds',filetypes=[('3DS game','*.cia *.3ds *.cci'),('All files','*.*')])
-        if p:
-            self.src.set(p)
-            is3ds=Path(p).suffix.lower() in ('.3ds','.cci')
-            if is3ds:
-                self.fmtframe.pack(fill='x',before=self.f2,**self.pad)
-                self.fmt.set('3ds')
-            else:
-                self.fmtframe.pack_forget();self.fmt.set('cia')
-            self.dst.set(str(Path(p).with_name(autoname(self.out_ext()))))
+        init=self.settings.get('last_src_dir')
+        p=filedialog.askopenfilename(title='Select your Dragon Quest XI .cia or .3ds',filetypes=[('3DS game','*.cia *.3ds *.cci'),('All files','*.*')],
+                                     initialdir=init if init and Path(init).is_dir() else None)
+        if p:self.set_src(p)
+    def set_src(self,p):
+        self.src.set(p)
+        is3ds=Path(p).suffix.lower() in ('.3ds','.cci')
+        if is3ds:
+            self.fmtframe.pack(fill='x',before=self.f2,**self.pad)
+            self.fmt.set(self.settings.get('fmt','3ds') if self.settings.get('fmt') in ('3ds','cia') else '3ds')
+        else:
+            self.fmtframe.pack_forget();self.fmt.set('cia')
+        dd=self.settings.get('last_dst_dir')
+        # the output goes where the last one went (or next to the game file the first time)
+        self.dst.set(str((Path(dd) if dd and Path(dd).is_dir() else Path(p).parent)/autoname(self.out_ext())))
+        self.settings['last_src_dir']=str(Path(p).parent);self.settings['last_src']=p;save_settings(self.settings)
+    def open_out(self):
+        p=Path(self.dst.get().strip().strip('"'))
+        try:
+            if os.name=='nt':
+                if p.exists():subprocess.Popen(['explorer','/select,'+str(p)])
+                else:os.startfile(str(p.parent))
+            elif sys.platform=='darwin':subprocess.Popen(['open','-R',str(p)] if p.exists() else ['open',str(p.parent)])
+            else:subprocess.Popen(['xdg-open',str(p.parent)])
+        except Exception as e:messagebox.showerror('Could not open the folder',str(e))
     def out_ext(self):
         return '.cia' if self.fmt.get()=='cia' else '.3ds'
     def fmt_changed(self):
@@ -149,9 +274,10 @@ class App(tk.Tk):
         ext=self.out_ext()
         init=Path(self.dst.get()) if self.dst.get() else None
         p=filedialog.asksaveasfilename(title='Save the English game as',defaultextension=ext,
-              initialfile=autoname(ext),initialdir=str(init.parent) if init else None,
+              initialfile=autoname(ext),initialdir=str(init.parent) if init else self.settings.get('last_dst_dir'),
               filetypes=[('3DS game','*'+ext)])
-        if p:self.dst.set(p)
+        if p:
+            self.dst.set(p);self.settings['last_dst_dir']=str(Path(p).parent);save_settings(self.settings)
     def start(self):
         if self.busy:return
         s=Path(self.src.get().strip().strip('"'));d=Path(self.dst.get().strip().strip('"'))
@@ -165,22 +291,29 @@ class App(tk.Tk):
             need=s.stat().st_size+(300<<20)
             free=shutil.disk_usage(d.parent).free
             if free<need and not messagebox.askyesno('Low disk space','There may not be enough free space (about %.1f GB needed). Continue anyway?'%(need/1e9)):return
+            fs=fs_name(d.parent)
+            if self.out_ext()=='.3ds' and fs.upper()=='FAT32':
+                messagebox.showerror('This drive cannot hold the file','The patched .3ds is 4 GB, but this drive is formatted as FAT32 (largest file 4 GB minus 1 byte).\n\nSave it on another drive, or choose the .cia format (about 2.8 GB).');return
+            self.runinfo=dict(src=s.name,srcext=s.suffix.lower(),srcsize=s.stat().st_size,dstext=self.out_ext(),verify=self.verify.get(),free=free,fs=fs)
         except Exception as e:
             messagebox.showerror('Location error',str(e));return
         if d.exists() and not messagebox.askyesno('Replace file','"%s" already exists. Replace it?'%d.name):return
         self.dst.set(str(d))
+        self.settings['last_dst_dir']=str(d.parent);self.settings['fmt']=self.out_ext().lstrip('.');save_settings(self.settings)
+        self.btn_open.config(state='disabled');self.t_start=time.time();self.phase=(0.0,0.88 if self.verify.get() else 1.0)
+        self.bar.config(value=0);self.prog_lbl.config(text='Starting ...')
         self.exporting=None
-        self.busy=True;self.btn.config(state='disabled');self.btn2.config(state='disabled');self.bar.start(12)
-        self.log.config(state='normal');self.log.delete('1.0','end');self.log.config(state='disabled')
+        self.busy=True;self.btn.config(state='disabled');self.btn2.config(state='disabled')
+        self.log.config(state='normal');self.log.delete('1.0','end');self.log.config(state='disabled');self.logbuf=[]
         threading.Thread(target=self.work,args=(str(s),str(d)),daemon=True).start()
     def start_export(self):
-        if self.busy:return
+        if self.busy or not UPDATE_FOLDERS:return
         s=Path(self.src.get().strip().strip('"'))
         if not s.is_file():messagebox.showerror('Missing file','Please select your original (decrypted) Japanese .cia or .3ds file in step 1 first.');return
         o=filedialog.askdirectory(title='Where should the update folder be created?',initialdir=str(s.parent))
         if not o:return
         self.exporting=str(Path(o)/'DQXI_English_Update')
-        self.busy=True;self.btn.config(state='disabled');self.btn2.config(state='disabled');self.bar.start(12)
+        self.busy=True;self.btn.config(state='disabled');self.btn2.config(state='disabled');self.t_start=time.time()
         self.log.config(state='normal');self.log.delete('1.0','end');self.log.config(state='disabled')
         threading.Thread(target=self.work_export,args=(str(s),self.exporting),daemon=True).start()
     def work_export(self,s,out):
@@ -196,7 +329,14 @@ class App(tk.Tk):
         t0=time.time()
         try:
             self.say('Reading %s ...'%Path(s).name)
-            rc=cia_patcher.patch(s,d,str(res('dqxi_en.dqp')),str(res('code.ips')),log=self.say)
+            hi=0.88 if self.runinfo.get('verify') else 1.0
+            def mk(lo,hi_):
+                return lambda x,label='':self.q.put(('prog',(lo+(hi_-lo)*max(0.0,min(1.0,x)),label)))
+            rc=cia_patcher.patch(s,d,str(res('dqxi_en.dqp')),str(res('code.ips')),log=self.say,progress=mk(0.0,hi))
+            if rc==0 and self.runinfo.get('verify'):
+                self.say('Checking the new file (about a minute) ...')
+                if not cia_patcher.verify_output(d,str(res('dqxi_en.dqp')),log=self.say,progress=mk(hi,1.0)):
+                    self.say('The new file did not pass the check and was deleted. Please try again.');rc=6
             if rc==0:self.say('Finished in %d seconds.'%(time.time()-t0))
             elif rc==2:
                 self.say('')
@@ -206,12 +346,14 @@ class App(tk.Tk):
                 try:
                     if Path(d).exists():Path(d).unlink()
                 except Exception:pass
+            self.runinfo.update(rc=rc,secs=int(time.time()-t0));self.save_log(d)
             self.q.put(('done',rc))
         except Exception as e:
             self.say('ERROR: %s'%e);self.say(traceback.format_exc())
             try:
                 if Path(d).exists():Path(d).unlink()
             except Exception:pass
+            self.runinfo.update(rc=-1,secs=int(time.time()-t0));self.save_log(d)
             self.q.put(('done',-1))
 
 def cli(argv):
@@ -227,6 +369,9 @@ def cli(argv):
     if not args or not os.path.exists(args[0]):
         print('Game file not found: %s'%(args[0] if args else '(none given)'))
         return 2
+    if '--export' in argv and not UPDATE_FOLDERS:
+        print('Update folders are turned off in this version. Make a full patched .cia/.3ds instead.')
+        return 2
     if '--export' in argv:
         i=argv.index('--export');out=argv[i+1] if i+1<len(argv) else 'dqxi_update'
         args=[a for a in args if a!=out][:1]
@@ -237,7 +382,12 @@ def cli(argv):
     else:
         want_cia='--cia' in flags or Path(src).suffix.lower()=='.cia'
         dst=str(Path(src).with_name('Dragon Quest XI - Echoes of an Elusive Age'+('.cia' if want_cia else ' (English).3ds')))
-    return cia_patcher.patch(src,dst,str(res('dqxi_en.dqp')),str(res('code.ips')),log=print)
+    rc=cia_patcher.patch(src,dst,str(res('dqxi_en.dqp')),str(res('code.ips')),log=print)
+    if rc==0 and '--no-verify' not in flags:
+        print('Checking the new file (about a minute) ...')
+        if not cia_patcher.verify_output(dst,str(res('dqxi_en.dqp')),log=print):
+            print('The new file did not pass the check - do not install it. Please try again or report the problem.');rc=6
+    return rc
 
 if __name__=='__main__':
     if len(sys.argv)>=2:

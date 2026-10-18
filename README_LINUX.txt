@@ -15,7 +15,6 @@ Nothing to install except Python 3 (and tkinter if you want the window).
        ./patch.sh "Dragon Quest XI (Japan).cia" "Dragon Quest XI - Echoes of an Elusive Age.cia"
        ./patch.sh "game.3ds"                               (.3ds -> "... (English).3ds", for emulator frontends)
        ./patch.sh "game.3ds" "English.cia" --cia         (.3ds -> installable .cia)
-       ./patch.sh "game.cia" --export ~/dqxi_update       (small update folder, see README.txt)
 
 Notes
  * Your game file must be DECRYPTED (see README.txt, GodMode9: "Decrypt file (SD output)").
@@ -25,8 +24,10 @@ Notes
  * Made with AI assistance (Anthropic's Claude) and the author's direction and testing.
    File-format tooling is based on dqxi-format-tools by Kenzie-1377 (MIT).
 
-Note: an update folder (--export) cannot include the game-code edits (Link label, equip headers, result wording, 2D object names, full battle labels); a full patched .cia/.3ds has them. Use the full patch if you can.
+Note: update folders (--export) are turned off for now. The patch changes often, so the best results come from making a NEW full patched .cia / .3ds and installing it each time. Sorry the updates are so frequent - they are needed as the translation keeps improving. Update folders will come back in a future patch once the game is more stable and patches are less frequent.
 
 No window library? The patcher also runs without tkinter: python3 DQXIEnglishPatcher.py "game.3ds" (writes "... (English).3ds"), or ./patch.sh with the game file as shown in step 4.
 
 IMPORTANT: before installing a new full game (.cia/.3ds) on a 3DS, delete any old update (luma) folder from the SD card: SD:/luma/titles/0004000000199200. Leftover files there override the new install (some text stays untranslated, e.g. the battle Plan menu).
+
+Note: always make a new full patched .cia/.3ds from the newest version. Update folders (--export) are turned off for now.

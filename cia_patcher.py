@@ -170,8 +170,10 @@ def load_templates():
     base=Path(getattr(sys,'_MEIPASS',HERE))
     return json.loads(zlib.decompress((base/'cia_templates.bin').read_bytes()))
 
-def patch(src,dst,patchfile,ips_file,keep_code=False,log=print,export_dir=None):
+def patch(src,dst,patchfile,ips_file,keep_code=False,log=print,export_dir=None,progress=None):
     t0=time.time()
+    def prog(x,label):
+        if progress:progress(x,label)
     f=open(src,'rb')
     f.seek(0x100);ncsd=f.read(4)==b'NCSD'
     to_cia=Path(dst).suffix.lower()=='.cia' if dst else False
@@ -214,6 +216,11 @@ def patch(src,dst,patchfile,ips_file,keep_code=False,log=print,export_dir=None):
             if hd[0x100:0x104]==b'NCCH' and not hd[0x188+7]&4:
                 log('Content %d of this CIA (the manual) is still encrypted - the CIA was only partly decrypted.'%c['idx'])
                 log('Decrypt the whole file with GodMode9 ("CIA image options" -> "Decrypt file (SD output)").');return 2
+    pid=struct.unpack_from('<Q',nc.hdr,0x118)[0]
+    if pid!=0x0004000000199200:
+        log('This is not the Japanese Dragon Quest XI (its title ID is %016X).'%pid)
+        log('The patch is made for the Japanese 3DS game "Dragon Quest XI: Sugi Sarishi Toki o Motomete" (title ID 0004000000199200).')
+        log('Use your own dump of that game (a different region, a demo or another game cannot be patched).');return 4
     rfs=RomFS(nc)
     log('romfs files: %d'%len(rfs.files))
     # ---- payload
@@ -227,8 +234,9 @@ def patch(src,dst,patchfile,ips_file,keep_code=False,log=print,export_dir=None):
     repl={};exe_repl={}
     old_exefs=nc.rd(nc.exefs_off,nc.exefs_size)
     old_files=exefs_files(old_exefs)
-    bad=0
-    for e in hdr['entries']:
+    bad=0;already=0
+    for _i,e in enumerate(hdr['entries']):
+        if _i%25==0:prog(0.75*_i/max(1,len(hdr['entries'])),'Applying the patch to the game files')
         blob=data[pos:pos+e['len']];pos+=e['len']
         if e['path'].startswith('exefs:'):      # HOME-menu banner / icon (ExeFS files)
             name=e['path'][6:];raw=old_files.get(name)
@@ -242,12 +250,22 @@ def patch(src,dst,patchfile,ips_file,keep_code=False,log=print,export_dir=None):
             ent=rfs.by_path.get(e['path'])
             if ent is None:log('missing in your game: '+e['path']);bad+=1;continue
             raw=rfs.read(ent)
-            if hashlib.sha256(raw).hexdigest()!=e['sha_orig']:log('MISMATCH (different game version?): '+e['path']);bad+=1;continue
+            rs=hashlib.sha256(raw).hexdigest()
+            if rs!=e['sha_orig']:
+                if rs==e['sha_new']:already+=1
+                if bad<4:log('does not match the original game: '+e['path'])
+                bad+=1;continue
             base=base_of(raw)
             new=base if e['kind']=='expand' else bspatch(base,blob)
         if hashlib.sha256(new).hexdigest()!=e['sha_new']:log('VERIFY FAILED: '+e['path']);bad+=1;continue
         repl[e['path']]=new
-    if bad:log('%d problem file(s); aborting.'%bad);return 3
+    if bad:
+        log('%d file(s) do not match the original Japanese game; nothing was written.'%bad)
+        if already or bad>=20:
+            log('Most likely this file is ALREADY PATCHED (by this or an older version of the patch).')
+            log('Patch your original, unpatched Japanese dump instead - a patched game cannot be patched again.');return 5
+        log('This is not the original Japanese version the patch was made for (a different game revision or a modified dump).')
+        log('Use an unmodified, decrypted dump of the Japanese game.');return 3
     log('patched files ready: %d (%.0fs)'%(len(repl),time.time()-t0))
     if export_dir:
         # update folder for an already patched game: only the changed romfs files + code.ips, loaded by LayeredFS
@@ -340,7 +358,8 @@ def patch(src,dst,patchfile,ips_file,keep_code=False,log=print,export_dir=None):
     feed(bytes(tables))
     pos=0
     src_base=nc.base+rfs.off+rfs.l3_phys+rfs.data_o
-    for e in order:
+    for _k,e in enumerate(order):
+        if _k%150==0:prog(0.75+0.2*_k/max(1,len(order)),'Writing the new game file')
         p=newoff[e['path']]
         if p>pos:feed(bytes(p-pos));pos=p
         if e['path'] in repl:
@@ -350,6 +369,7 @@ def patch(src,dst,patchfile,ips_file,keep_code=False,log=print,export_dir=None):
             while left:
                 ch=f.read(min(left,8<<20));feed(ch);left-=len(ch)
             pos+=e['size']
+    prog(0.95,'Finishing the new game file')
     if buf:
         feed(bytes(0x1000-len(buf)))   # zero pad hashed block (also physical padding)
         # padding beyond l3_size is physical padding up to the 0x1000 boundary: already written
@@ -461,6 +481,79 @@ def patch(src,dst,patchfile,ips_file,keep_code=False,log=print,export_dir=None):
     log('wrote %s (%.0f MB) in %.0fs'%(dst,os.path.getsize(dst)/1e6,time.time()-t0))
     return 0
 
+def read_patch_header(patchfile):
+    """patch version / date / file count of dqxi_en.dqp without decompressing the whole payload"""
+    try:
+        d=zlib.decompressobj();buf=d.decompress(Path(patchfile).read_bytes(),1<<21)
+        if buf[:8]!=b'DQXIENP1':return {}
+        hl=struct.unpack_from('<I',buf,8)[0];hdr=json.loads(buf[12:12+hl])
+        return dict(version=hdr.get('patch_version','?'),built=hdr.get('built','?'),files=len(hdr.get('entries',[])))
+    except Exception:
+        return {}
+
+def verify_output(dst,patchfile,log=print,progress=None):
+    """Re-open the finished .cia/.3ds and check it: container hashes (TMD / NCCH / ExeFS / ExHeader / romfs hash tree) and that every
+    patched file reads back with exactly the expected content. Returns True when everything is fine."""
+    t0=time.time();ok=True
+    def prog(x,label='Checking the new file'):
+        if progress:progress(x,label)
+    f=open(dst,'rb')
+    try:
+        f.seek(0x100)
+        if f.read(4)==b'NCSD':
+            f.seek(0x120);po,ps=struct.unpack('<II',f.read(8));c=dict(off=po*MU,size=ps*MU)
+        else:
+            cia=CIA(f);c=cia.chunks[0]
+            h=hashlib.sha256();f.seek(c['off']);left=c['size']
+            tot=max(1,c['size'])
+            while left:
+                ch=f.read(min(left,16<<20));h.update(ch);left-=len(ch);prog(0.45*(tot-left)/tot)
+            if h.digest()!=c['hash']:log('  FAILED: the game content does not match its CIA checksum');ok=False
+        nc=Ncch(f,c['off'],c['size'])
+        if u32(nc.hdr,0x104)*MU!=c['size']:log('  FAILED: game size field');ok=False
+        ex=nc.rd(nc.exefs_off,nc.exefs_size)
+        if hashlib.sha256(ex[:0x200]).digest()!=nc.hdr[0x1c0:0x1e0]:log('  FAILED: ExeFS header checksum');ok=False
+        if hashlib.sha256(nc.rd(0x200,0x400)).digest()!=nc.hdr[0x160:0x180]:log('  FAILED: ExHeader checksum');ok=False
+        efs=exefs_files(ex)
+        for i in range(10):
+            nm=ex[i*16:i*16+8].rstrip(b'\0')
+            if nm:
+                o,s=struct.unpack_from('<II',ex,i*16+8)
+                if hashlib.sha256(ex[0x200+o:0x200+o+s]).digest()!=ex[0xc0+0x20*(9-i):0xc0+0x20*(10-i)]:log('  FAILED: ExeFS file '+nm.decode());ok=False
+        base=nc.romfs_off
+        hd=nc.rd(base,0x60);master=u32(hd,8)
+        l3s=struct.unpack_from('<Q',hd,0x3c+8)[0];l1s=struct.unpack_from('<Q',hd,0x0c+8)[0];l2s=struct.unpack_from('<Q',hd,0x24+8)[0]
+        l3p=al(0x60+master,0x1000);l1p=al(l3p+l3s,0x1000);l2p=l1p+al(l1s,0x1000)
+        def hash_blocks(off,size):
+            out=bytearray();pos=0
+            while pos<size:
+                n=min(0x1000,size-pos);b=nc.rd(base+off+pos,n)+bytes(0x1000-n);out+=hashlib.sha256(b).digest();pos+=0x1000
+                if (pos>>12)%16384==0:prog(0.45+0.4*min(1.0,pos/max(1,size)))
+            return bytes(out)
+        if nc.rd(base+l2p,l2s)!=hash_blocks(l3p,l3s):log('  FAILED: romfs hash tree (level 2)');ok=False
+        if nc.rd(base+l1p,l1s)!=hash_blocks(l2p,l2s):log('  FAILED: romfs hash tree (level 1)');ok=False
+        if nc.rd(base+0x60,master)!=hash_blocks(l1p,l1s):log('  FAILED: romfs hash tree (master)');ok=False
+        if hashlib.sha256(nc.rd(base,al(0x60+master,0x200))).digest()!=nc.hdr[0x1e0:0x200]:log('  FAILED: romfs superblock checksum');ok=False
+        # every patched file reads back as expected
+        data=zlib.decompress(Path(patchfile).read_bytes());hl=struct.unpack_from('<I',data,8)[0];hdr=json.loads(data[12:12+hl])
+        rfs=RomFS(nc);bad=0;n=0
+        prog(0.88)
+        for _i,e in enumerate(hdr['entries']):
+            if _i%100==0:prog(0.88+0.12*_i/max(1,len(hdr['entries'])))
+            if e['path'].startswith('exefs:'):
+                raw=efs.get(e['path'][6:]);got=hashlib.sha256(raw).hexdigest() if raw is not None else None
+            else:
+                ent=rfs.by_path.get(e['path']);got=hashlib.sha256(rfs.read(ent)).hexdigest() if ent is not None else None
+            n+=1
+            if got!=e['sha_new']:bad+=1
+        if bad:log('  FAILED: %d of %d patched files do not read back correctly'%(bad,n));ok=False
+        log('Verified %d patched files and the file structure in %d seconds: %s'%(n,time.time()-t0,'OK' if ok else 'PROBLEMS FOUND'))
+    except Exception as ex:
+        log('  verification could not finish: %s'%ex);ok=False
+    finally:
+        f.close()
+    return ok
+
 if __name__=='__main__':
     args=[a for a in sys.argv[1:] if not a.startswith('--')]
     if '--export' in sys.argv:args=args[:1]
@@ -476,4 +569,8 @@ if __name__=='__main__':
         sys.exit(patch(src,None,HERE/'dqxi_en.dqp',HERE/'code_layered.ips',export_dir=out))
     keep='--identity' in sys.argv      # rebuild without any change (self-test)
     pf=None if keep else HERE/'dqxi_en.dqp'
-    sys.exit(patch(src,dst,pf,None if keep else HERE/'code.ips',keep_code=keep))
+    rc=patch(src,dst,pf,None if keep else HERE/'code.ips',keep_code=keep)
+    if rc==0 and not keep and '--no-verify' not in sys.argv:
+        print('Verifying the new file (about a minute) ...')
+        rc=0 if verify_output(dst,pf) else 6
+    sys.exit(rc)

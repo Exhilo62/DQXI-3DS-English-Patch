@@ -61,28 +61,13 @@ The window also shows the patch notes for each version.
 > **Installing a new full `.cia` / `.3ds` on a 3DS? Delete any old update ("luma") folder from the SD card first**
 > (`SD:/luma/titles/0004000000199200`). Files left there, especially a `code.ips`, override the new install, so parts
 > stay untranslated (for example the battle Plan menu shows odd letters instead of "Party") even though the new
-> game file is correct. Clean install = delete that folder, install the new `.cia`, and only then add a newer update
-> folder if you want one.
+> game file is correct. Clean install = delete that folder, then install the new `.cia`.
 
-### Updating an already patched game (no reinstall)
-After a new version, you don't have to rebuild and reinstall the whole game:
-1. Open `DQXIEnglishPatcher.exe`, choose the **same decrypted Japanese file** as before (top box), then press
-   **Create update folder (already patched game)** and pick where to save it.
-2. **Real 3DS:** copy the created `luma` folder to the root of the SD card (replace files). Turn on
-   *Enable game patching* once in the Luma config (hold SELECT while powering on).
-3. **Azahar / Citra:** copy the contents of `luma/titles/0004000000199200/` into the emulator's
-   `load/mods/0004000000199200/` folder.
+### Updating an already patched game
+> **Update (Luma) folders are turned off for now.** The patch changes often, so the best results come from making a NEW full patched .cia / .3ds and installing it each time. Sorry the updates are so frequent - they are needed as the translation keeps improving. Update folders will come back in a future patch once the game is more stable and patches are less frequent.
 
-The update folder is about 150 MB and contains only changed files; it overrides what is installed.
-
-> **Update folder vs full patch:** an update folder (Luma folder / emulator mod) can only replace data files;
-> changing the game's program code that way crashes real 3DS hardware, so it is left out. With an update folder only:
-> - battle menu labels are the shorter ones (Hit / Spell / Guard / Art / Bag / Eq.)
-> - the Plan menu "Party" row is unreadable
-> - the "Link" battle command, the equip-window headers (L.H. / Items / Equip), the group-battle result wording
->   and the 2D "examined" object names stay Japanese-looking
->
-> A full patched `.cia` / `.3ds` has all of these fixed, so use the full patch if you can.
+To update, patch your Japanese game again with the newest version and install the new full `.cia` / `.3ds`
+(delete any old `SD:/luma/titles/0004000000199200` folder first, see above).
 
 ### Decrypting your file (once)
 With **GodMode9** on your 3DS: select the file →
@@ -97,7 +82,7 @@ encrypted.
 
 ## Known issues
 - A few NPC strings and the "combo available" picture are still Japanese.
-- Update folders (LayeredFS) cannot carry the game-code edits listed above; a full patched `.cia` / `.3ds` has them.
+- Update (Luma) folders are paused for now; always make a new full `.cia` / `.3ds`.
 - Some very long lines may still be tight in 2D mode – please report them.
 - Developed in the Azahar emulator. **Tested on:** a real New Nintendo 3DS (Luma3DS, patched `.cia`) and a
   Retroid Pocket Duo Lite running Citra MMJ (patched `.3ds`).
