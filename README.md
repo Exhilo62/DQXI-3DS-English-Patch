@@ -81,11 +81,23 @@ encrypted.
 - Works in both **3D** and **2D** mode (2D text re-fitted to the narrower window)
 
 ## Known issues
-- A few NPC strings and the "combo available" picture are still Japanese.
+- The "combo available" picture is still Japanese (a full scan of the game text found no Japanese left in dialogue).
 - Update (Luma) folders are paused for now; always make a new full `.cia` / `.3ds`.
 - Some very long lines may still be tight in 2D mode – please report them.
 - Developed in the Azahar emulator. **Tested on:** a real New Nintendo 3DS (Luma3DS, patched `.cia`) and a
   Retroid Pocket Duo Lite running Citra MMJ (patched `.3ds`).
+
+## Help us test (v0.1.18)
+These changes pass our automatic text checks but haven't been seen in the game yet. If you get there, please post a
+screenshot (or just "OK") with your model or emulator and 2D/3D mode:
+- [ ] **Name tags:** Placido's speaker tag in Gondolia (the Doge Rotondo's son; was "Yahim") and Valentino's in Puerto Valor
+  (was "Seidon") – check the right name shows and the dialogue isn't garbled.
+- [ ] **Gallopolis:** the knight's vow sign by the palm trees left of the palace stairs (three centered lines with periods),
+  and the palace guards, fans, wife and child after the Sand National.
+- [ ] **Battle:** Veronica and Serena's pep power **Arboria's Blessing** – menu name, "Arboria's Blessing!" and the "...wore off!" messages.
+- [ ] **Act 1 story cutscenes** (rewritten into more natural English): any line that reads oddly, is cut off or scrolls.
+- [ ] **Sniflheim map:** the "Sn'rfelt" labels on the bottom-screen map (the apostrophe should show).
+- [ ] **Leftover old names:** Puchalao, Bahatra, Cheron, Lambda, Hinonogi, Shijima, Eckehart, Milrean or "... Castle Town" anywhere.
 
 ## Reporting problems
 Open an [issue](../../issues) with a **screenshot**, the **mode (2D/3D)**, and where it happened.

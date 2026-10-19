@@ -2,6 +2,16 @@
 import subprocess,sys,shutil,zipfile
 from pathlib import Path
 H=Path(__file__).parent
+# pre-release text scan of the build (Japanese left, dialogue over 3 lines / too wide, old names); stops the build on failure.
+# Run the full check (text diff + structure check) BEFORE syncing a new mod into mod_build:
+#   py translation/text-v9/prerelease_check.py <Azahar mod romfs> --base release/mod_build/romfs
+# Set DQXI_SKIP_CHECK=1 to build anyway.
+import os
+_mod=Path(os.environ.get('DQXI_MOD') or H/'mod_build')
+_chk=H.parent/'translation'/'text-v9'/'prerelease_check.py'      # only in the working copy, not in the public repo
+if os.environ.get('DQXI_SKIP_CHECK')!='1' and _chk.exists():
+    _r=subprocess.run([sys.executable,'-X','utf8',str(_chk),str(_mod/'romfs'),'--scan-only'])
+    if _r.returncode:sys.exit('pre-release check failed - fix the problems above or set DQXI_SKIP_CHECK=1')
 subprocess.check_call([sys.executable,str(H/'make_patch.py')],cwd=str(H))
 for f in ('dqxi_en.dqp','code.ips'):shutil.copy2(H/'dist'/f,H/f)
 r=str(H)

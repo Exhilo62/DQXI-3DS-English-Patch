@@ -54,6 +54,18 @@ NOTES
    a .cia needs signature patches (Luma3DS default).
  * Please report problems with a screenshot and which mode (2D/3D) you were in.
 
+HELP US TEST (v0.1.18)
+ These changes pass our text checks but nobody has seen them in the game yet. If you get
+ there, please send a screenshot (or "OK") with your model/emulator and 2D/3D mode:
+ * Name tags: Placido in Gondolia (was "Yahim") and Valentino in Puerto Valor (was "Seidon").
+ * Gallopolis: the knight's vow sign by the palace stairs, and the palace guards/fans at night
+   after the Sand National.
+ * Battle: Veronica and Serena's pep power "Arboria's Blessing" and its "wore off" messages.
+ * Act 1 story cutscenes (rewritten): any line that reads oddly, is cut off or scrolls.
+ * Sniflheim bottom-screen map: the "Sn'rfelt" labels (the apostrophe should show).
+ * Any leftover old name: Puchalao, Bahatra, Cheron, Lambda, Hinonogi, Shijima, Eckehart,
+   Milrean, "... Castle Town".
+
 LINUX / STEAM DECK / MAC
  Use the separate "Linux" download (DQXI_3DS_English_Patch_Linux_v*.zip): extract it,
  chmod +x patch.sh, then run ./patch.sh (window) or ./patch.sh game.cia out.cia (terminal).
