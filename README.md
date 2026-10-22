@@ -87,14 +87,14 @@ encrypted.
 - Developed in the Azahar emulator. **Tested on:** a real New Nintendo 3DS (Luma3DS, patched `.cia`) and a
   Retroid Pocket Duo Lite running Citra MMJ (patched `.3ds`).
 
-## Help us test (v0.1.21)
+## Help us test (v0.1.22)
 These changes pass our automatic text checks but not everything has been seen in the game. If you get there, please post a
 screenshot (or just "OK") with your model or emulator and 2D/3D mode:
-- [ ] **Battle:** the Swap menu (Bench / Order), the victory message, and a poisoned character on the field party panel.
-- [ ] **Act 2 and Act 3 story cutscenes** (rewritten into more natural English): any line that reads oddly, is cut off or disappears too soon.
-- [ ] **Region map near Gallopolis:** label positions, and the shop item **Big Blade II**.
+- [ ] **Battle:** the spell / ability lists (long official names such as Cock-a-doodle-doo, Boulderbringer), the enemy target list (names should sit inside the rows), a Pep Power and "is pepped up!" / "lost the power of pep!".
+- [ ] **Menus:** the Skills menu (no overlapping names), shops and item lists (long official item names), the monster book, the Labyrinth / Go Exploring menus, and the quest guide on the bottom screen.
+- [ ] **Window text:** title screen, shops, the Fun-Size Forge and the casino: nothing should be blank that used to show a label.
+- [ ] **Serena's "Saint's Song"** (Saint's Poem in older versions): the bar under the skill list should be in English.
 - [ ] **Save repair:** if you used the save repair tool on an old save, tell us whether the names look right and whether battles with Veronica in the party (especially on an Old 3DS) still crash.
-- [ ] **Leftover old names:** Prophet, Jacola, Gold Plague, Kiragold, Boogie, Demon King, Tree of Life or Divine Folk anywhere.
 
 ## Save repair (saves made with 0.1.17 - 0.1.20)
 Those versions saved Veronica and Sylvando with names one letter too long, which causes a stray symbol after the name and
