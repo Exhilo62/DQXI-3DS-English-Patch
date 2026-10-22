@@ -38,6 +38,14 @@ IF IT SAYS YOUR FILE IS ENCRYPTED (one-time step)
  Copy the decrypted file to your PC and patch that one. Files that already work in
  emulators such as Azahar are usually already decrypted.
 
+SAVE REPAIR (saves from 0.1.17 - 0.1.20)
+ Veronica and Sylvando were stored with names one letter too long in saves made with 0.1.17 - 0.1.20:
+ a stray symbol after the name in some lists, and battle crashes reported mostly on Old 3DS. New games
+ started with 0.1.21 or newer are fine. To keep playing an OLD save, download the separate
+ "DQXI_3DS_Save_Repair" zip from the same GitHub page, run DQXI_SaveRepair.exe on a COPY of your save
+ (back it up with Checkpoint / JKSM first; instructions in its README), put the repaired save back and
+ play with a game patched with 0.1.21 or newer. Your original files are kept in a backup folder.
+
 AI ASSISTANCE
  This project was made with the help of AI (Anthropic's Claude), working with the
  project's author, who directed, tested and corrected the work. The translation is

@@ -31,3 +31,5 @@ No window library? The patcher also runs without tkinter: python3 DQXIEnglishPat
 IMPORTANT: before installing a new full game (.cia/.3ds) on a 3DS, delete any old update (luma) folder from the SD card: SD:/luma/titles/0004000000199200. Leftover files there override the new install (some text stays untranslated, e.g. the battle Plan menu).
 
 Note: always make a new full patched .cia/.3ds from the newest version. Update folders (--export) are turned off for now.
+
+SAVE REPAIR (saves from 0.1.17 - 0.1.20): Veronica and Sylvando were stored with names one letter too long (stray symbol after the name, and crashes reported mostly on Old 3DS). New games started with 0.1.21+ are fine. To keep playing an OLD save, download the separate "DQXI_3DS_Save_Repair" zip from the same GitHub page and run  python3 DQXI_SaveRepair.py "folder with your save files"  on a COPY of your save (README inside). Then play with a game patched with 0.1.21 or newer.

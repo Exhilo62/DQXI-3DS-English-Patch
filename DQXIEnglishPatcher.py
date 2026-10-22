@@ -135,6 +135,9 @@ class App(tk.Tk):
         ttk.Label(self,text='This is version %s. Because the patch changes often, the best results come from making a NEW full patched .cia/.3ds and installing it each time. '
                   'Update (Luma) folders are turned off for now and will come back in a future patch once the game is more stable.'%VERSION,
                   wraplength=630,foreground='#1a4f9c').pack(anchor='w',padx=14,pady=(6,0))
+        ttk.Label(self,text='Playing a save from 0.1.17 - 0.1.20? Veronica and Sylvando were saved with names that the new game draws wrongly (stray symbol or wrong letters; crashes reported mostly on Old 3DS). '
+                  'Use the separate "DQXI_3DS_Save_Repair" download (same GitHub page) on a copy of your save to fix it, then play with a game patched with 0.1.21 or newer. New games started with 0.1.21 do not need it.',
+                  wraplength=630,foreground='#a33a00').pack(anchor='w',padx=14,pady=(6,0))
         nf=ttk.LabelFrame(self,text="What's new (patch notes)");nf.pack(fill='both',expand=True,padx=14,pady=(6,0))
         sb=ttk.Scrollbar(nf,orient='vertical')
         self.notes=tk.Text(nf,height=6,wrap='word',font=('Segoe UI',10),yscrollcommand=sb.set,padx=8,pady=6,spacing1=2,spacing3=2)

@@ -39,4 +39,13 @@ with zipfile.ZipFile(lz,'w',zipfile.ZIP_DEFLATED) as zf:
     zi.compress_type=zipfile.ZIP_DEFLATED
     zf.writestr(zi,(H/'patch.sh').read_bytes().replace(b'\r\n',b'\n'))
 print('wrote',lz,round(lz.stat().st_size/1e6,1),'MB')
-
+# Save repair tool (third download): standalone exe + python source + README
+SR=H/'save_repair'
+subprocess.check_call([sys.executable,'-m','PyInstaller','--noconfirm','--clean','--onefile','--console','--name','DQXI_SaveRepair',
+    '--distpath',str(SR/'exe_dist'),'--workpath',str(SR/'exe_build'),'--specpath',str(SR/'exe_build'),str(SR/'DQXI_SaveRepair.py')],cwd=str(SR))
+sz=H/'dist'/f'DQXI_3DS_Save_Repair_v{v}.zip'
+with zipfile.ZipFile(sz,'w',zipfile.ZIP_DEFLATED) as zf:
+    zf.write(SR/'exe_dist'/'DQXI_SaveRepair.exe','DQXI_SaveRepair.exe')
+    zf.write(SR/'DQXI_SaveRepair.py','DQXI_SaveRepair.py')
+    zf.write(SR/'README_SAVE_REPAIR.txt','README.txt')
+print('wrote',sz,round(sz.stat().st_size/1e6,1),'MB')

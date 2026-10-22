@@ -87,13 +87,21 @@ encrypted.
 - Developed in the Azahar emulator. **Tested on:** a real New Nintendo 3DS (Luma3DS, patched `.cia`) and a
   Retroid Pocket Duo Lite running Citra MMJ (patched `.3ds`).
 
-## Help us test (v0.1.20)
+## Help us test (v0.1.21)
 These changes pass our automatic text checks but not everything has been seen in the game. If you get there, please post a
 screenshot (or just "OK") with your model or emulator and 2D/3D mode:
 - [ ] **Battle:** the Swap menu (Bench / Order), the victory message, and a poisoned character on the field party panel.
 - [ ] **Act 2 and Act 3 story cutscenes** (rewritten into more natural English): any line that reads oddly, is cut off or disappears too soon.
 - [ ] **Region map near Gallopolis:** label positions, and the shop item **Big Blade II**.
+- [ ] **Save repair:** if you used the save repair tool on an old save, tell us whether the names look right and whether battles with Veronica in the party (especially on an Old 3DS) still crash.
 - [ ] **Leftover old names:** Prophet, Jacola, Gold Plague, Kiragold, Boogie, Demon King, Tree of Life or Divine Folk anywhere.
+
+## Save repair (saves made with 0.1.17 - 0.1.20)
+Those versions saved Veronica and Sylvando with names one letter too long, which causes a stray symbol after the name and
+(mostly on Old 3DS) probably crashes in battle. New games started with 0.1.21 or newer are fine. For an existing save, download
+`DQXI_3DS_Save_Repair_v0.1.21.zip` from the release, run it on a copy of your save (back it up with Checkpoint / JKSM first;
+the zip contains a README with the steps and a Python source for Linux/Mac), put the repaired save back and play with a
+game patched with 0.1.21 or newer.
 
 ## Reporting problems
 Open an [issue](../../issues) with a **screenshot**, the **mode (2D/3D)**, and where it happened.
