@@ -6,6 +6,20 @@ DQXI 3DS English patch - changelog
     translation keeps improving. Update folders will return in a future patch once the game is more stable.
     If you still have an old update folder on your SD card, delete it (SD:/luma/titles/0004000000199200).
 
+0.1.24
+  * Serena's Saint's Song: the bar under the ability list showed Japanese ("...聖者...使用後"). It is now "Link: after Mark of the Saint" (and "Link: after Mark of the Paladin" for the Paladin one). Reported by Q.
+  * Cock-a-doodle-doo (Erik's skill) is spelled "Cockadoodledoo" so it fits on one line in the spell list instead of wrapping over the next row.
+  * The mural boss is called Dora-in-Grey everywhere, like the official English release (the cutscenes, speaker name tag, chapter titles and the Liberator title description still said "Meltoa" while the battle said Dora-in-Grey). Mel keeps her name. Reported by Sola.
+  * Sylvando's navigator is called Dave, like the official English release (the Japanese name is Alice): about 40 lines changed. Suggested by Amarlian.
+  * Tockle data screen (bottom screen after you collect a Tockle) was reported empty: the 0.1.22 clean-up had blanked a few placeholder text boxes on it; they are restored. Please tell us whether the Tockle screen shows its data again. Reported by Amarlian.
+  * Tockle profile and your own profile screens: long weapon names ("Cobblestone Sword", "Birch Boomerang"), "Personality: Absent-Minded", "Hometown: Faraway Land" and "1st Finder" overlapped their labels or wrapped; the text is narrower now, and "Part with checked Tockle" no longer wraps in the Tockle list. Reported by the user.
+  * Tockle profile and your profile screens now use one consistent (slightly smaller) text size for all labels and values.
+  * Field Magic menu: the spell help box broke words in the middle ("Revives one a/lly", "Cures one all/y"); its text is smaller now so the lines fit.
+  * Field Magic list: the spell "Weather Forecast" wrapped onto a second line and its help text was cut in the middle of words; it is now "Forecast" with the help "Tells today's weather here".
+  * Records > Details: the category names on the left ("Adventure", "StreetPass") were cut off or wrapped; the text is narrower now.
+  * Known issue: the Memories list (Medal Academy tree) was adjusted in 0.1.23; please tell us if any row still overlaps.
+  * Old saves: the save repair tool from 0.1.21 is still needed for saves made with 0.1.17 - 0.1.20 (zip "DQXI_3DS_Save_Repair" on the release page).
+
 0.1.23
   * Area name banners (the title that slides in when you enter a town): all 29 are redrawn with the final official names. "Undersea Kingdom Muurea" is now Nautica, Samadi's banner no longer says "Gondolia Castle Town", and so on. Reported by Sola.
   * Old region name "Sikesubia" is now Sniflheim in the item "Found" lines (e.g. Mirror Stone: "Island South of Sniflheim"), the map and area lists and one villager line. Reported by Q.
