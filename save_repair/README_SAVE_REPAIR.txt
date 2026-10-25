@@ -17,7 +17,8 @@ WHO NEEDS THIS
 
 WHAT IT DOES
  It looks for the 7-letter names in every save slot (Data0 - Data3) and rewrites them in the
- 6-character form, and fixes the save's checksum (without that the game refuses the file). Nothing
+ 6-character form. Since 0.1.25 it also repairs the NPC name table of the save: the scholar Snorri
+ ("Eckehar" with junk after it in old saves) and the old forms of Connie, Da and Son. It then fixes the save's checksum (without that the game refuses the file). Nothing
  else in the save is touched. Every file it changes is first copied into a folder
  "DQXI_SaveRepair_backups" next to the program. Running it twice is harmless.
 

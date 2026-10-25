@@ -14,10 +14,11 @@ Every file that is changed is first copied to DQXI_SaveRepair_backups\\<date-tim
 import sys, os, re, struct, zlib, time, shutil
 
 # 7 letters -> 6 characters ('Ve'+ro+ni+'ca', 'Sy'+lv+an+'do'; the middle cells are drawn by the patch's font)
-FIX = {'Veronic': 'Ve冑冒ca', 'Sylvand': 'Sy冥写do'}
+FIX = {'Veronic': 'Ve冑冒ca', 'Sylvand': 'Sy冥写do', 'Eckehar': 'Snorri', 'Bahatra': 'Da'}       # Snorri (JP Eckhart; 0.1.18 and older wrote 'Eckehar'), Phnom Nonh father
 # 6-character forms from unreleased test builds
 SAME_LEN = {'Vero冒冑': 'Ve冑冒ca', 'Sylv写冥': 'Sy冥写do',
             'Vero冑冒': 'Ve冑冒ca', 'Sylv冥写': 'Sy冥写do'}
+SHORT = {'Ruko': 'Connie', 'Cheron': 'Son'}
 SLOT = re.compile(r'^Data[0-9]$')
 
 
@@ -36,8 +37,15 @@ def repair(path, backup_dir, log=print):
         pat = old.encode('utf-16le'); i = d.find(pat)
         while i >= 0:
             if i % 2 == 0 and d[i + 14:i + 16] != b'\0\0':       # 7 letters with no end marker: the bad form
-                d[i:i + 14] = new.encode('utf-16le') + b'\0\0'
+                d[i:i + 14] = (new.encode('utf-16le') + b'\0\0').ljust(14, b'\0')
                 n += 1
+            i = d.find(pat, i + 2)
+    # short names stored in the same 6-character fields: bring them in line with the current patch
+    for old, new in SHORT.items():
+        pat = old.encode('utf-16le'); i = d.find(pat)
+        while i >= 0:
+            if i % 2 == 0 and d[i + len(pat):i + 14] == bytes(14 - len(pat)):
+                d[i:i + 14] = new.encode('utf-16le') + bytes(14 - 2 * len(new)); n += 1
             i = d.find(pat, i + 2)
     for old, new in SAME_LEN.items():
         pat = old.encode('utf-16le'); i = d.find(pat)
