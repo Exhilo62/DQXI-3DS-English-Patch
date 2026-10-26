@@ -6,6 +6,15 @@ DQXI 3DS English patch - changelog
     translation keeps improving. Update folders will return in a future patch once the game is more stable.
     If you still have an old update folder on your SD card, delete it (SD:/luma/titles/0004000000199200).
 
+0.1.27
+  * IMPORTANT - USE THE SAVE REPAIR TOOL: if you already have a save game, run DQXI_3DS_Save_Repair_v0.1.27.zip on a COPY of your save (instructions inside). The patch cannot change names that are already stored in a save; without the tool an existing save keeps older names ("Hendrik$" in battle, old Veronica / Sylvando / Snorri forms ...). A new game started with this version does not need it.
+  * Cutscene freeze fixed: after the fight with Tyriant in Act 2 the cutscene at the Last Bastion (King Carnelian: "...Hendrik. You have fought well for our kingdom...") stopped and never continued. We reproduced it in an emulator: our extended message timing in that scene's timing data was the cause. That scene (and two other scenes with the same kind of timing table, in Act 1 and Act 3) now keeps the original timing. Reported by Sola.
+  * About 460 NPC lines in the Medal Academy and the Undersea Palace of Nautica were shifted by one entry (each NPC said the line meant for the next Japanese message): they are re-aligned. A few lines that were missing in English were translated. Found by scanning every Japanese / English pair for such shifts.
+  * Names now follow the official English release in more places: the Tockle who asks for help is Ickle (was "Kurutch"/"Kurucchi") and his uncle is Tickle (was "Ojitch"); Miko's son is Ryu (was "Harima"); the siblings dressed as the fire dragon are Atsuo and Atsuko (were "Teba" and "Saki"); the undersea monster is Bathysfear everywhere (was partly "Death Aegir").
+  * Save repair tool: also converts the Tockle name Kurutch/Kuruch to Ickle in older saves. Run it on a COPY of your save as before.
+  * Known issue: some layout changes from 0.1.23 / 0.1.24 (Memories list, Tockle profile, field Magic help box) have not been checked on real hardware yet; please tell us if text still overlaps.
+  * Old saves: the save repair tool is still needed for saves made with 0.1.17 - 0.1.20 (zip "DQXI_3DS_Save_Repair" on the release page).
+
 0.1.26
   * IMPORTANT - USE THE SAVE REPAIR TOOL: if you already have a save game, run DQXI_3DS_Save_Repair_v0.1.26.zip on a COPY of your save (instructions inside). The patch cannot change names that are already stored in a save: without the tool an existing save still shows "Hendrik$" in battle and keeps older names. A new game started with this version does not need it.
   * Soft lock fixed (reported on GitHub #17 and patched): in Act 2 at Arboria, after Veronica dies and Serena plays her harp at night, the line "This is a sad love song..." never advanced. The cutscene timing of that line was longer than the next one; it is corrected. Reported on GitHub (#17).

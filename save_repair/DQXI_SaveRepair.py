@@ -14,11 +14,11 @@ Every file that is changed is first copied to DQXI_SaveRepair_backups\\<date-tim
 import sys, os, re, struct, zlib, time, shutil
 
 # 7 letters -> 6 characters ('Ve'+ro+ni+'ca', 'Sy'+lv+an+'do'; the middle cells are drawn by the patch's font)
-FIX = {'Veronic': 'Ve冑冒ca', 'Sylvand': 'Sy冥写do', 'Eckehar': 'Snorri', 'Bahatra': 'Da', 'Hendrik': 'He冠rik', 'Mysteri': 'Youth', 'High La': 'Lama'}       # Snorri (JP Eckhart; 0.1.18 and older wrote 'Eckehar'), Phnom Nonh father
+FIX = {'Veronic': 'Ve冑冒ca', 'Sylvand': 'Sy冥写do', 'Eckehar': 'Snorri', 'Bahatra': 'Da', 'Hendrik': 'He冠rik', 'Mysteri': 'Youth', 'High La': 'Lama', 'Kurucch': 'Ickle', 'Kurutch': 'Ickle'}       # Snorri (JP Eckhart; 0.1.18 and older wrote 'Eckehar'), Phnom Nonh father
 # 6-character forms from unreleased test builds
 SAME_LEN = {'Vero冒冑': 'Ve冑冒ca', 'Sylv写冥': 'Sy冥写do',
             'Vero冑冒': 'Ve冑冒ca', 'Sylv冥写': 'Sy冥写do'}
-SHORT = {'Ruko': 'Connie', 'Cheron': 'Son'}
+SHORT = {'Ruko': 'Connie', 'Cheron': 'Son', 'Kuruch': 'Ickle'}
 SLOT = re.compile(r'^Data[0-9]$')
 
 

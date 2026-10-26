@@ -87,13 +87,15 @@ encrypted.
 - Developed in the Azahar emulator. **Tested on:** a real New Nintendo 3DS (Luma3DS, patched `.cia`) and a
   Retroid Pocket Duo Lite running Citra MMJ (patched `.3ds`).
 
-## Help us test (v0.1.26)
+## Help us test (v0.1.27)
 These changes pass our automatic text checks but not everything has been seen in the game. If you get there, please post a
 screenshot (or just "OK") with your model or emulator and 2D/3D mode:
 - [ ] **Battle:** the spell / ability lists (long official names such as Cock-a-doodle-doo, Boulderbringer), the enemy target list (names should sit inside the rows), a Pep Power and "is pepped up!" / "lost the power of pep!".
 - [ ] **Menus:** the Skills menu (no overlapping names), shops and item lists (long official item names), the monster book, the Labyrinth / Go Exploring menus, and the quest guide on the bottom screen.
 - [ ] **Window text:** title screen, shops, the Fun-Size Forge and the casino: nothing should be blank that used to show a label.
-- [ ] **Cutscene soft locks:** the Act 2 scenes in Arboria (Serena's harp, after Veronica dies) and after the Heliodor boss should now advance; tell us if any cutscene still stops.
+- [ ] **Cutscene soft locks:** the Act 2 scenes in Arboria (Serena's harp, after Veronica dies) and the Last Bastion scene after the Heliodor boss (King Carnelian: "...Hendrik. You have fought well...") should now advance; tell us if any cutscene still stops.
+- [ ] **NPC dialogue in the Medal Academy and Nautica's Undersea Palace:** each NPC's lines should now match their situation (about 460 lines were shifted by one message); tell us about any that still look wrong.
+- [ ] **New official names:** Ickle / Tickle (Tockles), Ryu (Miko's son), Atsuo and Atsuko, Bathysfear.
 - [ ] **Draconian Quest** (Misc menu, title screen settings, church 'Cancel Draconian Quest'): the new name should fit its labels.
 - [ ] **Names on the maps** (Hekswood, Kingsbarrow, Champs Sauvage, Emerald Coast, Royal Library): labels should be readable and not cut off.
 - [ ] **Tockle data screen:** collect a Tockle; the bottom screen should show its name, rank, weapon and so on (it was empty in 0.1.22/0.1.23).
@@ -105,7 +107,7 @@ screenshot (or just "OK") with your model or emulator and 2D/3D mode:
 ## Save repair (saves made with 0.1.17 - 0.1.20)
 Those versions saved Veronica and Sylvando with names one letter too long, which causes a stray symbol after the name and
 (mostly on Old 3DS) probably crashes in battle. New games started with 0.1.21 or newer are fine. For an existing save, download
-`DQXI_3DS_Save_Repair_v0.1.26.zip` from the release, run it on a copy of your save (back it up with Checkpoint / JKSM first;
+`DQXI_3DS_Save_Repair_v0.1.27.zip` from the release, run it on a copy of your save (back it up with Checkpoint / JKSM first;
 the zip contains a README with the steps and a Python source for Linux/Mac), put the repaired save back and play with a
 game patched with 0.1.21 or newer.
 
