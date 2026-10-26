@@ -6,6 +6,17 @@ DQXI 3DS English patch - changelog
     translation keeps improving. Update folders will return in a future patch once the game is more stable.
     If you still have an old update folder on your SD card, delete it (SD:/luma/titles/0004000000199200).
 
+0.1.26
+  * IMPORTANT - USE THE SAVE REPAIR TOOL: if you already have a save game, run DQXI_3DS_Save_Repair_v0.1.26.zip on a COPY of your save (instructions inside). The patch cannot change names that are already stored in a save: without the tool an existing save still shows "Hendrik$" in battle and keeps older names. A new game started with this version does not need it.
+  * Soft lock fixed (reported on GitHub #17 and patched): in Act 2 at Arboria, after Veronica dies and Serena plays her harp at night, the line "This is a sad love song..." never advanced. The cutscene timing of that line was longer than the next one; it is corrected. Reported on GitHub (#17).
+  * Dead name-tag pointers fixed in about 100 cutscenes (195 speaker tags / lines read an empty slot, which can show an empty or garbled name tag and may freeze a cutscene). Reported by Sola (stuck cutscene after the Heliodor boss in Act 2).
+  * Hendrik's name no longer shows a stray character after it in battle ("Hendrik$"): the game keeps only 6 characters of a party name, so "Hendrik" now uses a two-letter character like Veronica and Sylvando. A few other long names in the same table were shortened (the Mysterious Youth, the High Lama, Kurutch).
+  * The Heliodor boss is called Tyriant everywhere (it was Zolde in cutscenes and chats and Tyriant in battle), like the official release. Reported by Sola.
+  * The name tag "King of Heliodor" is now "King Carnelian" (the official name); the long tag wrapped over the text in some scenes. Reported by Sola.
+  * Save repair tool: also converts Hendrik, the Mysterious Youth and the High Lama in saves made before this version (so the stray character after Hendrik's name goes away in an existing save). Run it on a COPY of your save as before.
+  * Known issue: some layout changes from 0.1.23 / 0.1.24 (Memories list, Tockle profile, field Magic help box) have not been checked on real hardware yet; please tell us if text still overlaps.
+  * Old saves: the save repair tool is still needed for saves made with 0.1.17 - 0.1.20 (zip "DQXI_3DS_Save_Repair" on the release page).
+
 0.1.25
   * Names now follow the official English release in many more places (checked against the official script and the Dragon Quest wiki, about 1,500 lines changed):
       - Hotto's High Priestess is Miko (was "Yayak"); the Sniflheim queen is Queen Frysabel, "Fryssy" to her friends (was "Lady Charl"); the scholar is Snorri / Master Snorri (was "Eckhart"); the mural boss is Dora-in-Grey everywhere (was "Meltoa" in cutscenes and name tags).
