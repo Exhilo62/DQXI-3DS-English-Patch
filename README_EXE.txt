@@ -26,10 +26,26 @@ INSTALLING / PLAYING
         carry over - back them up first to be safe.
  .3ds : use like any other cartridge dump (flashcart, emulators such as Azahar/Citra).
 
-UPDATING AN ALREADY PATCHED GAME
- Update (Luma) folders are turned off for now. The patch changes often, so the best results come from making a NEW full patched .cia / .3ds and installing it each time. Sorry the updates are so frequent - they are needed as the translation keeps improving. Update folders will come back in a future patch once the game is more stable and patches are less frequent.
- To update: patch your Japanese game again with the newest version and install the new full .cia / .3ds
- (delete any old SD:/luma/titles/0004000000199200 folder first, see above).
+TWO WAYS TO PLAY ON A REAL 3DS - pick ONE and never mix them
+ A) FULL .cia (safest, recommended): press Patch, install the new .cia with FBI. Everything is translated.
+    To update: patch your Japanese game again with the newest version and install the new .cia
+    (delete any old SD:/luma/titles/0004000000199200 folder first, see above).
+ B) LUMA FOLDER (small, quick to update): press "Create Luma folder". Rules:
+    1. The game installed on your 3DS must be the original, UNMODIFIED Japanese game - not a patched .cia.
+       (If you ever installed a patched .cia, delete it and install a fresh Japanese copy first.)
+    2. Delete the old folder SD:/luma/titles/0004000000199200 first, then copy the new "luma" folder to the
+       root of the SD card, so you never have old and new files mixed. Do this with EVERY new version.
+    3. Luma3DS needs "Enable game patching" turned on (hold SELECT while booting for its menu).
+    !! CAUTION: a Luma folder is NOT a complete translation. It cannot change the game program itself, so the
+    battle command menu (Fight / Plan / Swap / Flee, Attack / Spells / Defend / Ability / Items / Equip), the
+    party / bench / bag labels (Party, Bench, Bag, Soldiers, 's team), the status abbreviations (KO / Psn / Cur)
+    and the HOME-menu banner stay Japanese. Full list: LUMA_FOLDER_LIMITS.txt. Everything stored in the game
+    files is English. For the whole game in English use the full patched .cia / .3ds.
+    NOTE: Luma folders are an option for people who do not want to reinstall the game for every test version. If they turn out to cause problems again (known crashes or bug reports), they will be switched off again until the project is nearly complete, and the full .cia / .3ds will be the only way.
+    Any change to the game program (code) can only be in the full .cia / .3ds, never in a folder.
+    A patched game (.cia/.3ds) plus a Luma folder at the same time (or a few patched versions installed over
+    each other) can crash in battle. If something crashes, go back to one clean setup: either a fresh Japanese
+    install + the newest Luma folder, or the newest full .cia with NO luma folder on the SD card.
 
 IF IT SAYS YOUR FILE IS ENCRYPTED (one-time step)
  On your 3DS with GodMode9: select the file ->
@@ -62,17 +78,11 @@ NOTES
    a .cia needs signature patches (Luma3DS default).
  * Please report problems with a screenshot and which mode (2D/3D) you were in.
 
-HELP US TEST (v0.1.18)
- These changes pass our text checks but nobody has seen them in the game yet. If you get
- there, please send a screenshot (or "OK") with your model/emulator and 2D/3D mode:
- * Name tags: Placido in Gondolia (was "Yahim") and Valentino in Puerto Valor (was "Seidon").
- * Gallopolis: the knight's vow sign by the palace stairs, and the palace guards/fans at night
-   after the Sand National.
- * Battle: Veronica and Serena's pep power "Arboria's Blessing" and its "wore off" messages.
- * Act 1 story cutscenes (rewritten): any line that reads oddly, is cut off or scrolls.
- * Sniflheim bottom-screen map: the "Sn'rfelt" labels (the apostrophe should show).
- * Any leftover old name: Puchalao, Bahatra, Cheron, Lambda, Hinonogi, Shijima, Eckehart,
-   Milrean, "... Castle Town".
+HELP US TEST (v0.1.28)
+ The current list of things to check (and where to report them) is on the project page:
+ https://github.com/Exhilo62/DQXI-3DS-English-Patch  ("Help us test"). A screenshot or just "OK" with your
+ model / emulator and 2D/3D mode helps a lot. Most wanted: the boss Avarith (Phnom Nonh), Gloomnivore,
+ Tentacular, Sinderella and Whambelina (Octagonia tournament), the new Luma folder option, and Android (Termux).
 
 LINUX / STEAM DECK / MAC
  Use the separate "Linux" download (DQXI_3DS_English_Patch_Linux_v*.zip): extract it,

@@ -1,0 +1,47 @@
+Luma folder: what stays Japanese
+================================
+
+A Luma folder replaces the game's DATA files (all dialogue, menus, names, descriptions, maps, cutscenes: everything stored in
+the game's files). It cannot change the game PROGRAM (its code) or the HOME-menu banner/icon. A few short words are drawn
+by the program itself, so with a Luma folder these stay Japanese. The full patched .cia / .3ds translates all of them.
+
+Stays Japanese with a Luma folder                              Full .cia / .3ds shows
+-------------------------------------------------------------------------------------------------
+Battle: start menu
+  たたかう / さくせん / いれかえ / にげる                       Fight / Plan / Swap / Flee
+  きりかえ (switch)                                              Switch
+Battle: command list of each character
+  こうげき / じゅもん / ぼうぎょ / とくぎ / どうぐ / そうび     Attack / Spells / Defend / Ability / Items / Equip
+Battle: party target and tactics screen
+  ぜんいん (all)                                                 Party
+  いれかえ (bench) / れんけい / そうがえ                         Bench / Link / Order
+Status abbreviations
+  しに / どく / のろい                                           KO / Psn / Cur
+Menus and equipment
+  アイテム / そうび (short menu words)                           Items / Eq.
+  ひだりて (left hand)                                           L.H.
+  ふくろ (bag)                                                   Bag
+  クリアずみ (cleared marker)                                    Clear
+Names and furniture labels
+  デルカダール兵たち                                             Soldiers
+  家具 / タンス                                                  (furniture) Box
+  "...たちは それぞれ" and "...たち" (the party's)               's team / 's
+HOME menu
+  the game icon and banner text                                  English title / banner
+
+Everything else (story, NPC lines, menus, item / spell / monster names, quests, maps, the title screen) is English in both ways.
+
+Which way to choose
+  * Want the whole game in English: patch a full .cia / .3ds (safest).
+  * Prefer a small, quick-to-update Luma folder and accept the words above in Japanese: use a Luma folder on a clean,
+    unmodified Japanese install, and replace the whole folder with every new version. Never combine a Luma folder with a
+    patched .cia / .3ds.
+
+Policy
+  * Luma folders are for people who do not want to reinstall the game for every test version.
+  * If they become a known problem again (crashes, bug reports), they will be switched off until the project is nearly complete.
+  * Anything that changes the game program (code) can only ever be in the full .cia / .3ds, never in a folder.
+
+This list was made by comparing the code edits of the full patch with the code edits a Luma folder can carry
+(code.ips vs code_layered.ips, scans/luma_missing.py). Where exactly a word appears on screen was not checked word by word;
+if you find another Japanese word with a Luma folder, tell us.

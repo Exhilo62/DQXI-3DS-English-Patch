@@ -31,6 +31,9 @@ or an emulator (2D or 3D mode). Bugs can also be filed as [GitHub issues](../../
 Get **`DQXI_3DS_English_Patch_vX.Y.Z.zip`** from the [Releases](../../releases) page, extract it, and run
 **`DQXIEnglishPatcher.exe`**.
 
+### Android (phone / handheld, no PC)
+Download **`DQXI_English_Patcher_Android_v0.1.28.apk`** from the [Releases](../../releases) page and open it on the device (allow "install unknown apps" when Android asks; it is not from the Play Store, so Play Protect may warn). Choose your decrypted Japanese `.3ds` or `.cia`, choose the output (`.3ds` for emulators such as Azahar, `.cia` for a 3DS) and press **Patch**; it runs in the background and shows a progress notification. About 6 minutes on a Retroid Pocket Duo Lite, arm64 devices only. The source is in [`android_patcher`](android_patcher). Prefer a terminal? `README_ANDROID.txt` in the Linux zip explains the Termux route.
+
 ## How to use
 
 1. Make sure your game file is **decrypted** (one-time step, see below).
@@ -64,7 +67,12 @@ The window also shows the patch notes for each version.
 > game file is correct. Clean install = delete that folder, then install the new `.cia`.
 
 ### Updating an already patched game
-> **Update (Luma) folders are turned off for now.** The patch changes often, so the best results come from making a NEW full patched .cia / .3ds and installing it each time. Sorry the updates are so frequent - they are needed as the translation keeps improving. Update folders will come back in a future patch once the game is more stable and patches are less frequent.
+> **Two ways to play on a real 3DS - use ONE, never both.** **A) Safest:** make a NEW full patched `.cia` / `.3ds` and install it (everything is translated). **B) Luma folder:** only on a fresh, *unmodified* Japanese install - delete the old `SD:/luma/titles/0004000000199200` and copy the new `luma` folder over it with **every** update (Luma3DS "Enable game patching" on). 
+>
+> ⚠️ **CAUTION: a Luma folder is NOT a complete translation.** It cannot change the game program itself, so the battle command menu (Fight / Plan / Swap / Flee, Attack / Spells / Defend / Ability / Items / Equip), the party / bench / bag labels, the status abbreviations (KO / Psn / Cur) and the HOME-menu banner stay Japanese - see [LUMA_FOLDER_LIMITS.txt](LUMA_FOLDER_LIMITS.txt). For the whole game in English use the full `.cia` / `.3ds`.
+>
+> Luma folders are offered for people who don't want to reinstall the game for every test version. If they become a known problem again, they will be **switched off until the project is nearly complete**. Changes to the game program (code) can only ever be in the full `.cia` / `.3ds`.
+> A patched game plus a Luma folder, or several patched versions installed over each other, can crash in battle.
 
 To update, patch your Japanese game again with the newest version and install the new full `.cia` / `.3ds`
 (delete any old `SD:/luma/titles/0004000000199200` folder first, see above).
@@ -82,20 +90,24 @@ encrypted.
 
 ## Known issues
 - The "combo available" picture is still Japanese (a full scan of the game text found no Japanese left in dialogue).
-- Update (Luma) folders are paused for now; always make a new full `.cia` / `.3ds`.
+- Luma folders are back: use them only on a clean Japanese install and replace the whole folder with every version (see above); otherwise make a new full `.cia` / `.3ds`.
 - Some very long lines may still be tight in 2D mode – please report them.
 - Developed in the Azahar emulator. **Tested on:** a real New Nintendo 3DS (Luma3DS, patched `.cia`) and a
   Retroid Pocket Duo Lite running Citra MMJ (patched `.3ds`).
 
-## Help us test (v0.1.27)
+## Help us test (v0.1.28)
 These changes pass our automatic text checks but not everything has been seen in the game. If you get there, please post a
 screenshot (or just "OK") with your model or emulator and 2D/3D mode:
 - [ ] **Battle:** the spell / ability lists (long official names such as Cock-a-doodle-doo, Boulderbringer), the enemy target list (names should sit inside the rows), a Pep Power and "is pepped up!" / "lost the power of pep!".
 - [ ] **Menus:** the Skills menu (no overlapping names), shops and item lists (long official item names), the monster book, the Labyrinth / Go Exploring menus, and the quest guide on the bottom screen.
 - [ ] **Window text:** title screen, shops, the Fun-Size Forge and the casino: nothing should be blank that used to show a label.
 - [ ] **Cutscene soft locks:** the Act 2 scenes in Arboria (Serena's harp, after Veronica dies) and the Last Bastion scene after the Heliodor boss (King Carnelian: "...Hendrik. You have fought well...") should now advance; tell us if any cutscene still stops.
+- [ ] **Empty message boxes:** cutscene messages should always show their text and name tag (about 300 were empty before 0.1.28, e.g. the horse scene after the Tyriant fight and Sandy's barking at the Last Bastion); tell us the scene if you still see an empty box.
 - [ ] **NPC dialogue in the Medal Academy and Nautica's Undersea Palace:** each NPC's lines should now match their situation (about 460 lines were shifted by one message); tell us about any that still look wrong.
-- [ ] **New official names:** Ickle / Tickle (Tockles), Ryu (Miko's son), Atsuo and Atsuko, Bathysfear.
+- [ ] **New official names:** Ickle / Tickle (Tockles), Ryu (Miko's son), Atsuo and Atsuko, Bathysfear, Obsidian (Hendrik's horse), Manglegrove (not "Napgana Jungle"), Irwin (the Luminary's father), Jormun (the holy beast in Sniflheim), Derk (item shop in Cobblestone).
+- [ ] **Bosses and characters with their official names:** **Avarith** at Phnom Nonh (name tag, dialogue, NPCs: "she/her"), **Gloomnivore** under Dundrasil, **Tentacular** (the squid), **Sinderella and Whambelina** in the Octagonia masked tournament, **Golden Boy**, **Auroral Serpent**, **Sir Roseguardin**. The name should be the same in the battle and in the cutscene before it. Longer names: check the name tag and the text box are not cut off.
+- [ ] **Luma folder (optional, real 3DS):** on a fresh, unmodified Japanese install, delete the old `luma/titles/0004000000199200` and copy the new folder over it. Does the game start and do battles work? Tell us your model and firmware.
+- [ ] **Android app:** did the app patch your game and did it boot? Tell us your phone / handheld, Android version and how long it took (and whether Termux works if you tried it).
 - [ ] **Draconian Quest** (Misc menu, title screen settings, church 'Cancel Draconian Quest'): the new name should fit its labels.
 - [ ] **Names on the maps** (Hekswood, Kingsbarrow, Champs Sauvage, Emerald Coast, Royal Library): labels should be readable and not cut off.
 - [ ] **Tockle data screen:** collect a Tockle; the bottom screen should show its name, rank, weapon and so on (it was empty in 0.1.22/0.1.23).
@@ -107,7 +119,7 @@ screenshot (or just "OK") with your model or emulator and 2D/3D mode:
 ## Save repair (saves made with 0.1.17 - 0.1.20)
 Those versions saved Veronica and Sylvando with names one letter too long, which causes a stray symbol after the name and
 (mostly on Old 3DS) probably crashes in battle. New games started with 0.1.21 or newer are fine. For an existing save, download
-`DQXI_3DS_Save_Repair_v0.1.27.zip` from the release, run it on a copy of your save (back it up with Checkpoint / JKSM first;
+`DQXI_3DS_Save_Repair_v0.1.28.zip` from the release, run it on a copy of your save (back it up with Checkpoint / JKSM first;
 the zip contains a README with the steps and a Python source for Linux/Mac), put the repaired save back and play with a
 game patched with 0.1.21 or newer.
 

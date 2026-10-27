@@ -25,6 +25,7 @@ with zipfile.ZipFile(z,'w',zipfile.ZIP_DEFLATED) as zf:
     zf.write(H/'exe_dist'/'DQXIEnglishPatcher.exe','DQXIEnglishPatcher.exe')
     zf.write(H/'README_EXE.txt','README.txt')
     zf.write(H/'CHANGELOG.txt','CHANGELOG.txt')
+    zf.write(H/'LUMA_FOLDER_LIMITS.txt','LUMA_FOLDER_LIMITS.txt')
     zf.write(H/'LICENSE-dqxi-format-tools.txt','LICENSE-dqxi-format-tools.txt')
 print('wrote',z,round(z.stat().st_size/1e6,1),'MB')
 # Linux / Steam Deck / macOS package: python sources + data + launcher (the launcher keeps its executable bit)
@@ -35,6 +36,11 @@ with zipfile.ZipFile(lz,'w',zipfile.ZIP_DEFLATED) as zf:
     for f in SRC+DATA:zf.write(H/f,'DQXI_English_Patch/'+f)
     zf.write(H/'README_EXE.txt','DQXI_English_Patch/README.txt')
     zf.write(H/'README_LINUX.txt','DQXI_English_Patch/README_LINUX.txt')
+    zf.write(H/'README_ANDROID.txt','DQXI_English_Patch/README_ANDROID.txt')
+    zf.write(H/'LUMA_FOLDER_LIMITS.txt','DQXI_English_Patch/LUMA_FOLDER_LIMITS.txt')
+    za=zipfile.ZipInfo('DQXI_English_Patch/patch_android.sh');za.external_attr=(0o755<<16)|(0o100000<<16)
+    za.compress_type=zipfile.ZIP_DEFLATED
+    zf.writestr(za,(H/'patch_android.sh').read_bytes().replace(b'\r\n',b'\n'))
     zi=zipfile.ZipInfo('DQXI_English_Patch/patch.sh');zi.external_attr=(0o755<<16)|(0o100000<<16)
     zi.compress_type=zipfile.ZIP_DEFLATED
     zf.writestr(zi,(H/'patch.sh').read_bytes().replace(b'\r\n',b'\n'))

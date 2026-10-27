@@ -18,7 +18,7 @@ sys.path.insert(0,str(Path(__file__).parent))
 import cia_patcher
 
 VERSION='?'
-UPDATE_FOLDERS=False   # Luma update folders are paused: patches change too often, so full .cia/.3ds only
+UPDATE_FOLDERS=True    # Luma folders are back (0.1.28): they must be used on a CLEAN Japanese install, replaced as a whole each time
 try:VERSION=res('VERSION').read_text().strip()
 except Exception:pass
 def load_notes():
@@ -109,8 +109,8 @@ class App(tk.Tk):
         self.btn_open=ttk.Button(bf,text='Open output folder',command=self.open_out,state='disabled');self.btn_open.pack(side='left',padx=5,ipady=4)
         ttk.Button(bf,text='Report a problem...',command=self.report).pack(side='left',padx=5,ipady=4)
         ttk.Button(bf,text='Copy diagnostics',command=self.copy_diag).pack(side='left',padx=5,ipady=4)
-        # update folders are paused: the button object stays (the code paths use it) but is not shown
-        self.btn2=ttk.Button(bf,text='Create update folder',command=self.start_export)
+        # Luma folder (real 3DS, needs a clean Japanese install - see the notes below)
+        self.btn2=ttk.Button(bf,text='Create Luma folder',command=self.start_export)
         if not UPDATE_FOLDERS:self.btn2.config(state='disabled')
         else:self.btn2.pack(side='left',padx=5,ipady=4)
         self.verify=tk.BooleanVar(value=True)
@@ -129,12 +129,17 @@ class App(tk.Tk):
             except Exception:pass
         link.bind('<Button-1>',open_link)
         self.log=tk.Text(self,height=5,state='disabled',wrap='word',font='TkFixedFont');self.log.pack(side='bottom',fill='x',padx=14,pady=(6,6))
-        ttk.Label(self,text='Installing a new full game (.cia / .3ds) on a 3DS? Delete any old update folder from the SD card first: '
-                  'SD:/luma/titles/0004000000199200. Old files left there override the new install.',
+        ttk.Label(self,text='Never mix the two ways: a patched .cia/.3ds AND a Luma folder together can crash. Installing a new full game (.cia / .3ds)? '
+                  'Delete the old folder SD:/luma/titles/0004000000199200 first.',
                   wraplength=630,foreground='#a33a00').pack(anchor='w',padx=14,pady=(6,0))
-        ttk.Label(self,text='This is version %s. Because the patch changes often, the best results come from making a NEW full patched .cia/.3ds and installing it each time. '
-                  'Update (Luma) folders are turned off for now and will come back in a future patch once the game is more stable.'%VERSION,
+        ttk.Label(self,text='This is version %s. Safest: make a NEW full patched .cia/.3ds and install it (all text, every time). '
+                  'Luma folder: only on a fresh, unmodified Japanese install; delete the old folder and copy the new one over it with every update.'%VERSION,
                   wraplength=630,foreground='#1a4f9c').pack(anchor='w',padx=14,pady=(6,0))
+        ttk.Label(self,text='CAUTION: a Luma folder is NOT a complete translation. It cannot change the game program, so the battle command menu '
+                  '(Fight / Plan / Swap / Flee, Attack / Spells / Defend / Ability / Items / Equip), the party / bench / bag labels, the status abbreviations (KO / Psn / Cur) and the HOME-menu banner stay Japanese '
+                  '(full list: LUMA_FOLDER_LIMITS.txt). For the whole game in English use the full .cia / .3ds. '
+                  'If Luma folders cause problems again they will be switched off until the project is nearly complete.',
+                  wraplength=630,foreground='#a33a00',font=('Segoe UI',9,'bold')).pack(anchor='w',padx=14,pady=(6,0))
         ttk.Label(self,text='Playing a save from 0.1.17 - 0.1.20? Veronica and Sylvando were saved with names that the new game draws wrongly (stray symbol or wrong letters; crashes reported mostly on Old 3DS). '
                   'Use the separate "DQXI_3DS_Save_Repair" download (same GitHub page) on a copy of your save to fix it, then play with a game patched with 0.1.21 or newer. New games started with 0.1.21 do not need it.',
                   wraplength=630,foreground='#a33a00').pack(anchor='w',padx=14,pady=(6,0))
@@ -232,7 +237,7 @@ class App(tk.Tk):
                     self.busy=False;self.bar.stop();self.bar.config(value=100 if v==0 else 0);self.btn.config(state='normal');self.btn2.config(state='normal' if UPDATE_FOLDERS else 'disabled')
                     self.prog_lbl.config(text='Done - finished in %s.'%fmt_secs(time.time()-self.t_start) if v==0 else 'Stopped - see the log.')
                     if v==0 and not self.exporting:self.btn_open.config(state='normal')
-                    if v==0 and self.exporting:messagebox.showinfo('Done','The update folder was created:\n\n'+self.exporting+'\n\nCopy its "luma" folder to the root of your 3DS SD card (see the README).')
+                    if v==0 and self.exporting:messagebox.showinfo('Done','The Luma folder was created:\n\n'+self.exporting+'\n\n1. Your 3DS must have the original, UNMODIFIED Japanese game installed (not a patched .cia).\n2. On the SD card DELETE the old folder  luma/titles/0004000000199200  if it exists.\n3. Copy this "luma" folder to the root of the SD card and turn on "Enable game patching" in Luma3DS.\nDo this again with every new version.\n\nCAUTION: a Luma folder is NOT a complete translation. The battle command menu (Fight / Plan / Swap / Flee, Attack / Spells / Defend / Ability / Items / Equip), the party / bench / bag labels, the status abbreviations and the HOME-menu banner stay Japanese. See LUMA_FOLDER_LIMITS.txt. For the whole game in English use the full .cia / .3ds.')
                     elif v==0:messagebox.showinfo('Done',self.done_text())
                     elif v==-1:messagebox.showerror('Error','Something went wrong - see the log for details.')
                     elif v==3:messagebox.showwarning('Not the original game','This file does not match the original Japanese game that the patch was made for (a different game revision or a modified dump).\n\nUse an unmodified, decrypted dump of the Japanese game. Details are in the log.')
@@ -373,7 +378,7 @@ def cli(argv):
         print('Game file not found: %s'%(args[0] if args else '(none given)'))
         return 2
     if '--export' in argv and not UPDATE_FOLDERS:
-        print('Update folders are turned off in this version. Make a full patched .cia/.3ds instead.')
+        print('Luma folders are turned off in this version. Make a full patched .cia/.3ds instead.')
         return 2
     if '--export' in argv:
         i=argv.index('--export');out=argv[i+1] if i+1<len(argv) else 'dqxi_update'

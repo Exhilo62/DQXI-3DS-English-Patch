@@ -1,0 +1,57 @@
+plugins {
+    id 'com.android.application'
+    id 'com.chaquo.python'
+}
+
+// the patch version comes from the release folder (one place for every download)
+// in the private working folder the files live in ../release; in the GitHub repo they are in the repo root
+def releaseDir = file('../../release').exists() ? file('../../release') : file('../..')
+def patchVersion = new File(releaseDir, 'VERSION').text.trim()          // e.g. 0.1.28
+def (vMajor, vMinor, vPatch) = patchVersion.tokenize('.').collect { it.toInteger() }
+
+// release signing: keystore.properties next to settings.gradle (storeFile, storePassword, keyAlias, keyPassword; not in git).
+// Without it the release APK stays unsigned.
+def ksProps = new Properties()
+def ksFile = rootProject.file('keystore.properties')
+if (ksFile.exists()) ksFile.withInputStream { ksProps.load(it) }
+
+android {
+    namespace 'com.exhilo.dqxipatcher'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'com.exhilo.dqxipatcher'
+        minSdk 24
+        targetSdk 34
+        versionCode vMajor * 10000 + vMinor * 100 + vPatch
+        versionName patchVersion
+        ndk {
+            abiFilters 'arm64-v8a'          // phones / handhelds; add 'x86_64' for the emulator
+        }
+    }
+    signingConfigs {
+        if (ksFile.exists()) {
+            release {
+                storeFile rootProject.file(ksProps.getProperty('storeFile'))
+                storePassword ksProps.getProperty('storePassword')
+                keyAlias ksProps.getProperty('keyAlias')
+                keyPassword ksProps.getProperty('keyPassword')
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            if (ksFile.exists()) signingConfig signingConfigs.release
+        }
+    }
+    lint {
+        abortOnError false
+    }
+}
+
+chaquopy {
+    defaultConfig {
+        version "3.14"                       // the build machine needs the same Python (3.14)
+    }
+}
