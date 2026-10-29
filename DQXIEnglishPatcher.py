@@ -72,7 +72,7 @@ class App(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title('Dragon Quest XI English Patcher  v'+VERSION)
-        self.geometry('700x760');self.minsize(620,600)
+        self.geometry('840x%d'%min(880,max(620,self.winfo_screenheight()-90)));self.minsize(760,600)     # tall enough for the patch notes, never taller than the screen
         self.q=queue.Queue();self.busy=False;self.exporting=None
         self.logbuf=[];self.runinfo={};self.settings=load_settings();self.t_start=0;self.phase=(0,1)
         pad=dict(padx=14,pady=4)
@@ -105,14 +105,14 @@ class App(tk.Tk):
         ttk.Button(f2,text='Browse...',command=self.pick_dst).pack(side='right',padx=(4,8),pady=8)
         # buttons that matter are all in this top row so they are always visible (Report a problem / diagnostics included)
         bf=ttk.Frame(self);bf.pack(pady=(6,4))
-        self.btn=ttk.Button(bf,text='Patch',command=self.start);self.btn.pack(side='left',padx=5,ipadx=22,ipady=4)
-        self.btn_open=ttk.Button(bf,text='Open output folder',command=self.open_out,state='disabled');self.btn_open.pack(side='left',padx=5,ipady=4)
-        ttk.Button(bf,text='Report a problem...',command=self.report).pack(side='left',padx=5,ipady=4)
-        ttk.Button(bf,text='Copy diagnostics',command=self.copy_diag).pack(side='left',padx=5,ipady=4)
+        self.btn=ttk.Button(bf,text='Patch',command=self.start);self.btn.pack(side='left',padx=3,ipadx=22,ipady=4)
+        self.btn_open=ttk.Button(bf,text='Open output folder',command=self.open_out,state='disabled');self.btn_open.pack(side='left',padx=3,ipady=4)
+        ttk.Button(bf,text='Report a problem...',command=self.report).pack(side='left',padx=3,ipady=4)
+        ttk.Button(bf,text='Copy diagnostics',command=self.copy_diag).pack(side='left',padx=3,ipady=4)
         # Luma folder (real 3DS, needs a clean Japanese install - see the notes below)
         self.btn2=ttk.Button(bf,text='Create Luma folder',command=self.start_export)
         if not UPDATE_FOLDERS:self.btn2.config(state='disabled')
-        else:self.btn2.pack(side='left',padx=5,ipady=4)
+        else:self.btn2.pack(side='left',padx=3,ipady=4)
         self.verify=tk.BooleanVar(value=True)
         ttk.Checkbutton(self,text='Check the new file when it is done (recommended, takes about a minute)',variable=self.verify).pack(anchor='w',padx=18)
         self.bar=ttk.Progressbar(self,mode='determinate',maximum=100);self.bar.pack(fill='x',padx=14)
@@ -128,29 +128,29 @@ class App(tk.Tk):
                 import webbrowser;webbrowser.open(url)
             except Exception:pass
         link.bind('<Button-1>',open_link)
-        self.log=tk.Text(self,height=5,state='disabled',wrap='word',font='TkFixedFont');self.log.pack(side='bottom',fill='x',padx=14,pady=(6,6))
-        ttk.Label(self,text='Never mix the two ways: a patched .cia/.3ds AND a Luma folder together can crash. Installing a new full game (.cia / .3ds)? '
-                  'Delete the old folder SD:/luma/titles/0004000000199200 first.',
-                  wraplength=630,foreground='#a33a00').pack(anchor='w',padx=14,pady=(6,0))
-        ttk.Label(self,text='This is version %s. Safest: make a NEW full patched .cia/.3ds and install it (all text, every time). '
-                  'Luma folder: only on a fresh, unmodified Japanese install; delete the old folder and copy the new one over it with every update.'%VERSION,
-                  wraplength=630,foreground='#1a4f9c').pack(anchor='w',padx=14,pady=(6,0))
-        ttk.Label(self,text='CAUTION: a Luma folder is NOT a complete translation. It cannot change the game program, so the battle command menu '
-                  '(Fight / Plan / Swap / Flee, Attack / Spells / Defend / Ability / Items / Equip), the party / bench / bag labels, the status abbreviations (KO / Psn / Cur) and the HOME-menu banner stay Japanese '
-                  '(full list: LUMA_FOLDER_LIMITS.txt). For the whole game in English use the full .cia / .3ds. '
-                  'If Luma folders cause problems again they will be switched off until the project is nearly complete.',
-                  wraplength=630,foreground='#a33a00',font=('Segoe UI',9,'bold')).pack(anchor='w',padx=14,pady=(6,0))
-        ttk.Label(self,text='Playing a save from 0.1.17 - 0.1.20? Veronica and Sylvando were saved with names that the new game draws wrongly (stray symbol or wrong letters; crashes reported mostly on Old 3DS). '
-                  'Use the separate "DQXI_3DS_Save_Repair" download (same GitHub page) on a copy of your save to fix it, then play with a game patched with 0.1.21 or newer. New games started with 0.1.21 do not need it.',
-                  wraplength=630,foreground='#a33a00').pack(anchor='w',padx=14,pady=(6,0))
+        self.log=tk.Text(self,height=3,state='disabled',wrap='word',font='TkFixedFont');self.log.pack(side='bottom',fill='x',padx=14,pady=(6,6))
+        self.warn=[('#a33a00',False,"Never mix the two ways: a patched .cia/.3ds AND a Luma folder together can crash. Installing a new full game (.cia / .3ds)? Delete the old folder SD:/luma/titles/0004000000199200 first."),
+                   ('#1a4f9c',False,'This is version %s. Safest: make a NEW full patched .cia/.3ds and install it (all text, every time). Luma folder: only on a fresh, unmodified Japanese install; delete the old folder and copy the new one over it with every update.'%VERSION),
+                   ('#a33a00',True,'CAUTION: a Luma folder is NOT a complete translation. It cannot change the game program, so the battle command menu (Fight / Plan / Swap / Flee, Attack / Spells / Defend / Ability / Items / Equip), the party / bench / bag labels, the status abbreviations (KO / Psn / Cur) and the HOME-menu banner stay Japanese (full list: LUMA_FOLDER_LIMITS.txt). For the whole game in English use the full .cia / .3ds. If Luma folders cause problems again they will be switched off until the project is nearly complete.'),
+                   ('#a33a00',False,'Playing a save from 0.1.17 - 0.1.20? Veronica and Sylvando were saved with names that the new game draws wrongly (stray symbol or wrong letters; crashes reported mostly on Old 3DS). Use the separate "DQXI_3DS_Save_Repair" download (same GitHub page) on a copy of your save to fix it, then play with a game patched with 0.1.21 or newer. New games started with 0.1.21 do not need it.')]
+        # the long warnings live in their own window; the main window keeps one short line + a button so the patch notes are visible at once
+        wf=ttk.Frame(self);wf.pack(fill='x',padx=14,pady=(6,0))
+        ttk.Button(wf,text='Read first: Luma folders / old saves',command=self.show_warnings).pack(side='left',ipady=2)
+        ttk.Label(wf,text='Safest: make a NEW full .cia/.3ds. Never mix a patched game with a Luma folder.',foreground='#a33a00',wraplength=420).pack(side='left',padx=10)
         nf=ttk.LabelFrame(self,text="What's new (patch notes)");nf.pack(fill='both',expand=True,padx=14,pady=(6,0))
         sb=ttk.Scrollbar(nf,orient='vertical')
-        self.notes=tk.Text(nf,height=6,wrap='word',font=('Segoe UI',10),yscrollcommand=sb.set,padx=8,pady=6,spacing1=2,spacing3=2)
+        self.notes=tk.Text(nf,height=10,wrap='word',font=('Segoe UI',10),yscrollcommand=sb.set,padx=8,pady=6,spacing1=2,spacing3=2)
         sb.config(command=self.notes.yview);sb.pack(side='right',fill='y');self.notes.pack(side='left',fill='both',expand=True,padx=(6,0),pady=6)
         self.render_notes(load_notes());self.notes.config(state='disabled')
         ls=self.settings.get('last_src')
         if ls and Path(ls).is_file():self.set_src(ls)          # remember the last game file and output folder
         self.after(150,self.poll)
+    def show_warnings(self):
+        w=tk.Toplevel(self);w.title('Read first - Luma folders and old saves');w.geometry('660x520');w.transient(self)
+        f=ttk.Frame(w);f.pack(fill='both',expand=True,padx=14,pady=10)
+        for col,bold,t in self.warn:
+            ttk.Label(f,text=t,wraplength=620,foreground=col,font=('Segoe UI',9,'bold') if bold else None).pack(anchor='w',pady=(0,10))
+        ttk.Button(f,text='Close',command=w.destroy).pack(pady=6)
     def render_notes(self,text):
         """Reflow the plain-text changelog: version headings stand out, bullets get a hanging indent and the
         hard line breaks inside a bullet are joined so the text wraps to whatever width the window has."""
@@ -167,8 +167,11 @@ class App(tk.Tk):
             elif s.lstrip().startswith('* '):items.append(('bul','\u2022 '+s.lstrip()[2:]))
             elif items and items[-1][0]=='bul' and s.startswith(' '):items[-1]=('bul',items[-1][1]+' '+s.strip())
             else:items.append(('title' if not items else 'bul',s.strip()))
+        first=None
         for i,(k,s) in enumerate(items):
+            if k=='ver' and first is None:first=t.index('end-1c')
             t.insert('end',s+'\n',k)
+        if first:self.after(50,lambda:t.yview(first))     # open at the newest version's notes, not the general intro above them
     # ---- helpers
     def say(self,msg):
         self.logbuf.append(str(msg));self.q.put(('log',str(msg)))

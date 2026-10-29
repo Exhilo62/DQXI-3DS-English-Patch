@@ -12,6 +12,16 @@ DQXI 3DS English patch - changelog
        will be switched off until the project is nearly complete. Code changes can only ever be in the full .cia / .3ds, never in a folder.
     A patched game plus a Luma folder, or several patched versions installed over each other, can crash in battle.
 
+0.1.30
+  * The launcher window now opens with the patch notes already showing (scrolled to the newest version), so you see what is new without resizing the window. The long Luma-folder and old-save warnings moved into a "Read first: Luma folders / old saves" button, and the window is taller and fits the buttons.
+  * The casino JACKPOT banner is redrawn: the letters were too wide and the thick outline filled the middle of the "O", so it read "JACKPCIT" (reported by a player on Discord).
+  * Two Travel Tips boxes had a line that ran past the edge of the box and cut a word in the middle ("may get yo|u pepped up" in the Pep tutorial, and the Tickington / StreetPass tip). They are re-wrapped; every other tutorial box was checked for width.
+  * More Japanese text found inside pictures (a second sweep that also decodes the picture formats the first one could not read): the roulette payout labels ("When it hits" / 27x ... 2x / treasure chest / result, now PAYS / 27x ... / CHEST / RESULT), the Skill Panel bonus line ("WIN FOR A BONUS!"), and the party initials on the Equip screen (Luminary L, Erik E, Veronica V, Serena Se, Sylvando Sy, Rab R, Jade J, Hendrik H). The "BACK" label in the Labyrinth had a leftover piece of the old kana and is clean now.
+  * Queen Marina: about 20 NPC lines in the Undersea Palace and Nautica still called the mermaid queen "Lady Selene" / "Queen Selene" (reported by Sola). She is Queen Marina everywhere now.
+  * Names that appeared in two spellings are unified with the official script (found by comparing every English name with the Japanese original): Grand Master Pang (4 cutscene name tags said "Master Pang"), Gloomnivore (two Bakumos lines), Aquila (was also Isaiah / Isaac), Erdwin (was also Rosh), Kiefer (was Keefa), Gyldygga (was Kilagold), Cetacea (15 lines said Cetus), Tura, Rudman, Lapin House, Zayus, Heehodolf, Sabrecat and Drackyma. About 130 lines in all.
+  * Text boxes that were too wide: about 90 quest log, story summary, monster book, item description, achievement, scenario guide and Skill Panel entries had lines longer than their window, so the game wrapped them again in odd places. They are re-flowed to fit.
+  * Everything else is the same as 0.1.29. Saves from 0.1.17 - 0.1.20 still need DQXI_3DS_Save_Repair_v0.1.30.zip (see the 0.1.29 notes below).
+
 0.1.29
   * IMPORTANT - USE THE SAVE REPAIR TOOL: if you already have a save game, run DQXI_3DS_Save_Repair_v0.1.29.zip on a COPY of your save (instructions inside). The patch cannot change names that are already stored in a save; without the tool an existing save keeps older names ("Hendrik$" in battle, old party names from 0.1.17 - 0.1.20 saves ...). A brand-new game does not need it.
   * Alena: the princess from the Padequia / Cannock story (Japanese Arena) is now "Alena", the official name, in all 47 lines that name her (quests, NPC talk, cutscenes). The word "arena" as a place is unchanged.
