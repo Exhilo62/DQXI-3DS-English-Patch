@@ -39,13 +39,13 @@ say(f'== A. reproducible build (version {V})')
 if '--skip-build' in sys.argv:
     say('   skipped (--skip-build)')
 else:
-    before = {n: sha(H / 'dist' / n) for n in ('dqxi_en.dqp', 'code.ips')}
+    before = {n: sha(H / 'dist' / '_build' / n) for n in ('dqxi_en.dqp', 'code.ips')}
     env = dict(os.environ, DQXI_MOD=str(MOD))
     r = subprocess.run([sys.executable, str(H / 'make_patch.py')], cwd=str(H), env=env, capture_output=True, text=True)
     if r.returncode:
         fail('make_patch.py failed: ' + (r.stderr or r.stdout)[-300:])
     for n, h in before.items():
-        if sha(H / 'dist' / n) != h:
+        if sha(H / 'dist' / '_build' / n) != h:
             fail(f'{n} differs after rebuilding from the same mod (build is not reproducible)')
         else:
             say(f'   {n}: identical after a rebuild')
@@ -141,13 +141,13 @@ else:
     asset_ver = zipfile.ZipFile(apk).read('assets/VERSION').decode().strip() if 'assets/VERSION' in z.namelist() else '?'
     if asset_ver != V: fail(f'{apk.name} carries patch version {asset_ver}, expected {V}')
     # the APK must carry exactly the patch data of this release
-    for nm, src in (('assets/dqxi_en.dqp', H / 'dist/dqxi_en.dqp'), ('assets/code.ips', H / 'code.ips')):
+    for nm, src in (('assets/dqxi_en.dqp', H / 'dist/_build/dqxi_en.dqp'), ('assets/code.ips', H / 'code.ips')):
         if nm not in z.namelist() or hashlib.sha1(z.read(nm)).hexdigest() != sha(src): fail(f'{apk.name}: {nm} differs from the release build (rebuild the APK)')
 if not (GH / 'android_patcher' / 'app' / 'build.gradle').exists(): fail('github_repo/android_patcher is missing (copy the app source)')
 cia = H / f'test_english_{V}.cia'
 if not cia.exists(): fail(f'{cia.name} missing')
 if (GH / 'VERSION').read_text().strip() != V: fail('github_repo/VERSION differs')
-for n, src in (('dqxi_en.dqp', H / 'dist/dqxi_en.dqp'), ('code.ips', H / 'code.ips'), ('CHANGELOG.txt', H / 'CHANGELOG.txt'),
+for n, src in (('dqxi_en.dqp', H / 'dist/_build/dqxi_en.dqp'), ('code.ips', H / 'code.ips'), ('CHANGELOG.txt', H / 'CHANGELOG.txt'),
                ('save_repair/DQXI_SaveRepair.py', H / 'save_repair/DQXI_SaveRepair.py'),
                ('save_repair/README_SAVE_REPAIR.txt', H / 'save_repair/README_SAVE_REPAIR.txt')):
     g = GH / n

@@ -78,11 +78,11 @@ NOTES
    a .cia needs signature patches (Luma3DS default).
  * Please report problems with a screenshot and which mode (2D/3D) you were in.
 
-HELP US TEST (v0.1.28)
+HELP US TEST (v0.1.29)
  The current list of things to check (and where to report them) is on the project page:
  https://github.com/Exhilo62/DQXI-3DS-English-Patch  ("Help us test"). A screenshot or just "OK" with your
- model / emulator and 2D/3D mode helps a lot. Most wanted: the boss Avarith (Phnom Nonh), Gloomnivore,
- Tentacular, Sinderella and Whambelina (Octagonia tournament), the new Luma folder option, and Android (Termux).
+ model / emulator and 2D/3D mode helps a lot. Most wanted: menus with shortened labels (camp, shops, Tockle / Labyrinth, battle), Alena and Serenica in dialogue, the Field of Discipline in Angri-La (Gauntlet menus,
+ High Lama's name tag, Zoom list), Octagonia on the world map, then Avarith (Phnom Nonh), the Luma folder option and the Android app.
 
 LINUX / STEAM DECK / MAC
  Use the separate "Linux" download (DQXI_3DS_English_Patch_Linux_v*.zip): extract it,

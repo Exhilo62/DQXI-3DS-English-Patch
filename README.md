@@ -32,7 +32,7 @@ Get **`DQXI_3DS_English_Patch_vX.Y.Z.zip`** from the [Releases](../../releases) 
 **`DQXIEnglishPatcher.exe`**.
 
 ### Android (phone / handheld, no PC)
-Download **`DQXI_English_Patcher_Android_v0.1.28.apk`** from the [Releases](../../releases) page and open it on the device (allow "install unknown apps" when Android asks; it is not from the Play Store, so Play Protect may warn). Choose your decrypted Japanese `.3ds` or `.cia`, choose the output (`.3ds` for emulators such as Azahar, `.cia` for a 3DS) and press **Patch**; it runs in the background and shows a progress notification. About 6 minutes on a Retroid Pocket Duo Lite, arm64 devices only. The source is in [`android_patcher`](android_patcher). Prefer a terminal? `README_ANDROID.txt` in the Linux zip explains the Termux route.
+Download **`DQXI_English_Patcher_Android_v0.1.29.apk`** from the [Releases](../../releases) page and open it on the device (allow "install unknown apps" when Android asks; it is not from the Play Store, so Play Protect may warn). Choose your decrypted Japanese `.3ds` or `.cia`, choose the output (`.3ds` for emulators such as Azahar, `.cia` for a 3DS) and press **Patch**; it runs in the background and shows a progress notification. About 6 minutes on a Retroid Pocket Duo Lite, arm64 devices only. The source is in [`android_patcher`](android_patcher). Prefer a terminal? `README_ANDROID.txt` in the Linux zip explains the Termux route.
 
 ## How to use
 
@@ -95,9 +95,12 @@ encrypted.
 - Developed in the Azahar emulator. **Tested on:** a real New Nintendo 3DS (Luma3DS, patched `.cia`) and a
   Retroid Pocket Duo Lite running Citra MMJ (patched `.3ds`).
 
-## Help us test (v0.1.28)
+## Help us test (v0.1.29)
 These changes pass our automatic text checks but not everything has been seen in the game. If you get there, please post a
 screenshot (or just "OK") with your model or emulator and 2D/3D mode:
+- [ ] **Shortened menu labels (new in 0.1.29):** about 200 labels were shortened so they stop wrapping onto the row below: camp menu ("Merchant", "Pray"), church ("To 2D Mode"), Memories ("Forge recipes"), Tockle / Labyrinth menus, the boss list, the battle tactics ("No MP") and more. Does anything now read wrong, or is anything still cut off or overlapping? Please say 2D or 3D mode.
+- [ ] **Alena and Serenica (new in 0.1.29):** the princess is now "Alena" (was Arena); the ancient sage is "Serenica" (was Serena in ~70 lines). Tell us if a line mixes them up.
+- [ ] **Field of Discipline (Angri-La, new in 0.1.29):** the High Lama's name tag should read "High Lama" (not "Walk"); in the Gauntlet menus nothing should overlap: the reward window ("Party:", "In 45 moves", item names), the trial list ("Battle 1" over each trial name), the member window and the trial / battle lists. Also the Zoom list ("Field of Discipline", "Kingdom of Nautica") and the Octagonia labels on the Act 2 world map (should not say Gallopolis). Please say whether you were in 2D or 3D mode.
 - [ ] **Battle:** the spell / ability lists (long official names such as Cock-a-doodle-doo, Boulderbringer), the enemy target list (names should sit inside the rows), a Pep Power and "is pepped up!" / "lost the power of pep!".
 - [ ] **Menus:** the Skills menu (no overlapping names), shops and item lists (long official item names), the monster book, the Labyrinth / Go Exploring menus, and the quest guide on the bottom screen.
 - [ ] **Window text:** title screen, shops, the Fun-Size Forge and the casino: nothing should be blank that used to show a label.
@@ -119,7 +122,7 @@ screenshot (or just "OK") with your model or emulator and 2D/3D mode:
 ## Save repair (saves made with 0.1.17 - 0.1.20)
 Those versions saved Veronica and Sylvando with names one letter too long, which causes a stray symbol after the name and
 (mostly on Old 3DS) probably crashes in battle. New games started with 0.1.21 or newer are fine. For an existing save, download
-`DQXI_3DS_Save_Repair_v0.1.28.zip` from the release, run it on a copy of your save (back it up with Checkpoint / JKSM first;
+`DQXI_3DS_Save_Repair_v0.1.29.zip` from the release, run it on a copy of your save (back it up with Checkpoint / JKSM first;
 the zip contains a README with the steps and a Python source for Linux/Mac), put the repaired save back and play with a
 game patched with 0.1.21 or newer.
 

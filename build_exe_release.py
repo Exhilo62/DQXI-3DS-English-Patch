@@ -13,13 +13,18 @@ if os.environ.get('DQXI_SKIP_CHECK')!='1' and _chk.exists():
     _r=subprocess.run([sys.executable,'-X','utf8',str(_chk),str(_mod/'romfs'),'--scan-only'])
     if _r.returncode:sys.exit('pre-release check failed - fix the problems above or set DQXI_SKIP_CHECK=1')
 subprocess.check_call([sys.executable,str(H/'make_patch.py')],cwd=str(H))
-for f in ('dqxi_en.dqp','code.ips'):shutil.copy2(H/'dist'/f,H/f)
+for f in ('dqxi_en.dqp','code.ips'):shutil.copy2(H/'dist'/'_build'/f,H/f)
 r=str(H)
 subprocess.check_call([sys.executable,'-m','PyInstaller','--noconfirm','--clean','--onefile','--windowed','--name','DQXIEnglishPatcher',
     '--add-data',r+r'\dqxi_en.dqp;.','--add-data',r+r'\code.ips;.','--add-data',r+r'\code_layered.ips;.','--add-data',r+r'\VERSION;.',
     '--add-data',r+r'\CHANGELOG.txt;.','--add-data',r+r'\logo.png;.','--add-data',r+r'\cia_templates.bin;.',
     '--distpath',str(H/'exe_dist'),'--workpath',str(H/'exe_build'),'--specpath',str(H/'exe_build'),str(H/'DQXIEnglishPatcher.py')],cwd=r)
 v=(H/'VERSION').read_text().strip()
+# dist/ holds only this version's uploads: older zips / apks / test files move to dist/archive
+(H/'dist'/'archive').mkdir(exist_ok=True)
+for _f in list((H/'dist').iterdir()):
+    if _f.is_file() and _f.suffix in ('.zip','.apk','.txt') and f'v{v}' not in _f.name and _f.name!='UPLOAD_THESE.txt':
+        shutil.move(str(_f),str(H/'dist'/'archive'/_f.name))
 z=H/'dist'/f'DQXI_3DS_English_Patch_v{v}.zip'
 with zipfile.ZipFile(z,'w',zipfile.ZIP_DEFLATED) as zf:
     zf.write(H/'exe_dist'/'DQXIEnglishPatcher.exe','DQXIEnglishPatcher.exe')
@@ -55,3 +60,14 @@ with zipfile.ZipFile(sz,'w',zipfile.ZIP_DEFLATED) as zf:
     zf.write(SR/'DQXI_SaveRepair.py','DQXI_SaveRepair.py')
     zf.write(SR/'README_SAVE_REPAIR.txt','README.txt')
 print('wrote',sz,round(sz.stat().st_size/1e6,1),'MB')
+# the list of what to upload for this version
+_ups = [('DQXI_3DS_English_Patch_v%s.zip' % v, 'Windows (DQXIEnglishPatcher.exe)'),
+        ('DQXI_3DS_English_Patch_Linux_v%s.zip' % v, 'Linux / Steam Deck / macOS (and the Termux route for Android)'),
+        ('DQXI_English_Patcher_Android_v%s.apk' % v, 'Android app (build it with android_patcher\\build_apk.bat release)'),
+        ('DQXI_3DS_Save_Repair_v%s.zip' % v, 'Save repair tool')]
+_lines = ['Release v%s - attach these files to the GitHub release (nothing else in this folder):' % v, '']
+_lines += ['  [%s] %s   - %s' % ('x' if (H / 'dist' / n).exists() else 'MISSING', n, d) for n, d in _ups]
+_lines += ['', 'Texts: release/GITHUB_RELEASE_v%s.md (release notes), release/DISCORD_POST_v%s.md (Discord).' % (v, v),
+           'archive/ = older versions and test files (do not upload).  _build/ = build intermediates.',
+           'NEVER upload the test .cia/.3ds (they contain the game) or android_patcher/*.keystore / keystore.properties.']
+(H / 'dist' / 'UPLOAD_THESE.txt').write_text('\n'.join(_lines) + '\n', encoding='utf-8')

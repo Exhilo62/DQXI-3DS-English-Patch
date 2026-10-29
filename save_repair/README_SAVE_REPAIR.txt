@@ -5,7 +5,9 @@ WHO NEEDS THIS
  Saves made with English patch versions 0.1.17 - 0.1.20 (a save you started or last saved with one of
  those). In 0.1.17 - 0.1.19 two party names were stored one letter too long ("Veronic" and "Sylvand");
  0.1.20 stored them in a two-letter form that is drawn badly in battle and not recognised by 0.1.21. The game's name field holds only 6 characters, so the 7th letter spills into the next field.
- What you may notice: a stray symbol after Veronica's or Sylvando's name in some lists, and
+ (0.1.18 and 0.1.19 saves may also hold "Veroni" / "Sylvan" plus a special character that old patches drew as "ca" / "do"; with a
+ newer patch that character is drawn as other letters, so Veronica shows as "Veroniro" in the skill panel. The tool converts that form too.)
+ What you may notice: a stray symbol after Veronica's or Sylvando's name in some lists, "Veroniro" in the skill panel, and
  "Veronic ,Serena" in the Link requirements. Testers also reported battle crashes (mostly on an Old 3DS)
  with Veronica in the party; one of them crashed even in the unmodified Japanese game with such a save,
  so it is not caused by the translation itself. We do not know that every crash is caused by this,
