@@ -12,6 +12,14 @@ DQXI 3DS English patch - changelog
        will be switched off until the project is nearly complete. Code changes can only ever be in the full .cia / .3ds, never in a folder.
     A patched game plus a Luma folder, or several patched versions installed over each other, can crash in battle.
 
+0.1.31
+  * Skill, item and enemy names that were still the old wording in the middle of a sentence are fixed. The earlier rename passes missed any name that the game had split over two lines ("Shadow" at the end of one line, "Attack" at the start of the next) and a few names inside quotes. Player screenshots showed the quest page "The Real Decoy" with its text still saying "Shadow Attack". Corrected: 15 skill names (Shadow Attack -> The Real Decoy, A Page of Youth -> Youthful Spirit, Holy Prayer -> Care Prayer, Overlord Slash -> Quadraslash, Grand Cross -> Pearly Gates, Knight's Pride -> Arise, Death Dream -> Snooze 'n' Bruise ...), 28 item names (Windcutter Feather -> Flurry Feather, Gold Cactus -> Golden Globule, Slimy Aloe -> Mellow Vera, Angel's Smelling Salts -> Defuddle Drops, Silver Harp -> Lyre of Ire, Hakim's Axe -> Apollo's Axe ...) and 16 enemy names (Demon Knight -> Knight Aberrant, Dragonlord Mimic -> Lord Dragon, Phantom Shadow -> Headless Hunter ...). The affected lines were re-flowed to fit.
+  * "The Real Decoy" is written with a capital T in three quest and NPC lines that said "the Real Decoy".
+  * "Ring of Wrack and Ruin" ran past the edge of the Link list and its last letter dropped onto the next row; it is now "Ring of Wrack & Ruin".
+  * Records > Details: the row "Pots and barrels smashed" was the widest row and its number ran into the label; it now reads "Pots & barrels broken".
+  * The Save Repair tool (DQXI_3DS_Save_Repair_v0.1.31.zip) now tells you more: for each save slot it lists which names it changed (for example "Veronic -> Veronica"), says that the repaired files are in the folder you chose and must be copied back to the 3DS / emulator, says where the backup is, and warns if you picked a .zip file (unzip it first) or a folder that is not a Dragon Quest XI save. If a save is already correct it says so. The repair itself is unchanged.
+  * Everything else is the same as 0.1.30.
+
 0.1.30
   * The launcher window now opens with the patch notes already showing (scrolled to the newest version), so you see what is new without resizing the window. The long Luma-folder and old-save warnings moved into a "Read first: Luma folders / old saves" button, and the window is taller and fits the buttons.
   * The casino JACKPOT banner is redrawn: the letters were too wide and the thick outline filled the middle of the "O", so it read "JACKPCIT" (reported by a player on Discord).

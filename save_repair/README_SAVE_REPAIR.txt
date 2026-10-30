@@ -35,7 +35,8 @@ HOW TO USE (Windows)
     (Azahar: File > Open Azahar folder).
  2. Double-click  DQXI_SaveRepair.exe  and pick the folder that holds your save files (Data0, Data1,
     Data2, Data3, mini_0 ...). You can also drag the folder onto the exe. Subfolders are searched too.
- 3. It lists each slot and how many names it repaired. "nothing to repair" means that slot is fine.
+ 3. It lists each slot and which names it changed (for example "Veronic -> Ve..ca"). "nothing to repair" means that slot is fine.
+    The repaired files stay in the folder you chose; the originals are in DQXI_SaveRepair_backups. (A .zip must be unzipped first.)
  4. Copy the repaired files back (on a 3DS: restore the backup with Checkpoint / JKSM; in an emulator:
     close the emulator and replace the files), then start the game patched with 0.1.21 or newer.
 

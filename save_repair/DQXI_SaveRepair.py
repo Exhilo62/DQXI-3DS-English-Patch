@@ -33,35 +33,37 @@ def repair(path, backup_dir, log=print):
         log('  %s: not a save slot this tool understands (checksum does not match) - left alone' % path)
         return -1
     n = 0
+    changed = []                                    # 'old -> new' for the report
+    ok = [new for new in ('Ve冑冒ca', 'Sy冥写do') if new.encode('utf-16le') in d]     # party names already in the current form
     for old, new in FIX.items():
         pat = old.encode('utf-16le'); i = d.find(pat)
         while i >= 0:
             if i % 2 == 0 and d[i + 14:i + 16] != b'\0\0':       # 7 letters with no end marker: the bad form
                 d[i:i + 14] = (new.encode('utf-16le') + b'\0\0').ljust(14, b'\0')
-                n += 1
+                n += 1; changed.append('%s -> %s' % (old, new))
             i = d.find(pat, i + 2)
     # short names stored in the same 6-character fields: bring them in line with the current patch
     for old, new in SHORT.items():
         pat = old.encode('utf-16le'); i = d.find(pat)
         while i >= 0:
             if i % 2 == 0 and d[i + len(pat):i + 14] == bytes(14 - len(pat)):
-                d[i:i + 14] = new.encode('utf-16le') + bytes(14 - 2 * len(new)); n += 1
+                d[i:i + 14] = new.encode('utf-16le') + bytes(14 - 2 * len(new)); n += 1; changed.append('%s -> %s' % (old, new))
             i = d.find(pat, i + 2)
     for old, new in SAME_LEN.items():
         pat = old.encode('utf-16le'); i = d.find(pat)
         while i >= 0:
             if i % 2 == 0:
-                d[i:i + 12] = new.encode('utf-16le'); n += 1
+                d[i:i + 12] = new.encode('utf-16le'); n += 1; changed.append('%s -> %s' % (old, new))
             i = d.find(pat, i + 2)
     if not n:
-        log('  %s: nothing to repair' % path)
+        log('  %s: nothing to repair%s' % (path, ' (party names already in the current form)' if ok else ''))
         return 0
     dst = os.path.join(backup_dir, os.path.splitdrive(os.path.abspath(path))[1].lstrip('\\/').replace(':', ''))
     os.makedirs(os.path.dirname(dst), exist_ok=True)
     shutil.copy2(path, dst)
     struct.pack_into('<I', d, len(d) - 4, zlib.crc32(bytes(d[:-8])) & 0xffffffff)
     open(path, 'wb').write(bytes(d))
-    log('  %s: %d name(s) repaired (original kept in %s)' % (path, n, dst))
+    log('  %s: %d name(s) repaired (%s)\n      original kept in %s' % (path, n, ', '.join(sorted(set(changed))), dst))
     return n
 
 
@@ -96,20 +98,34 @@ def main(argv):
     targets = argv or [p for p in [ask_folder()] if p]
     if not targets:
         return 1
+    if any(t.lower().endswith(('.zip', '.7z', '.rar')) for t in targets):
+        print('That is an archive. Unzip it first, then choose the unzipped folder (the one that holds Data0, Data1 ...).')
+        return 2
     files = find_slots(targets)
     if not files:
         print('No save files named Data0 ... Data9 found in:', ', '.join(targets))
+        print('Choose the folder that directly holds Data0, Data1, Data2, Data3 (on an emulator it is called 00000001).')
         return 2
     backup = os.path.join(here(), 'DQXI_SaveRepair_backups', time.strftime('%Y-%m-%d_%H-%M-%S'))
-    total = 0
-    print('Checking %d save file(s) ...' % len(files))
+    total = skipped = 0
+    print('Found %d save slot file(s):' % len(files))
     for f in files:
         r = repair(f, backup)
+        if r < 0:
+            skipped += 1
         total += max(r, 0)
-    if total:
-        print('\nDone: %d name(s) repaired. Copy the folder back to your 3DS / emulator. Use the game patched with 0.1.21 or newer.' % total)
+    print()
+    if skipped == len(files):
+        print('None of these files is a Dragon Quest XI save slot (the checksum did not match), so nothing was changed.')
+        print('Check that you chose the right game folder.')
+    elif total:
+        print('Done: %d name(s) repaired in the slots listed above.' % total)
+        print('The repaired files are in the folder you chose - copy THAT folder back to your 3DS (Checkpoint / JKSM restore) or')
+        print('emulator (close it first), then play with the game patched with 0.1.21 or newer.')
+        print('The originals are kept in: %s' % backup)
     else:
-        print('\nNothing needed repairing.')
+        print('Nothing needed repairing - this save is already fine. If names still look wrong, update the patch to the latest')
+        print('version and make sure the patched game is the one you start.')
     return 0
 
 

@@ -3,7 +3,7 @@
 
 EASIEST: THE ANDROID APP
 ------------------------
-Download DQXI_English_Patcher_Android_v0.1.30.apk from the GitHub release page and open it on the device (Android asks you to allow "install unknown apps" for the
+Download DQXI_English_Patcher_Android_v0.1.31.apk from the GitHub release page and open it on the device (Android asks you to allow "install unknown apps" for the
 app you opened it from; it is not from the Play Store, so Play Protect may warn). Then: choose your decrypted Japanese .3ds / .cia,
 choose the output (.3ds for emulators such as Azahar, .cia for a 3DS), press Patch and choose where to save. It keeps running in the
 background (a notification shows the progress) and takes about 6 minutes on a Retroid Pocket Duo Lite. arm64 devices only.
