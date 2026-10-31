@@ -20,6 +20,12 @@ HOW TO USE
     "Party") even though the new game file is correct. To go back to a clean install, delete
     that folder and install the new .cia.
 
+OLD SAVES (started with patch 0.1.17 - 0.1.20)
+ Press "Repair old save..." in the patcher. It finds the save of an emulator (Azahar / Lime3DS / Citra) by itself, or you
+ choose the folder with Data0, Data1 ... (a real 3DS: export the save with Checkpoint / JKSM first, repair the copy, restore it).
+ Close the emulator first. The original files are copied to Documents\DQXI_SaveRepair_backups before anything is changed.
+ Command line: DQXIEnglishPatcher.exe --repair-save [save folder]
+
 INSTALLING / PLAYING
  .cia : copy to your 3DS SD card and install with FBI (needs custom firmware, e.g.
         Luma3DS). It keeps the same title ID as the Japanese game, so your saves
@@ -54,13 +60,12 @@ IF IT SAYS YOUR FILE IS ENCRYPTED (one-time step)
  Copy the decrypted file to your PC and patch that one. Files that already work in
  emulators such as Azahar are usually already decrypted.
 
-SAVE REPAIR (saves from 0.1.17 - 0.1.20)
+SAVE REPAIR (saves from 0.1.17 - 0.1.20) - built into this program since 0.1.32
  Veronica and Sylvando were stored with names one letter too long in saves made with 0.1.17 - 0.1.20:
  a stray symbol after the name in some lists, and battle crashes reported mostly on Old 3DS. New games
- started with 0.1.21 or newer are fine. To keep playing an OLD save, download the separate
- "DQXI_3DS_Save_Repair" zip from the same GitHub page, run DQXI_SaveRepair.exe on a COPY of your save
- (back it up with Checkpoint / JKSM first; instructions in its README), put the repaired save back and
- play with a game patched with 0.1.21 or newer. Your original files are kept in a backup folder.
+ started with 0.1.21 or newer are fine. To keep playing an OLD save, press "Repair old save..." in this
+ program (see OLD SAVES at the top). There is no separate download any more: from 0.1.32 on, saves are
+ repaired with the patcher, in every version. Your original files are kept in a backup folder.
 
 AI ASSISTANCE
  This project was made with the help of AI (Anthropic's Claude), working with the
@@ -78,10 +83,10 @@ NOTES
    a .cia needs signature patches (Luma3DS default).
  * Please report problems with a screenshot and which mode (2D/3D) you were in.
 
-HELP US TEST (v0.1.31)
+HELP US TEST (v0.1.32)
  The current list of things to check (and where to report them) is on the project page:
  https://github.com/Exhilo62/DQXI-3DS-English-Patch  ("Help us test"). A screenshot or just "OK" with your
- model / emulator and 2D/3D mode helps a lot. Most wanted: menus with shortened labels (camp, shops, Tockle / Labyrinth, battle), Alena and Serenica in dialogue, the Field of Discipline in Angri-La (Gauntlet menus,
+ model / emulator and 2D/3D mode helps a lot. Most wanted: group fights (Sabercub A / B), pick-up messages (ore, berries), the Pep Chance and Forge text, the new Repair old save button, menus with shortened labels (camp, shops, Tockle / Labyrinth, battle), Alena and Serenica in dialogue, the Field of Discipline in Angri-La (Gauntlet menus,
  High Lama's name tag, Zoom list), Octagonia on the world map, then Avarith (Phnom Nonh), the Luma folder option and the Android app.
 
 LINUX / STEAM DECK / MAC

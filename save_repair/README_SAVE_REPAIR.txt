@@ -28,6 +28,9 @@ WHAT IT DOES
  .cia / .3ds with the 0.1.21 patcher first). Older versions cannot draw the new name characters and
  would show odd symbols instead of the names.
 
+SINCE 0.1.32 the English patcher has this built in ("Repair old save..." button; Android app: "Repair an old save"),
+so this separate tool is only needed if you do not use the patcher.
+
 HOW TO USE (Windows)
  1. Make a backup of your save. On a real 3DS: open Checkpoint (or JKSM), pick Dragon Quest XI and
     back up the save. Copy the backup folder from the SD card (SD:/3ds/Checkpoint/saves/...) to your PC.

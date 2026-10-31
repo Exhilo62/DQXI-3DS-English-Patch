@@ -31,3 +31,26 @@ def run(data_dir, src, dst, cb):
     except Exception:
         log(traceback.format_exc())
         return -1
+
+
+def repair_saves(work_dir):
+    """Old-save repair (DQXI_SaveRepair, the same code as the PC tool).  work_dir/in/<n>/Data0..Data9 are repaired in place; the
+    untouched originals are first copied to work_dir/orig/<n>/.  Returns JSON {"code", "report", "changed": ["<n>/DataX", ...]}."""
+    import json
+    import shutil
+    try:
+        import DQXI_SaveRepair
+        src = os.path.join(work_dir, 'in')
+        orig = os.path.join(work_dir, 'orig')
+        shutil.rmtree(orig, ignore_errors=True)
+        shutil.copytree(src, orig)
+        code, report = DQXI_SaveRepair.run([src], backup_base=os.path.join(work_dir, 'backups'), log=lambda m: None)
+        changed = []
+        for dp, dn, fn in os.walk(src):
+            for f in fn:
+                rel = os.path.relpath(os.path.join(dp, f), src).replace(os.sep, '/')
+                if open(os.path.join(src, rel), 'rb').read() != open(os.path.join(orig, rel), 'rb').read():
+                    changed.append(rel)
+        return json.dumps({'code': code, 'report': report, 'changed': changed})
+    except Exception:
+        return json.dumps({'code': -1, 'report': traceback.format_exc(), 'changed': []})

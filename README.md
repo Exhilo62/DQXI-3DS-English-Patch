@@ -32,7 +32,7 @@ Get **`DQXI_3DS_English_Patch_vX.Y.Z.zip`** from the [Releases](../../releases) 
 **`DQXIEnglishPatcher.exe`**.
 
 ### Android (phone / handheld, no PC)
-Download **`DQXI_English_Patcher_Android_v0.1.31.apk`** from the [Releases](../../releases) page and open it on the device (allow "install unknown apps" when Android asks; it is not from the Play Store, so Play Protect may warn). Choose your decrypted Japanese `.3ds` or `.cia`, choose the output (`.3ds` for emulators such as Azahar, `.cia` for a 3DS) and press **Patch**; it runs in the background and shows a progress notification. About 6 minutes on a Retroid Pocket Duo Lite, arm64 devices only. The source is in [`android_patcher`](android_patcher). Prefer a terminal? `README_ANDROID.txt` in the Linux zip explains the Termux route.
+Download **`DQXI_English_Patcher_Android_v0.1.32.apk`** from the [Releases](../../releases) page and open it on the device (allow "install unknown apps" when Android asks; it is not from the Play Store, so Play Protect may warn). Choose your decrypted Japanese `.3ds` or `.cia`, choose the output (`.3ds` for emulators such as Azahar, `.cia` for a 3DS) and press **Patch**; it runs in the background and shows a progress notification. About 6 minutes on a Retroid Pocket Duo Lite, arm64 devices only. The source is in [`android_patcher`](android_patcher). Prefer a terminal? `README_ANDROID.txt` in the Linux zip explains the Termux route.
 
 ## How to use
 
@@ -95,9 +95,14 @@ encrypted.
 - Developed in the Azahar emulator. **Tested on:** a real New Nintendo 3DS (Luma3DS, patched `.cia`) and a
   Retroid Pocket Duo Lite running Citra MMJ (patched `.3ds`).
 
-## Help us test (v0.1.31)
+## Help us test (v0.1.32)
 These changes pass our automatic text checks but not everything has been seen in the game. If you get there, please post a
 screenshot (or just "OK") with your model or emulator and 2D/3D mode:
+- [ ] **Enemy names in group fights (new in 0.1.32):** a group should read "Sabercub A / B / C" (not "SabercubA") and the victory line "Great Sabercub group!" (not "Great Sabercubgroup!"). About 106 names had lost the space the game needs; also check Knight Aberrant, Cureslime, Foo Dog and Bambooligan groups.
+- [ ] **Pick-up messages (new in 0.1.32):** mine an ore node, shake a berry tree or open a chest with two or three items: the item should be on its own line ("Exhilo acquires / Buzzberries and / Buzzberries!") and no word may split at the edge of the screen.
+- [ ] **Skill Panel and Forge text (new in 0.1.32):** the Pep Chance description should read "Makes it easier / to get pepped up", and an item that cannot be reforged shows "No reforge" in the Fun-Size Forge list without wrapping onto the next row.
+- [ ] **Save repair buttons (new in 0.1.32):** Windows / Linux patcher: "Repair old save..." (finds your Azahar / Lime3DS / Citra save); Android app: "Repair an old save" (choose the folder that holds Data0 ... Data3). Only for saves made with 0.1.17 - 0.1.20; tell us whether it worked and whether Veronica / Sylvando show correctly.
+- [ ] **Sabercat (new in 0.1.32):** the cats are Great / Dark / Silver **Sabercat**, matching the Sabercubs; tell us if you still see "Sabrecat" anywhere.
 - [ ] **Shortened menu labels (new in 0.1.29):** about 200 labels were shortened so they stop wrapping onto the row below: camp menu ("Merchant", "Pray"), church ("To 2D Mode"), Memories ("Forge recipes"), Tockle / Labyrinth menus, the boss list, the battle tactics ("No MP") and more. Does anything now read wrong, or is anything still cut off or overlapping? Please say 2D or 3D mode.
 - [ ] **Alena and Serenica (new in 0.1.29):** the princess is now "Alena" (was Arena); the ancient sage is "Serenica" (was Serena in ~70 lines). Tell us if a line mixes them up.
 - [ ] **Field of Discipline (Angri-La, new in 0.1.29):** the High Lama's name tag should read "High Lama" (not "Walk"); in the Gauntlet menus nothing should overlap: the reward window ("Party:", "In 45 moves", item names), the trial list ("Battle 1" over each trial name), the member window and the trial / battle lists. Also the Zoom list ("Field of Discipline", "Kingdom of Nautica") and the Octagonia labels on the Act 2 world map (should not say Gallopolis). Please say whether you were in 2D or 3D mode.
@@ -119,12 +124,15 @@ screenshot (or just "OK") with your model or emulator and 2D/3D mode:
 - [ ] **Serena's "Saint's Song"** (Saint's Poem in older versions): the bar under the skill list should be in English.
 - [ ] **Save repair:** if you used the save repair tool on an old save, tell us whether the names look right and whether battles with Veronica in the party (especially on an Old 3DS) still crash.
 
-## Save repair (saves made with 0.1.17 - 0.1.20)
-Those versions saved Veronica and Sylvando with names one letter too long, which causes a stray symbol after the name and
-(mostly on Old 3DS) probably crashes in battle. New games started with 0.1.21 or newer are fine. For an existing save, download
-`DQXI_3DS_Save_Repair_v0.1.31.zip` from the release, run it on a copy of your save (back it up with Checkpoint / JKSM first;
-the zip contains a README with the steps and a Python source for Linux/Mac), put the repaired save back and play with a
-game patched with 0.1.21 or newer.
+## Save repair (saves made with 0.1.17 - 0.1.20) - built into the patcher
+Those versions saved Veronica and Sylvando with names one letter too long, which causes a stray symbol after the name, a garbled name
+bar in the Pep / Link screens and (mostly on Old 3DS) probably crashes in battle. New games started with 0.1.21 or newer are fine.
+**Since 0.1.32 there is no separate Save Repair download: old saves are repaired with the patcher itself, in this and every future version.**
+
+- **Windows / Linux:** press **Repair old save...** in the patcher window (or `DQXIEnglishPatcher.exe --repair-save [folder]`). It finds your Azahar / Lime3DS / Citra save, or you choose the folder with `Data0`, `Data1` ... . Close the emulator first. The originals are copied to `Documents\DQXI_SaveRepair_backups`.
+- **Android app:** press **Repair an old save** and choose the folder with your save files. Android does not let apps open another app's private data folder, so copy the save folder to Documents first. The originals are backed up in a `DQXI_SaveRepair_backups` folder inside the folder you chose.
+- **Real 3DS:** export the save with Checkpoint / JKSM, repair the copy on a computer, restore it.
+- Then play with a game patched with 0.1.21 or newer. Running the repair twice is harmless. The source is `save_repair/DQXI_SaveRepair.py` in this repository (the patchers use it).
 
 ## Reporting problems
 Open an [issue](../../issues) with a **screenshot**, the **mode (2D/3D)**, and where it happened.

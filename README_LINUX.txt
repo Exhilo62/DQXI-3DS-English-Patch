@@ -43,4 +43,6 @@ IMPORTANT: before installing a new full game (.cia/.3ds) on a 3DS, delete any ol
 
 Note: always start from the newest version: make a NEW full patched .cia/.3ds, or a new Luma folder on a fresh Japanese install.
 
-SAVE REPAIR (saves from 0.1.17 - 0.1.20): Veronica and Sylvando were stored with names one letter too long (stray symbol after the name, and crashes reported mostly on Old 3DS). New games started with 0.1.21+ are fine. To keep playing an OLD save, download the separate "DQXI_3DS_Save_Repair" zip from the same GitHub page and run  python3 DQXI_SaveRepair.py "folder with your save files"  on a COPY of your save (README inside). Then play with a game patched with 0.1.21 or newer.
+Built in: python3 DQXIEnglishPatcher.py --repair-save [save folder]   (no folder = the Azahar / Lime3DS / Citra save found on this computer; the window has a "Repair old save..." button too; backups go to ~/Documents/DQXI_SaveRepair_backups).
+
+SAVE REPAIR (saves from 0.1.17 - 0.1.20), built into the patcher since 0.1.32: Veronica and Sylvando were stored with names one letter too long (stray symbol after the name, and crashes reported mostly on Old 3DS). New games started with 0.1.21+ are fine. To keep playing an OLD save press "Repair old save..." in the window, or run  python3 DQXIEnglishPatcher.py --repair-save "folder with your save files"  (a COPY of the save is safest). There is no separate Save Repair download any more; repairs are done through the patcher in every version. Then play with a game patched with 0.1.21 or newer.

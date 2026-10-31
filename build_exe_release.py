@@ -18,6 +18,7 @@ r=str(H)
 subprocess.check_call([sys.executable,'-m','PyInstaller','--noconfirm','--clean','--onefile','--windowed','--name','DQXIEnglishPatcher',
     '--add-data',r+r'\dqxi_en.dqp;.','--add-data',r+r'\code.ips;.','--add-data',r+r'\code_layered.ips;.','--add-data',r+r'\VERSION;.',
     '--add-data',r+r'\CHANGELOG.txt;.','--add-data',r+r'\logo.png;.','--add-data',r+r'\cia_templates.bin;.',
+    '--paths',str(H/'save_repair'),'--hidden-import','DQXI_SaveRepair',
     '--distpath',str(H/'exe_dist'),'--workpath',str(H/'exe_build'),'--specpath',str(H/'exe_build'),str(H/'DQXIEnglishPatcher.py')],cwd=r)
 v=(H/'VERSION').read_text().strip()
 # dist/ holds only this version's uploads: older zips / apks / test files move to dist/archive
@@ -39,6 +40,7 @@ SRC=['cia_patcher.py','DQXIEnglishPatcher.py','dqxi_blz.py','dqxi_en_patcher.py'
 DATA=['dqxi_en.dqp','code.ips','code_layered.ips','cia_templates.bin','VERSION','CHANGELOG.txt','logo.png','LICENSE-dqxi-format-tools.txt']
 with zipfile.ZipFile(lz,'w',zipfile.ZIP_DEFLATED) as zf:
     for f in SRC+DATA:zf.write(H/f,'DQXI_English_Patch/'+f)
+    zf.write(H/'save_repair'/'DQXI_SaveRepair.py','DQXI_English_Patch/DQXI_SaveRepair.py')      # the patcher's "Repair old save" button / --repair-save
     zf.write(H/'README_EXE.txt','DQXI_English_Patch/README.txt')
     zf.write(H/'README_LINUX.txt','DQXI_English_Patch/README_LINUX.txt')
     zf.write(H/'README_ANDROID.txt','DQXI_English_Patch/README_ANDROID.txt')
@@ -50,21 +52,10 @@ with zipfile.ZipFile(lz,'w',zipfile.ZIP_DEFLATED) as zf:
     zi.compress_type=zipfile.ZIP_DEFLATED
     zf.writestr(zi,(H/'patch.sh').read_bytes().replace(b'\r\n',b'\n'))
 print('wrote',lz,round(lz.stat().st_size/1e6,1),'MB')
-# Save repair tool (third download): standalone exe + python source + README
-SR=H/'save_repair'
-subprocess.check_call([sys.executable,'-m','PyInstaller','--noconfirm','--clean','--onefile','--console','--name','DQXI_SaveRepair',
-    '--distpath',str(SR/'exe_dist'),'--workpath',str(SR/'exe_build'),'--specpath',str(SR/'exe_build'),str(SR/'DQXI_SaveRepair.py')],cwd=str(SR))
-sz=H/'dist'/f'DQXI_3DS_Save_Repair_v{v}.zip'
-with zipfile.ZipFile(sz,'w',zipfile.ZIP_DEFLATED) as zf:
-    zf.write(SR/'exe_dist'/'DQXI_SaveRepair.exe','DQXI_SaveRepair.exe')
-    zf.write(SR/'DQXI_SaveRepair.py','DQXI_SaveRepair.py')
-    zf.write(SR/'README_SAVE_REPAIR.txt','README.txt')
-print('wrote',sz,round(sz.stat().st_size/1e6,1),'MB')
 # the list of what to upload for this version
 _ups = [('DQXI_3DS_English_Patch_v%s.zip' % v, 'Windows (DQXIEnglishPatcher.exe)'),
         ('DQXI_3DS_English_Patch_Linux_v%s.zip' % v, 'Linux / Steam Deck / macOS (and the Termux route for Android)'),
-        ('DQXI_English_Patcher_Android_v%s.apk' % v, 'Android app (build it with android_patcher\\build_apk.bat release)'),
-        ('DQXI_3DS_Save_Repair_v%s.zip' % v, 'Save repair tool')]
+        ('DQXI_English_Patcher_Android_v%s.apk' % v, 'Android app (arm64 phones / handhelds; build it with android_patcher\\build_apk.bat release)')]
 _lines = ['Release v%s - attach these files to the GitHub release (nothing else in this folder):' % v, '']
 _lines += ['  [%s] %s   - %s' % ('x' if (H / 'dist' / n).exists() else 'MISSING', n, d) for n, d in _ups]
 _lines += ['', 'Texts: release/GITHUB_RELEASE_v%s.md (release notes), release/DISCORD_POST_v%s.md (Discord).' % (v, v),

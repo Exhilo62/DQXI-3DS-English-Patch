@@ -106,12 +106,12 @@ for f in (H / f'GITHUB_RELEASE_v{V}.md', H / f'DISCORD_POST_v{V}.md'):
         fail(f'missing {f.name}'); continue
     t = f.read_text(encoding='utf-8')
     if f.name.startswith('GITHUB'):
-        for need in (f'v{V}', f'DQXI_3DS_Save_Repair_v{V}.zip', f'DQXI_3DS_English_Patch_v{V}.zip', f'DQXI_3DS_English_Patch_Linux_v{V}.zip',
+        for need in (f'v{V}', f'DQXI_3DS_English_Patch_v{V}.zip', f'DQXI_3DS_English_Patch_Linux_v{V}.zip',
                      f'DQXI_English_Patcher_Android_v{V}.apk',
-                     'AI-assisted project', 'SAVE REPAIR'):
+                     'AI-assisted project', 'REPAIR OLD SAVE'):
             if need not in t: fail(f'{f.name}: "{need}" missing')
     else:
-        for need in (f'v{V}', f'DQXI_3DS_Save_Repair_v{V}.zip', 'save repair'):
+        for need in (f'v{V}', 'save repair'):
             if need.lower() not in t.lower(): fail(f'{f.name}: "{need}" missing')
     for other in re.findall(r'v?0\.1\.(\d+)', t):
         if int(other) > int(V.split('.')[2]): fail(f'{f.name}: mentions a newer version 0.1.{other}')
@@ -120,12 +120,12 @@ first = re.search(r'^(0\.1\.\d+)\s*$', cl, re.M)
 if not first or first.group(1) != V:
     fail(f'CHANGELOG first section is {first.group(1) if first else "?"}, expected {V}')
 sec = cl.split(f'\n{V}\n', 1)[-1].split('\n0.1.', 1)[0] if f'\n{V}\n' in cl else ''
-if 'DQXI_3DS_Save_Repair_v' + V not in sec:
-    fail('CHANGELOG section does not name the save repair zip of this version')
+if 'Repair old save' not in sec:
+    fail('CHANGELOG section does not mention the built-in save repair of this version')
 rd = (GH / 'README.md').read_text(encoding='utf-8')
 if f'Help us test (v{V})' not in rd: fail(f'README test list is not "Help us test (v{V})"')
-if f'DQXI_3DS_Save_Repair_v{V}.zip' not in rd: fail('README names a different save repair zip')
-for n in (f'DQXI_3DS_English_Patch_v{V}.zip', f'DQXI_3DS_English_Patch_Linux_v{V}.zip', f'DQXI_3DS_Save_Repair_v{V}.zip'):
+if 'Repair old save' not in rd: fail('README does not describe the built-in save repair')
+for n in (f'DQXI_3DS_English_Patch_v{V}.zip', f'DQXI_3DS_English_Patch_Linux_v{V}.zip'):
     p = H / 'dist' / n
     if not p.exists() or p.stat().st_size < 1_000_000: fail(f'dist/{n} missing or tiny')
     else:

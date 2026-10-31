@@ -15,6 +15,7 @@ if not exist "%AS%" mkdir "%AS%"
 copy /y "%REL%\cia_patcher.py" "%PY%\" >nul || exit /b 1
 copy /y "%REL%\dqxi_blz.py" "%PY%\" >nul || exit /b 1
 copy /y "%REL%\dqxi_en_patcher.py" "%PY%\" >nul || exit /b 1
+copy /y "%REL%\save_repair\DQXI_SaveRepair.py" "%PY%\" >nul || exit /b 1
 copy /y "%REL%\dqxi_en.dqp" "%AS%\" >nul || exit /b 1
 copy /y "%REL%\code.ips" "%AS%\" >nul || exit /b 1
 copy /y "%REL%\cia_templates.bin" "%AS%\" >nul || exit /b 1

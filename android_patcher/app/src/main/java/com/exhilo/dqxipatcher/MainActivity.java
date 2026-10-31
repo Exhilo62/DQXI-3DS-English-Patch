@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.provider.OpenableColumns;
 import android.view.Gravity;
 import android.view.View;
@@ -19,6 +20,20 @@ import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.chaquo.python.Python;
+import com.chaquo.python.android.AndroidPlatform;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -26,13 +41,14 @@ import java.util.Locale;
  * The patching runs in PatchService (a foreground service) with the same Python code as the PC tool (python/cia_patcher.py, via Chaquopy).
  */
 public class MainActivity extends Activity implements PatchService.Listener {
-    static final int REQ_PICK = 1, REQ_SAVE = 2;
+    static final int REQ_PICK = 1, REQ_SAVE = 2, REQ_TREE = 3;
 
     Uri srcUri;
     String srcName = "", ext = "";
     long srcSize;
     TextView tvFile, tvStatus, tvLog;
-    Button btnPick, btnPatch;
+    Button btnPick, btnPatch, btnRepair;
+    volatile boolean repairing;
     ProgressBar bar;
     ScrollView scroll;
     RadioGroup rgFormat;
@@ -100,6 +116,11 @@ public class MainActivity extends Activity implements PatchService.Listener {
         btnPatch.setOnClickListener(v -> startSave());
         root.addView(btnPatch);
 
+        btnRepair = new Button(this);
+        btnRepair.setText("Repair an old save (patch 0.1.17 - 0.1.20)");
+        btnRepair.setOnClickListener(v -> pickSaveFolder());
+        root.addView(btnRepair);
+
         bar = new ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal);
         bar.setMax(1000);
         root.addView(bar, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, dp(24)));
@@ -142,7 +163,8 @@ public class MainActivity extends Activity implements PatchService.Listener {
     }
 
     void updateButtons() {
-        boolean busy = PatchService.running || PatchService.starting;
+        boolean busy = PatchService.running || PatchService.starting || repairing;
+        btnRepair.setEnabled(!busy);
         boolean haveFile = srcUri != null && !ext.isEmpty();
         btnPick.setEnabled(!busy);
         btnPatch.setEnabled(!busy && haveFile);
@@ -180,7 +202,9 @@ public class MainActivity extends Activity implements PatchService.Listener {
     protected void onActivityResult(int req, int res, Intent data) {
         super.onActivityResult(req, res, data);
         if (res != RESULT_OK || data == null || data.getData() == null) return;
-        if (req == REQ_PICK) {
+        if (req == REQ_TREE) {
+            repairTree(data.getData());
+        } else if (req == REQ_PICK) {
             srcUri = data.getData();
             try {
                 getContentResolver().takePersistableUriPermission(srcUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -227,6 +251,140 @@ public class MainActivity extends Activity implements PatchService.Listener {
             if (Build.VERSION.SDK_INT >= 26) startForegroundService(s);
             else startService(s);
         }
+    }
+
+    // ------------------------------------------------------------------ old save repair
+    static final String BACKUPS = "DQXI_SaveRepair_backups";
+
+    void pickSaveFolder() {
+        if (PatchService.running || PatchService.starting || repairing) return;
+        Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
+        tvLog.setText("Choose the folder that holds your save files (Data0, Data1, Data2, Data3, mini_0 ...). It must be a folder the system lets "
+                + "apps open (Android does not allow another app's private data folder: copy the save folder to Documents first). "
+                + "The original files are copied to a " + BACKUPS + " folder inside it before anything is changed.\n");
+        startActivityForResult(i, REQ_TREE);
+    }
+
+    static class SaveFile {
+        String docId, name, rel;
+    }
+
+    void scanSaves(Uri tree, String parentId, String rel, int depth, List<SaveFile> out) {
+        Uri kids = DocumentsContract.buildChildDocumentsUriUsingTree(tree, parentId);
+        try (Cursor c = getContentResolver().query(kids, new String[]{DocumentsContract.Document.COLUMN_DOCUMENT_ID,
+                DocumentsContract.Document.COLUMN_DISPLAY_NAME, DocumentsContract.Document.COLUMN_MIME_TYPE}, null, null, null)) {
+            if (c == null) return;
+            List<String[]> dirs = new ArrayList<>();
+            while (c.moveToNext()) {
+                String id = c.getString(0), name = c.getString(1), mime = c.getString(2);
+                if (DocumentsContract.Document.MIME_TYPE_DIR.equals(mime)) {
+                    if (depth < 3 && !BACKUPS.equals(name)) dirs.add(new String[]{id, name});
+                } else if (name != null && name.matches("Data[0-9]")) {
+                    SaveFile f = new SaveFile();
+                    f.docId = id;
+                    f.name = name;
+                    f.rel = rel;
+                    out.add(f);
+                }
+            }
+            for (String[] d : dirs) scanSaves(tree, d[0], rel + d[1] + "/", depth + 1, out);
+        }
+    }
+
+    static byte[] readAll(InputStream in) throws Exception {
+        ByteArrayOutputStream bo = new ByteArrayOutputStream();
+        byte[] buf = new byte[65536];
+        int n;
+        while ((n = in.read(buf)) > 0) bo.write(buf, 0, n);
+        in.close();
+        return bo.toByteArray();
+    }
+
+    static void deleteTree(File f) {
+        File[] k = f.listFiles();
+        if (k != null) for (File x : k) deleteTree(x);
+        f.delete();
+    }
+
+    void say(final String m) {
+        runOnUiThread(() -> {
+            tvLog.append(m + "\n");
+            scroll.post(() -> scroll.fullScroll(View.FOCUS_DOWN));
+        });
+    }
+
+    void repairTree(final Uri tree) {
+        repairing = true;
+        tvLog.setText("");
+        tvStatus.setText("Repairing the save ...");
+        updateButtons();
+        new Thread(() -> {
+            try {
+                String rootId = DocumentsContract.getTreeDocumentId(tree);
+                List<SaveFile> files = new ArrayList<>();
+                scanSaves(tree, rootId, "", 0, files);
+                if (files.isEmpty()) {
+                    say("No save files named Data0 ... Data9 found in that folder (or its sub folders).");
+                    say("Choose the folder that directly holds Data0, Data1, Data2, Data3 (on an emulator it is called 00000001).");
+                    return;
+                }
+                File work = new File(getFilesDir(), "saverepair");
+                deleteTree(work);
+                for (int i = 0; i < files.size(); i++) {
+                    File d = new File(work, "in/" + i);
+                    d.mkdirs();
+                    byte[] b = readAll(getContentResolver().openInputStream(DocumentsContract.buildDocumentUriUsingTree(tree, files.get(i).docId)));
+                    try (FileOutputStream fo = new FileOutputStream(new File(d, files.get(i).name))) {
+                        fo.write(b);
+                    }
+                }
+                if (!Python.isStarted()) Python.start(new AndroidPlatform(this));
+                JSONObject res = new JSONObject(Python.getInstance().getModule("patcher_bridge")
+                        .callAttr("repair_saves", work.getAbsolutePath()).toString());
+                JSONArray changed = res.getJSONArray("changed");
+                String report = res.getString("report").replace(work.getAbsolutePath() + "/in/", "");
+                for (int i = 0; i < files.size(); i++)          // the temporary copies are numbered folders: show the real file names
+                    report = report.replace("  " + i + "/" + files.get(i).name + ":", "  " + files.get(i).rel + files.get(i).name + ":");
+                say(report.replaceAll("(?m)^\\s*original kept in .*\\n?", "")
+                        .replaceAll("(?m)^(The repaired files are in|emulator \\(close|The originals are kept in).*\\n?", ""));
+                if (changed.length() == 0) return;
+                // back up the originals inside the chosen folder, check them, only then overwrite
+                Uri root = DocumentsContract.buildDocumentUriUsingTree(tree, rootId);
+                Uri bk = DocumentsContract.createDocument(getContentResolver(), root, DocumentsContract.Document.MIME_TYPE_DIR, BACKUPS);
+                if (bk == null) throw new Exception("could not create the " + BACKUPS + " folder here");
+                bk = DocumentsContract.createDocument(getContentResolver(), bk, DocumentsContract.Document.MIME_TYPE_DIR,
+                        new java.text.SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.US).format(new java.util.Date()));
+                if (bk == null) throw new Exception("could not create the backup folder");
+                for (int k = 0; k < changed.length(); k++) {
+                    String rel = changed.getString(k);
+                    SaveFile f = files.get(Integer.parseInt(rel.split("/")[0]));
+                    byte[] orig = readAll(new FileInputStream(new File(work, "orig/" + rel)));
+                    byte[] fixed = readAll(new FileInputStream(new File(work, "in/" + rel)));
+                    Uri b = DocumentsContract.createDocument(getContentResolver(), bk, "application/octet-stream",
+                            f.rel.replace("/", "_") + f.name);
+                    if (b == null) throw new Exception("could not write the backup of " + f.name);
+                    try (OutputStream o = getContentResolver().openOutputStream(b, "wt")) {
+                        o.write(orig);
+                    }
+                    if (readAll(getContentResolver().openInputStream(b)).length != orig.length)
+                        throw new Exception("the backup of " + f.name + " is incomplete - it was not changed");
+                    try (OutputStream o = getContentResolver().openOutputStream(DocumentsContract.buildDocumentUriUsingTree(tree, f.docId), "wt")) {
+                        o.write(fixed);
+                    }
+                }
+                say("The repaired files were written into the folder you chose. The originals are in its " + BACKUPS + " folder.");
+                say("Close the emulator before you start the game again, then play with the game patched with 0.1.21 or newer.");
+            } catch (Throwable t) {
+                say("The save could not be repaired: " + t);
+            } finally {
+                repairing = false;
+                runOnUiThread(() -> {
+                    tvStatus.setText("");
+                    updateButtons();
+                });
+            }
+        }).start();
     }
 
     // ------------------------------------------------------------------ PatchService.Listener (called from the worker thread)

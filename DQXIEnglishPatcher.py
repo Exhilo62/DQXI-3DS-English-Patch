@@ -16,6 +16,9 @@ def res(name):
     return base/name
 sys.path.insert(0,str(Path(__file__).parent))
 import cia_patcher
+sys.path.insert(0,str(Path(__file__).parent/'save_repair'))      # the working copy keeps the save repair tool in a sub folder
+try:import DQXI_SaveRepair
+except Exception:DQXI_SaveRepair=None
 
 VERSION='?'
 UPDATE_FOLDERS=True    # Luma folders are back (0.1.28): they must be used on a CLEAN Japanese install, replaced as a whole each time
@@ -109,6 +112,8 @@ class App(tk.Tk):
         self.btn_open=ttk.Button(bf,text='Open output folder',command=self.open_out,state='disabled');self.btn_open.pack(side='left',padx=3,ipady=4)
         ttk.Button(bf,text='Report a problem...',command=self.report).pack(side='left',padx=3,ipady=4)
         ttk.Button(bf,text='Copy diagnostics',command=self.copy_diag).pack(side='left',padx=3,ipady=4)
+        self.btn_sr=ttk.Button(bf,text='Repair old save...',command=self.repair_save)
+        if DQXI_SaveRepair:self.btn_sr.pack(side='left',padx=3,ipady=4)
         # Luma folder (real 3DS, needs a clean Japanese install - see the notes below)
         self.btn2=ttk.Button(bf,text='Create Luma folder',command=self.start_export)
         if not UPDATE_FOLDERS:self.btn2.config(state='disabled')
@@ -145,6 +150,23 @@ class App(tk.Tk):
         ls=self.settings.get('last_src')
         if ls and Path(ls).is_file():self.set_src(ls)          # remember the last game file and output folder
         self.after(150,self.poll)
+    def repair_save(self):
+        """Old saves (patch 0.1.17 - 0.1.20) hold the names Veronica / Sylvando in a form that garbles menus or crashes battles."""
+        if self.busy:return
+        folder=None
+        found=DQXI_SaveRepair.default_save_dirs()
+        if found and messagebox.askyesno('Repair an old save','Found a Dragon Quest XI save in your emulator:\n\n'+found[0]+'\n\nRepair it now?\n\nClose the emulator first. The original files are copied to a backup folder before anything is changed.'):
+            folder=found[0]
+        if not folder:
+            messagebox.showinfo('Repair an old save','Choose the folder that holds your save files (Data0, Data1, Data2, Data3, mini_0 ...).\n\nOn an emulator it is the folder called 00000001. For a real 3DS, export the save first (Checkpoint / JKSM), repair the copy, then restore it.\n\nThe original files are copied to a backup folder before anything is changed.')
+            folder=filedialog.askdirectory(title='Folder with the save files (Data0, Data1 ...)')
+            if not folder:return
+        bk=Path.home()/'Documents'
+        bk=(bk if bk.is_dir() else Path.home())/'DQXI_SaveRepair_backups'
+        try:code,report=DQXI_SaveRepair.run([folder],str(bk),log=lambda m:self.q.put(('log',str(m))))
+        except Exception as e:
+            messagebox.showerror('Repair an old save','The save could not be repaired:\n\n%s'%e);return
+        (messagebox.showinfo if code==0 else messagebox.showwarning)('Repair an old save',report)
     def show_warnings(self):
         w=tk.Toplevel(self);w.title('Read first - Luma folders and old saves');w.geometry('660x520');w.transient(self)
         f=ttk.Frame(w);f.pack(fill='both',expand=True,padx=14,pady=10)
@@ -373,10 +395,15 @@ def cli(argv):
     flags=[a for a in argv if a.startswith('--')]
     args=[a for a in argv if not a.startswith('--')]
     if sys.stdout is None:     # windowed .exe has no console: write the log next to the output instead
-        lf=open(str(Path(args[1] if len(args)>1 else args[0]).with_suffix('.log')),'w',encoding='utf-8')
+        lf=open(str(Path(args[1] if len(args)>1 else args[0] if args else 'DQXI_SaveRepair').with_suffix('.log')),'w',encoding='utf-8')
         print=lambda m:(lf.write(str(m)+'\n'),lf.flush())
     else:
         import builtins;print=builtins.print
+    if '--repair-save' in flags:       # --repair-save [save folder]: no folder = the emulator save found on this computer
+        if not DQXI_SaveRepair:print('The save repair tool is missing from this copy.');return 2
+        dirs=args or DQXI_SaveRepair.default_save_dirs()
+        if not dirs:print('No emulator save found. Give the folder that holds Data0, Data1 ...');return 2
+        return DQXI_SaveRepair.run(dirs,log=print)[0]
     if not args or not os.path.exists(args[0]):
         print('Game file not found: %s'%(args[0] if args else '(none given)'))
         return 2
