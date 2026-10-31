@@ -148,8 +148,7 @@ python DQXIEnglishPatcher.py          # GUI
 
 ## Credits & licenses
 - File-format tooling (PACK/PACA archive handling, BLZ decompression and BXON text records) is based on
-  **dqxi-format-tools** by **Kenzie-1377** (MIT License):
-  [github.com/Kenzie-1377/dqxi-3ds-english-patch](https://github.com/Kenzie-1377/dqxi-3ds-english-patch).
+  **dqxi-format-tools** by **Kenzie-1377** (MIT License).
   The copy of `dqxi_blz.py` in this repository comes from that project; see
   `LICENSE-dqxi-format-tools.txt`.
 - Official English names follow the PS4/Switch localisation.

@@ -95,8 +95,7 @@ LINUX / STEAM DECK / MAC
 
 CREDITS / LICENSES
  * File-format tooling (PACK/PACA archive handling, BLZ decompression, BXON text
-   records) is based on dqxi-format-tools by Kenzie-1377 (MIT License):
-   https://github.com/Kenzie-1377/dqxi-3ds-english-patch
+   records) is based on dqxi-format-tools by Kenzie-1377 (MIT License).
    See LICENSE-dqxi-format-tools.txt.
  * Official English names follow the PS4/Switch localisation where available.
  * Dragon Quest is a trademark of Square Enix. Unofficial fan project.
