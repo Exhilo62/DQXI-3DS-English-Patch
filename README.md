@@ -32,7 +32,7 @@ Get **`DQXI_3DS_English_Patch_vX.Y.Z.zip`** from the [Releases](../../releases) 
 **`DQXIEnglishPatcher.exe`**.
 
 ### Android (phone / handheld, no PC)
-Download **`DQXI_English_Patcher_Android_v0.1.32.apk`** from the [Releases](../../releases) page and open it on the device (allow "install unknown apps" when Android asks; it is not from the Play Store, so Play Protect may warn). Choose your decrypted Japanese `.3ds` or `.cia`, choose the output (`.3ds` for emulators such as Azahar, `.cia` for a 3DS) and press **Patch**; it runs in the background and shows a progress notification. About 6 minutes on a Retroid Pocket Duo Lite, arm64 devices only. The source is in [`android_patcher`](android_patcher). Prefer a terminal? `README_ANDROID.txt` in the Linux zip explains the Termux route.
+Download **`DQXI_English_Patcher_Android_v0.1.33.apk`** from the [Releases](../../releases) page and open it on the device (allow "install unknown apps" when Android asks; it is not from the Play Store, so Play Protect may warn). Choose your decrypted Japanese `.3ds` or `.cia`, choose the output (`.3ds` for emulators such as Azahar, `.cia` for a 3DS) and press **Patch**; it runs in the background and shows a progress notification. About 6 minutes on a Retroid Pocket Duo Lite, arm64 devices only. The source is in [`android_patcher`](android_patcher). Prefer a terminal? `README_ANDROID.txt` in the Linux zip explains the Termux route.
 
 ## How to use
 
@@ -95,9 +95,12 @@ encrypted.
 - Developed in the Azahar emulator. **Tested on:** a real New Nintendo 3DS (Luma3DS, patched `.cia`) and a
   Retroid Pocket Duo Lite running Citra MMJ (patched `.3ds`).
 
-## Help us test (v0.1.32)
+## Help us test (v0.1.33)
 These changes pass our automatic text checks but not everything has been seen in the game. If you get there, please post a
 screenshot (or just "OK") with your model or emulator and 2D/3D mode:
+- [ ] **Casino banners (new in 0.1.33):** win the roulette jackpot ("JACKPOT"), get a prize in poker ("ITEM GET!"), and also the slot banners "COIN GET!", "FREE SPIN" and "METAL CHANGE": the letters should be whole, not split or overlapping.
+- [ ] **Fun-Size Forge technique list (new in 0.1.33):** the names (Frenzy Hit, Twin Strike, Super Quad, Cool Down, Heat Drop, Diag. Strike, Up-Down Hit, God's Flame) and their descriptions on the top screen should no longer overlap.
+- [ ] **Place names and Heliodor (new in 0.1.33):** "The Last Bastion", "The Strand", "Havens Above" in the Zoom list / dialogue; Hendrik's title "Hero of Heliodor" on the Stats screen; "Heliodor Shield" in an equipment list without the "+3" overlapping the next row.
 - [ ] **Enemy names in group fights (new in 0.1.32):** a group should read "Sabercub A / B / C" (not "SabercubA") and the victory line "Great Sabercub group!" (not "Great Sabercubgroup!"). About 106 names had lost the space the game needs; also check Knight Aberrant, Cureslime, Foo Dog and Bambooligan groups.
 - [ ] **Pick-up messages (new in 0.1.32):** mine an ore node, shake a berry tree or open a chest with two or three items: the item should be on its own line ("Exhilo acquires / Buzzberries and / Buzzberries!") and no word may split at the edge of the screen.
 - [ ] **Skill Panel and Forge text (new in 0.1.32):** the Pep Chance description should read "Makes it easier / to get pepped up", and an item that cannot be reforged shows "No reforge" in the Fun-Size Forge list without wrapping onto the next row.

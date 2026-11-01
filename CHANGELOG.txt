@@ -12,6 +12,14 @@ DQXI 3DS English patch - changelog
        will be switched off until the project is nearly complete. Code changes can only ever be in the full .cia / .3ds, never in a folder.
     A patched game plus a Luma folder, or several patched versions installed over each other, can crash in battle.
 
+0.1.33
+  * Casino banners: the "JACKPOT" and "ITEM GET!" pictures were garbled (split, overlapping letters, "IACKPOT") because the game builds each banner from one small picture per Japanese character and the English word had been drawn as one wide piece, so the cuts fell through the letters. Each letter now sits in its own piece: JACKPOT (JA / C / K / P / O / T) and ITEM GET! (IT / E / M / gap / G / E / T / !). The other banners drawn the same way get the same treatment: COIN GET! (CO / IN / gap / GE / T / !), FREE SPIN (FR / EE / gap / SP / I / N) and METAL CHANGE (ME / TA / L / gap / CH / AN / GE). Reported by a player on Discord. Not yet seen in the game.
+  * Fun-Size Forge technique list (top screen): the names and descriptions were wider than their columns and overlapped. Eight names are shortened (Frenzy Hit, Twin Strike, Super Quad, Cool Down, Heat Drop, Diag. Strike, Up-Down Hit, God's Flame) and six descriptions re-worded to fit (for example "Hits four squares at random. Said to be the very best"). Reported with a photo by a player.
+  * Place names now follow the official localisation: The Last Stronghold is "The Last Bastion", White Cove is "The Strand" (48 lines), Village of the Divine / Fallen Village of the Divine are "Havens Above" / "Fallen Havens Above".
+  * Hendrik's title on the Stats screen is "Hero of Heliodor" (was "Luminary of Heliodor").
+  * Stats screen equipment list: "Shield of Heliodor +3" wrapped and the "+3" printed over the next row. The shield is now "Heliodor Shield" everywhere (item and three cutscene lines).
+  * Everything else is the same as 0.1.32.
+
 0.1.32
   * Enemy names are spelled correctly in battle again. About 106 enemy names had lost the space the game needs after the name, so a group showed "SabercubA" instead of "Sabercub A" and the victory text read "Great Sabercubgroup!" instead of "Great Sabercub group!" (reported by a player). Affected: the Sabercubs, Cureslime, Knight Aberrant, Foo Dog, Bambooligan and about 100 more.
   * The Sabrecats are now spelled Sabercat (Great / Dark / Silver Sabercat, as in the official script and matching the Sabercubs): 5 story and NPC lines changed, plus the monster names, including the "Vic." (victory) variants that still said Sabrecat / Sabrecub.
