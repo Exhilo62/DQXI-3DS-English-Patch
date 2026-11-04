@@ -12,6 +12,23 @@ DQXI 3DS English patch - changelog
        will be switched off until the project is nearly complete. Code changes can only ever be in the full .cia / .3ds, never in a folder.
     A patched game plus a Luma folder, or several patched versions installed over each other, can crash in battle.
 
+0.1.35
+  * Cole: Gemma's friend in Cobblestone was called "Manolo"; the official name is Cole (25 lines: cutscenes, name tags, NPC talk, chapter title).
+  * Battle text: several Smog enemies were announced as "Smokes" ("Defeated the Smokes!"); the plural is now "Smogs" (players' photos).
+  * Official names (Sola): the Hotto fire dragon is "Tatsunaga" everywhere (about 160 lines: NPC talk, party chat, cutscenes, recaps, the title "Calmer of Tatsunaga", chapter names, "Tatsunaga's Lair"); the Fortress of Fear boss is "Indignus" (0.1.34 had it as "Garinga": monster list, battles, recaps, party talk); the world-map label "Wasteland Labyrinth" is "Cryptic Crypt"; the Fortress of Fear floors are "Fortress 1F" to "Fortress 4F" (were "Sky Castle") and the Indignus monster-book entry says "Fortress of Fear".
+  * Tockle Profile: long weapon names ("Staff of Sentencing") ran into the "Weapon:" label; the value text is a little smaller (3D mode; reported with a photo by a player).
+  * Final boss (Sola): "Mordegon, Lord of Shadows" wrapped in the battle target box and overprinted the row below (Mordragon's Tail); the final form is now just "Mordegon".
+  * Long enemy names: the enemy list in battle only has room for about 19 letters, so 41 longer names were reworded to fit (e.g. "Snow Homunculus (Strong)" is "Snow Homunculus+", "Vic. Hard-Boiled Eggsoskeleton" is "Vic. Boiled Eggsos.", "All-Consuming Greed" is "Consuming Greed"); "Eggoskeleton" is spelled "Eggsoskeleton" everywhere.
+  * Book and recipe item names in the bag: 36 long names (books, recipe books, a few key items such as the
+    treasure chests and the cold medicine) were wider than the list column and are reworded to fit, e.g.
+    "Archmage Primer", "Dundrasil Armor Art", "Lawyer's Casebook", "Raw Pancake", "Green Chest" (full list in
+    NAME_INDEX.md; found by a width scan, not yet seen in game).
+  * Island names on the world map and in the area lists now use the official Insula ... names (Insula Borealis,
+    Orientalis, Australis, Centralis, Incognita); "Wasteland Shrine" is now "Door of Departure".
+  * The battle line "Super Rampage Circle!" now reads "Ring of Wrack & Ruin!", matching the skill name.
+  * The boss "Golden Norberto" is now "Golden Goliath" (official name; Norberto stays Sylvando's real name).
+  * Everything else is the same as 0.1.34.
+
 0.1.34
   * Cobblestone cutscene (the little girl thanks you for getting her scarf): the Japanese has Gemma speak of herself in the third person, so the line now reads "thanks for getting Gemma's scarf!" (it said "my scarf"). Reported with a photo by a player.
   * Stats screen: the character title under the name was too wide for its row, so the last letter dropped onto the next line and printed over "EXP" ("The Hunted Luminary"). Ten long titles are shortened: Hunted Luminary, Legend Challenger, Captive Luminary, Reborn Luminary, Luminary's Guide / Shield / Partner / Grandpa, Do-Good Performer, Top Performer. Reported with a photo by a player.

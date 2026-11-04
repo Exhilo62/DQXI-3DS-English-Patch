@@ -32,7 +32,7 @@ Get **`DQXI_3DS_English_Patch_vX.Y.Z.zip`** from the [Releases](../../releases) 
 **`DQXIEnglishPatcher.exe`**.
 
 ### Android (phone / handheld, no PC)
-Download **`DQXI_English_Patcher_Android_v0.1.34.apk`** from the [Releases](../../releases) page and open it on the device (allow "install unknown apps" when Android asks; it is not from the Play Store, so Play Protect may warn). Choose your decrypted Japanese `.3ds` or `.cia`, choose the output (`.3ds` for emulators such as Azahar, `.cia` for a 3DS) and press **Patch**; it runs in the background and shows a progress notification. About 6 minutes on a Retroid Pocket Duo Lite, arm64 devices only. The source is in [`android_patcher`](android_patcher). Prefer a terminal? `README_ANDROID.txt` in the Linux zip explains the Termux route.
+Download **`DQXI_English_Patcher_Android_v0.1.35.apk`** from the [Releases](../../releases) page and open it on the device (allow "install unknown apps" when Android asks; it is not from the Play Store, so Play Protect may warn). Choose your decrypted Japanese `.3ds` or `.cia`, choose the output (`.3ds` for emulators such as Azahar, `.cia` for a 3DS) and press **Patch**; it runs in the background and shows a progress notification. About 6 minutes on a Retroid Pocket Duo Lite, arm64 devices only. The source is in [`android_patcher`](android_patcher). Prefer a terminal? `README_ANDROID.txt` in the Linux zip explains the Termux route.
 
 ## How to use
 
@@ -92,6 +92,8 @@ encrypted.
 - Map labels, town banners, title logo, HOME-menu banner and title text
 - Works in both **3D** and **2D** mode (2D text re-fitted to the narrower window)
 
+**Shortened names:** some enemy names, Memories titles and menu labels are shortened to fit their boxes; see [NAME_INDEX.md](NAME_INDEX.md) for the full wording next to what the patch shows.
+
 ## Known issues
 - The "combo available" picture is still Japanese (a full scan of the game text found no Japanese left in dialogue).
 - Luma folders are back: use them only on a clean Japanese install and replace the whole folder with every version (see above); otherwise make a new full `.cia` / `.3ds`.
@@ -99,9 +101,11 @@ encrypted.
 - Developed in the Azahar emulator. **Tested on:** a real New Nintendo 3DS (Luma3DS, patched `.cia`) and a
   Retroid Pocket Duo Lite running Citra MMJ (patched `.3ds`).
 
-## Help us test (v0.1.34)
+## Help us test (v0.1.35)
 These changes pass our automatic text checks but not everything has been seen in the game. If you get there, please post a
 screenshot (or just "OK") with your model or emulator and 2D/3D mode:
+- [ ] **Official names (new in 0.1.35):** the Hotto fire dragon should be **Tatsunaga** in NPC chat and recaps, the Fortress of Fear boss **Indignus** (monster list, battle), the world map cave **Cryptic Crypt**, and the Fortress floors "Fortress 1F" etc.
+- [ ] **Cole and Smogs (new in 0.1.35):** Gemma's friend in Cobblestone should be called **Cole** (not Manolo), and a battle against Smog enemies should end with "Defeated the Smogs!" (not "Smokes").
 - [ ] **Titles (new in 0.1.34):** the title under your name on the Stats screen must not run into EXP, and the descriptions in Records > Titles should fit their box.
 - [ ] **Cryptic Crypt (new in 0.1.34):** the cave west of the Hotto Steppe should be named "Cryptic Crypt" on the map and in the guide text.
 - [ ] **Menu background (new in 0.1.34, Azahar above 1x only):** the top-screen background of the continue screen / Records / Equip should not show thin vertical lines.
