@@ -32,7 +32,7 @@ Get **`DQXI_3DS_English_Patch_vX.Y.Z.zip`** from the [Releases](../../releases) 
 **`DQXIEnglishPatcher.exe`**.
 
 ### Android (phone / handheld, no PC)
-Download **`DQXI_English_Patcher_Android_v0.1.33.apk`** from the [Releases](../../releases) page and open it on the device (allow "install unknown apps" when Android asks; it is not from the Play Store, so Play Protect may warn). Choose your decrypted Japanese `.3ds` or `.cia`, choose the output (`.3ds` for emulators such as Azahar, `.cia` for a 3DS) and press **Patch**; it runs in the background and shows a progress notification. About 6 minutes on a Retroid Pocket Duo Lite, arm64 devices only. The source is in [`android_patcher`](android_patcher). Prefer a terminal? `README_ANDROID.txt` in the Linux zip explains the Termux route.
+Download **`DQXI_English_Patcher_Android_v0.1.34.apk`** from the [Releases](../../releases) page and open it on the device (allow "install unknown apps" when Android asks; it is not from the Play Store, so Play Protect may warn). Choose your decrypted Japanese `.3ds` or `.cia`, choose the output (`.3ds` for emulators such as Azahar, `.cia` for a 3DS) and press **Patch**; it runs in the background and shows a progress notification. About 6 minutes on a Retroid Pocket Duo Lite, arm64 devices only. The source is in [`android_patcher`](android_patcher). Prefer a terminal? `README_ANDROID.txt` in the Linux zip explains the Termux route.
 
 ## How to use
 
@@ -77,6 +77,10 @@ The window also shows the patch notes for each version.
 To update, patch your Japanese game again with the newest version and install the new full `.cia` / `.3ds`
 (delete any old `SD:/luma/titles/0004000000199200` folder first, see above).
 
+**Emulator (Azahar / Android):** after updating the patch, if a save freezes when you pick it or you get a white screen, clear Azahar's shader cache (long-press the game > clear shader cache, or delete the `shader` folder in the Azahar user folder) and start again. Two players hit this after an update; the patch itself is fine.
+
+**Patch the game yourself:** always make your own patched `.cia` / `.3ds` with the official patcher from your own Japanese game. Do not install a `.cia` that came from a QR code or from another person: players who did this had crashes (for example when opening a shop) that went away once they made their own patch.
+
 ### Decrypting your file (once)
 With **GodMode9** on your 3DS: select the file →
 `CIA image options` / `NCSD image options` → **Decrypt file (SD output)**.
@@ -95,9 +99,16 @@ encrypted.
 - Developed in the Azahar emulator. **Tested on:** a real New Nintendo 3DS (Luma3DS, patched `.cia`) and a
   Retroid Pocket Duo Lite running Citra MMJ (patched `.3ds`).
 
-## Help us test (v0.1.33)
+## Help us test (v0.1.34)
 These changes pass our automatic text checks but not everything has been seen in the game. If you get there, please post a
 screenshot (or just "OK") with your model or emulator and 2D/3D mode:
+- [ ] **Titles (new in 0.1.34):** the title under your name on the Stats screen must not run into EXP, and the descriptions in Records > Titles should fit their box.
+- [ ] **Cryptic Crypt (new in 0.1.34):** the cave west of the Hotto Steppe should be named "Cryptic Crypt" on the map and in the guide text.
+- [ ] **Menu background (new in 0.1.34, Azahar above 1x only):** the top-screen background of the continue screen / Records / Equip should not show thin vertical lines.
+- [ ] **Forge and Tockle layouts (new in 0.1.34):** the forge item list should show long names like "Iron Broadsword" and "Platinum Sword" in full (smaller font) without wrapping onto the next row; in Camp Menu > Misc > View Tockle the profile labels (Hat:, How to get:, Your World) and the "Sort: Order Obtained" bar should read at normal spacing, and the Tockle menu should say "To VIP Album" without overlapping "Part Ways".
+- [ ] **Names (new in 0.1.34):** the Hotto story item should say Ra's Mirror, the boss before Mordegon's fortress should be named Garinga in battle, the Hotto dragon should be called Tatsunaga in the dialogue too, and the Mount Huji volcano-interior map label should not overlap.
+- [ ] **Quest cleared (new in 0.1.34):** when you finish a quest, the "Quest cleared" popup text should stay inside its box (no one-letter rows, nothing cut off at the bottom).
+- [ ] **Cobblestone scarf (new in 0.1.34):** after you get Gemma's scarf out of the tree (the flashback to Cobblestone), her thank-you line should say "Gemma's scarf".
 - [ ] **Casino banners (new in 0.1.33):** win the roulette jackpot ("JACKPOT"), get a prize in poker ("ITEM GET!"), and also the slot banners "COIN GET!", "FREE SPIN" and "METAL CHANGE": the letters should be whole, not split or overlapping.
 - [ ] **Fun-Size Forge technique list (new in 0.1.33):** the names (Frenzy Hit, Twin Strike, Super Quad, Cool Down, Heat Drop, Diag. Strike, Up-Down Hit, God's Flame) and their descriptions on the top screen should no longer overlap.
 - [ ] **Place names and Heliodor (new in 0.1.33):** "The Last Bastion", "The Strand", "Havens Above" in the Zoom list / dialogue; Hendrik's title "Hero of Heliodor" on the Stats screen; "Heliodor Shield" in an equipment list without the "+3" overlapping the next row.
