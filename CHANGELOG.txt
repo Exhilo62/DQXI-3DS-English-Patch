@@ -12,6 +12,19 @@ DQXI 3DS English patch - changelog
        will be switched off until the project is nearly complete. Code changes can only ever be in the full .cia / .3ds, never in a folder.
     A patched game plus a Luma folder, or several patched versions installed over each other, can crash in battle.
 
+0.1.36
+  * Official names (Sola): the people of Havens Above are the Watchers (they were "Celestrians" / "Divine Folk" in about 100 lines of dialogue, quests, recaps and chapter names); Elder Igortap is Eegoltap; the "Time Guardian" is the Timekeeper (its name plate wrapped onto a second line and overlapped the message); the "Temple of the Sun" is the Temple of Dawn.
+  * Banners: the title card shown when you arrive at Havens Above said "Celestrian Village" and now says "Havens Above"; the Eternal Shrine card in the Tower of Lost Time says "Eternal Temple" like the map.
+  * Quest reward row (touch screen): "Hendrik's Selfless Attack is strengthened" (Drustan's Secret Book) was cut mid-word and overlapped the frame; it and the Earthsplitter reward are shorter.
+  * About 17 NPC / party lines were re-wrapped because the renamed words had joined two lines.
+  * Official names (audit against the official script): Daharla Marsh is Laguna di Gondolia, Domdora is Damdara, Besim is Richie, the Zonnar Tree is the Pepper Tree, Nurusuke is Maxie, King Arthur of Zwaardsrust is King Arnout, the Soltucha Canal is the Valor-Sauvage Channel, Lifecod is Weaver's Peak, Tappoko VIII is Gunnar Bilder Borg, Heehodolf is Iago, Samaltoria is Cannock and Lorasia is Midenhall (about 185 lines: NPC talk, quests, books, map and party chat; 12 lines re-wrapped or shortened to fit).
+  * Skill Panel banner (Sola): the gold "WIN FOR A BONUS!" line was drawn upside down and the old Japanese "ット!" ending was still showing next to it; both pictures are redrawn the right way up and the leftover letters are gone (the single "WINNER!" banner was already correct).
+  * Small text fixes from a full scan: wrong a / an before renamed words ("an Cobblestone woman", "a Alizarin"; 7 lines), "Emerald Coast coast", stray double spaces, "Defence" is "Defense" everywhere (6 lines), "Street Pass" is "StreetPass", "gold-the Gold Fever-".
+  * Labels that ran over their box in 2D mode are shorter: "Follow orders" is "Obey", "Can't buy" is "No buy", "Broadcast 2-4" are "Bcast 2-4".
+  * "Stats" (camp menu), "Turn" (monster record), the Tockle colour column ("Purple" / "Yellow", 2D) and "Green/Purple" (3D list) now have wide enough boxes; the Skullrider monster book entry uses the monster's name "Skullrider".
+  * Fixed (reported by Sola): the Mal. Robber Rabbit (and the Mal. Splatypunk) data was damaged by the text patch, so the Rabbit did not appear in Act 3 (Hotto / Cryptic Crypt area) and the battle froze; four monster names that had been mixed up or blank (Cureslime, Hard Eggsoskeleton, Badonis, Token Taker) are right again.
+  * Long enemy names are shown on two lines in the bottom-screen battle command strip, so they no longer touch their neighbours (about 200 names).
+
 0.1.35
   * Cole: Gemma's friend in Cobblestone was called "Manolo"; the official name is Cole (25 lines: cutscenes, name tags, NPC talk, chapter title).
   * Battle text: several Smog enemies were announced as "Smokes" ("Defeated the Smokes!"); the plural is now "Smogs" (players' photos).

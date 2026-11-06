@@ -311,3 +311,26 @@ Where a screen has more room, the full wording is used; on narrow panes the shor
 | Isle South of Heliodor | Insula Australis |
 | Cove Isle of Dundrasil | Insula Centralis |
 | Wasteland Shrine | Door of Departure |
+
+### 0.1.36 official names (Sola)
+
+| Old | New |
+|---|---|
+| Celestrians / Divine Folk / Divine People | Watchers |
+| Celestrian Village (banner) | Havens Above |
+| Igortap | Eegoltap |
+| Time Guardian | Timekeeper |
+| Temple of the Sun | Temple of Dawn |
+| Eternal Shrine (banner) | Eternal Temple |
+| Daharla Marsh | Laguna di Gondolia |
+| Domdora | Damdara |
+| Besim | Richie |
+| Zonnar Tree | Pepper Tree |
+| Nurusuke | Maxie |
+| King Arthur (Zwaardsrust) | King Arnout |
+| Soltucha Canal | Valor-Sauvage Channel |
+| Lifecod | Weaver's Peak |
+| Tappoko VIII | Gunnar Bilder Borg |
+| Heehodolf | Iago |
+| Samaltoria | Cannock |
+| Lorasia | Midenhall |
