@@ -12,6 +12,13 @@ DQXI 3DS English patch - changelog
        will be switched off until the project is nearly complete. Code changes can only ever be in the full .cia / .3ds, never in a folder.
     A patched game plus a Luma folder, or several patched versions installed over each other, can crash in battle.
 
+0.1.37
+  * Official names (Sola): the Village of Trials is Trial Isle (text, map header, warp list, area banner), the Temple of Peace is the Temple of Tranquility, and the Temple of Dawn name is now also on the world-map labels (they still said "Temple of the Sun").
+  * Map labels (3D mode) that still had the old names: "Monster Bird Valley" is Eerie Eyrie, "Heliodor Hills" is Heliodorian Foothills, the Lost Time Tower label is Tower of Lost Time like the text. Label boxes that were too small for the official name were enlarged.
+  * Area banners (pictures shown when you arrive): Heliodor Shrine is Kingsbarrow, Village of Trials is Trial Isle, Mentor's Trial is Guide's Trial and Hero's Trial is Luminary's Trial, matching the text and the map.
+  * Fixed: 38 internal data values of weapon and material entries (daggers, axes, wands, boomerangs, greatswords, a few materials) had been altered by the text patch (the same kind of damage as the Mal. Robber Rabbit); they are restored to the original game values. No text changes.
+  * Checked: every renamed word (334 rename rules) was searched for in all text, map labels and banners; the leftovers above were the only ones.
+
 0.1.36
   * Official names (Sola): the people of Havens Above are the Watchers (they were "Celestrians" / "Divine Folk" in about 100 lines of dialogue, quests, recaps and chapter names); Elder Igortap is Eegoltap; the "Time Guardian" is the Timekeeper (its name plate wrapped onto a second line and overlapped the message); the "Temple of the Sun" is the Temple of Dawn.
   * Banners: the title card shown when you arrive at Havens Above said "Celestrian Village" and now says "Havens Above"; the Eternal Shrine card in the Tower of Lost Time says "Eternal Temple" like the map.

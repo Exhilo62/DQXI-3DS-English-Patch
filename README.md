@@ -32,7 +32,7 @@ Get **`DQXI_3DS_English_Patch_vX.Y.Z.zip`** from the [Releases](../../releases) 
 **`DQXIEnglishPatcher.exe`**.
 
 ### Android (phone / handheld, no PC)
-Download **`DQXI_English_Patcher_Android_v0.1.36.apk`** from the [Releases](../../releases) page and open it on the device (allow "install unknown apps" when Android asks; it is not from the Play Store, so Play Protect may warn). Choose your decrypted Japanese `.3ds` or `.cia`, choose the output (`.3ds` for emulators such as Azahar, `.cia` for a 3DS) and press **Patch**; it runs in the background and shows a progress notification. About 6 minutes on a Retroid Pocket Duo Lite, arm64 devices only. The source is in [`android_patcher`](android_patcher). Prefer a terminal? `README_ANDROID.txt` in the Linux zip explains the Termux route.
+Download **`DQXI_English_Patcher_Android_v0.1.37.apk`** from the [Releases](../../releases) page and open it on the device (allow "install unknown apps" when Android asks; it is not from the Play Store, so Play Protect may warn). Choose your decrypted Japanese `.3ds` or `.cia`, choose the output (`.3ds` for emulators such as Azahar, `.cia` for a 3DS) and press **Patch**; it runs in the background and shows a progress notification. About 6 minutes on a Retroid Pocket Duo Lite, arm64 devices only. The source is in [`android_patcher`](android_patcher). Prefer a terminal? `README_ANDROID.txt` in the Linux zip explains the Termux route.
 
 ## How to use
 
@@ -101,9 +101,11 @@ encrypted.
 - Developed in the Azahar emulator. **Tested on:** a real New Nintendo 3DS (Luma3DS, patched `.cia`) and a
   Retroid Pocket Duo Lite running Citra MMJ (patched `.3ds`).
 
-## Help us test (v0.1.36)
+## Help us test (v0.1.37)
 These changes pass our automatic text checks but not everything has been seen in the game. If you get there, please post a
 screenshot (or just "OK") with your model or emulator and 2D/3D mode:
+- [ ] **Trial Isle and map names (new in 0.1.37):** the village of trials is Trial Isle (banner, map header, warp list), its temple is the Temple of Tranquility, the Havens Above map says Temple of Dawn, and the trial banners read Guide's / Sage's / Luminary's Trial.
+- [ ] **Weapon data (new in 0.1.37):** equip a few daggers / axes / wands / boomerangs / greatswords with different characters; who can use them and the stats should look normal.
 - [ ] **Watchers and Havens Above (new in 0.1.36):** NPCs and quests there should say Watchers (not Celestrians), the elder is Eegoltap, the building is the Temple of Dawn, the arrival banner reads "Havens Above", and the name plate in the Tower of Lost Time says Timekeeper.
 - [ ] **Renamed places and people (new in 0.1.36):** Weaver's Peak (the village), Damdara, Cannock / Midenhall (the DQ2 princes), Laguna di Gondolia, the Valor-Sauvage Channel, Richie (the casino man), Maxie (Rose's grave quest), Iago (Hotto treasure): text should fit its box everywhere.
 - [ ] **Skill Panel bonus banner (new in 0.1.36):** choosing a panel that is a bonus shows a gold "WINNER!" and a "WIN FOR A BONUS!" line the right way up, with no Japanese letters next to it. If it is still upside down, tell us your device / emulator.
