@@ -12,6 +12,12 @@ DQXI 3DS English patch - changelog
        will be switched off until the project is nearly complete. Code changes can only ever be in the full .cia / .3ds, never in a folder.
     A patched game plus a Luma folder, or several patched versions installed over each other, can crash in battle.
 
+0.1.38
+  * Official trial names (Sola): the Guide's Trial is the Disciple's Trial (text, map header, area banner); Labyrinth of Fortitude is The Cruel Crypt, Valley of Revelation is The Eerie Valley, Forest of Resolve is The Fierce Forest and Castle of Reminiscence is Hoarder's Keep; "Road to the Trial Isle" is the Path to the Trial Isle.
+  * The Temple of Tranquility label on the 3D map no longer breaks in the middle of the word ("Tranquil / ity"): it is on two lines, "Temple of / Tranquility".
+  * Drustan's wish menu (after the trials): the choices were too long, wrapped and printed over each other; they are short one-liners now.
+  * The move counter in the trial battles showed a Japanese character ("4" + 手); it now reads "T4" (turn 4). This is a change in the game program, so it is only in the full patched .cia / .3ds, never in a Luma folder.
+
 0.1.37
   * Official names (Sola): the Village of Trials is Trial Isle (text, map header, warp list, area banner), the Temple of Peace is the Temple of Tranquility, and the Temple of Dawn name is now also on the world-map labels (they still said "Temple of the Sun").
   * Map labels (3D mode) that still had the old names: "Monster Bird Valley" is Eerie Eyrie, "Heliodor Hills" is Heliodorian Foothills, the Lost Time Tower label is Tower of Lost Time like the text. Label boxes that were too small for the official name were enlarged.
