@@ -12,6 +12,11 @@ DQXI 3DS English patch - changelog
        will be switched off until the project is nearly complete. Code changes can only ever be in the full .cia / .3ds, never in a folder.
     A patched game plus a Luma folder, or several patched versions installed over each other, can crash in battle.
 
+0.1.40
+  * Official names (Sola): The Forgotten Land is The Lost Land; the islands are Insula Algarum (south of Sniflheim), Insula Occidentalis (west of the Champs Sauvage) and Insula Incognita (south-west); the Spirit Water Cave is the Grotta della Fonte; the Mount Zeeranda map label is Arborian Highlands; Royal Ruins is the Zwaardsrust Ruins; Sn'rfelt is the Snaerfelt (the game font has no ae letter).
+  * The Whale Way stops (Sky Exploration) have short map headers that fit: Sniflheim, Zwaardsrust, Champs Sauvage, Manglegrove, Hotto Steppe N., Hotto Steppe S., Laguna di Gondolia and Gallopolis Station.
+  * Fixed: the header "Auroral Serpent (Evil)" overlapped and is now "Mal. Auroral Serpent"; "Disembark Southwest Lone Islandto ?" lost its stray "to"; the Tower of Lost Time map label no longer wraps ("Tim / e"); the Gauntlet reward list no longer pushes the last letter of long item names onto the next row; the Gauntlet speaker plate says "Lama" (it cut "High Lama" to "High L").
+
 0.1.39
   * Official names (Sola): Luminary's Trial: Abyssal Netherworld Castle is the Citadel of Spite; its other areas have shorter names (Dark Icefield, Dark Volcano, Dark Forest, Dark Garden, Dark Mountain) so the map header no longer overflows.
   * Puwachat Ruins is the Ruins of Nhou Wat (map labels, books and dialogue now say Nhou Wat); Bahatra's House on the Phnom Nonh map is Da and Son's House.
