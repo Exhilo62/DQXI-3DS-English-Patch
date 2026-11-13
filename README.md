@@ -32,7 +32,7 @@ Get **`DQXI_3DS_English_Patch_vX.Y.Z.zip`** from the [Releases](../../releases) 
 **`DQXIEnglishPatcher.exe`**.
 
 ### Android (phone / handheld, no PC)
-Download **`DQXI_English_Patcher_Android_v0.1.40.apk`** from the [Releases](../../releases) page and open it on the device (allow "install unknown apps" when Android asks; it is not from the Play Store, so Play Protect may warn). Choose your decrypted Japanese `.3ds` or `.cia`, choose the output (`.3ds` for emulators such as Azahar, `.cia` for a 3DS) and press **Patch**; it runs in the background and shows a progress notification. About 6 minutes on a Retroid Pocket Duo Lite, arm64 devices only. The source is in [`android_patcher`](android_patcher). Prefer a terminal? `README_ANDROID.txt` in the Linux zip explains the Termux route.
+Download **`DQXI_English_Patcher_Android_v0.1.41.apk`** from the [Releases](../../releases) page and open it on the device (allow "install unknown apps" when Android asks; it is not from the Play Store, so Play Protect may warn). Choose your decrypted Japanese `.3ds` or `.cia`, choose the output (`.3ds` for emulators such as Azahar, `.cia` for a 3DS) and press **Patch**; it runs in the background and shows a progress notification. About 6 minutes on a Retroid Pocket Duo Lite, arm64 devices only. The source is in [`android_patcher`](android_patcher). Prefer a terminal? `README_ANDROID.txt` in the Linux zip explains the Termux route.
 
 ## How to use
 
@@ -101,9 +101,10 @@ encrypted.
 - Developed in the Azahar emulator. **Tested on:** a real New Nintendo 3DS (Luma3DS, patched `.cia`) and a
   Retroid Pocket Duo Lite running Citra MMJ (patched `.3ds`).
 
-## Help us test (v0.1.40)
+## Help us test (v0.1.41)
 These changes pass our automatic text checks but not everything has been seen in the game. If you get there, please post a
 screenshot (or just "OK") with your model or emulator and 2D/3D mode:
+- [ ] **Island headers and Gauntlet (new in 0.1.41):** the south-west island header is no longer blank (Insula Incognita) and Dundrasil Cove Island is Insula Centralis, the hidden First Forest Whale Way stop says First Forest Station, and the Gauntlet's first-trial reward list (Emperor's New Axe) has no overlap.
 - [ ] **Names and map headers (new in 0.1.40):** the world-map islands (Insula Algarum / Occidentalis / Incognita, the last one was blank), the Whale Way station headers (Manglegrove Station etc.), The Lost Land, Grotta della Fonte, Arborian Highlands, Zwaardsrust Ruins and Snaerfelt labels fit, "Disembark Insula Incognita?" has no stray "to", and the Gauntlet reward list and speaker plate (Lama) look right.
 - [ ] **Names (new in 0.1.39):** the Luminary's Trial map header shows Citadel of Spite (and Dark Icefield / Volcano / Forest / Garden / Mountain) completely, Phnom Nonh shows Da and Son's House and the Ruins of Nhou Wat, and Krystalinda (Sniflheim) talks about the Serpent's Soul, Kaleidocloth, Black Tear and Crimsonite.
 - [ ] **Trial names and wish menu (new in 0.1.38):** the Trial Isle map shows Path to the Trial Isle, the first trial is the Disciple's Trial (The Cruel Crypt, The Eerie Valley; Sage's Trial: The Fierce Forest, Hoarder's Keep), Drustan's wish list is readable after the trials, Temple of Tranquility is on two lines in 3D mode, and the trial battle counter says T1, T2 ...

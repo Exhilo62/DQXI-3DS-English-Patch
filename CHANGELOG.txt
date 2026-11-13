@@ -12,6 +12,11 @@ DQXI 3DS English patch - changelog
        will be switched off until the project is nearly complete. Code changes can only ever be in the full .cia / .3ds, never in a folder.
     A patched game plus a Luma folder, or several patched versions installed over each other, can crash in battle.
 
+0.1.41
+  * Fixed (Sola): the header of the south-west island (Insula Incognita) was blank on the world map and in Sky Exploration; its text pointer in the map data was dead and is repaired.
+  * Official names (Sola): Dundrasil Cove Island is Insula Centralis (map header and the "Disembark ...?" question); the hidden Whale Way stop in the First Forest (Act 3) is First Forest Station.
+  * Gauntlet (Field of Discipline): the first-clear reward of the first trial printed over the next row because its name was too long; the recipe book is now "Emperor's New Axe" (official: The Emperor's New Axe, "The" left out to fit).
+
 0.1.40
   * Official names (Sola): The Forgotten Land is The Lost Land; the islands are Insula Algarum (south of Sniflheim), Insula Occidentalis (west of the Champs Sauvage) and Insula Incognita (south-west); the Spirit Water Cave is the Grotta della Fonte; the Mount Zeeranda map label is Arborian Highlands; Royal Ruins is the Zwaardsrust Ruins; Sn'rfelt is the Snaerfelt (the game font has no ae letter).
   * The Whale Way stops (Sky Exploration) have short map headers that fit: Sniflheim, Zwaardsrust, Champs Sauvage, Manglegrove, Hotto Steppe N., Hotto Steppe S., Laguna di Gondolia and Gallopolis Station.
