@@ -12,6 +12,10 @@ DQXI 3DS English patch - changelog
        will be switched off until the project is nearly complete. Code changes can only ever be in the full .cia / .3ds, never in a folder.
     A patched game plus a Luma folder, or several patched versions installed over each other, can crash in battle.
 
+0.1.43
+  * Official names in the Adventure Log worlds (Sola): Luida is Patty, Rikka is Erinn, Roxanne is Sellma, Santheim is Zamoksva, Papas is Pankraz, Santa Rosa is Whealbrook, Cynthia is Eliza (quest "I Am Eliza"), the Earth Tura is the Torban of Truth. Applied in dialogue, quest texts and speaker plates.
+  * Fixed (Sola): the speaker plate "Princess Gwaelin" printed over the dialogue box (it now reads Gwaelin); the cutscene plate "Master Pang" is kept short as well (it was expanded to Grand Master Pang again).
+
 0.1.42
   * Official names (Sola): the Tickington altar room is the Echo Chamber (was Altar Chamber). The ten Adventure Log altars and the places of their 29 adventures use the official names, e.g. Altar of Salvation, Aliahan, Imperial Pantry, Chateau Felix, Castle Trodain, Rainbow Mines, Roamer Encampment, The Observatory, Tenton (quest texts and map headers too). Long altar names are written "X Altar" to fit the menu.
   * Kings of the Adventure Log worlds: King of Samanosa is King of Manoza, King of Edinbear is King of Edina.
