@@ -12,6 +12,12 @@ DQXI 3DS English patch - changelog
        will be switched off until the project is nearly complete. Code changes can only ever be in the full .cia / .3ds, never in a folder.
     A patched game plus a Luma folder, or several patched versions installed over each other, can crash in battle.
 
+0.1.44
+  * Official names in the Adventure Log worlds (Sola): Tura is Torban, Abba is Tenda, Lord Turtle is Galapagod, Ete-Ne is Tenton, Ishmauri is Ishmahri (and the reward Lightsaber is the Shamsir of Light), Rudman is Rodrigo, Flora is Nera, Arosa is Rosalind, Granestado is Estard, Karatchi is Tom, Killer Panther is Sabercat, the Roamers' chief is Rom Baro, Yuval is Roamer(s), Old Pegasus / Faux Pegasus are Grampogriff / Nagasus, Eden's Altar is Forgotten Past Altar.
+  * Fixed (Sola): the text of the altar statues ("A statue of the Luminary stands in ...") overprinted its box with the longer altar names; Sylvando's Ladies First showed a garbled header (",s 2z-mt") over the next command menu, an untranslated string in the game program (now "Lady 1st"; the Beast Mode label is "Beast").
+  * More official names from Sola: Jorocchi is Stickle, Bunnich is Tickle, the Altar of Times Past is the Altar of an Elusive Age, the Temple of Reminiscence is the Hall of Remembrance (its floor rows read "Remembrance Hall F2" / "F3" to fit the menu); the cutscene lines that announce a new floor and the stone monument text follow.
+  * Fixed: the Stats screen equipment list wrapped the "+3" of long item names (King Gooreatsword+3) onto the next row and printed over it; the item names in that list use a slightly smaller font now. The Forge Record lists (Weapon / Armor / Accessory pages) use a smaller font too, so long names ("Autumn Shower Hat", "Enchantress Gloves") are no longer cut off at the window edge.
+
 0.1.43
   * Official names in the Adventure Log worlds (Sola): Luida is Patty, Rikka is Erinn, Roxanne is Sellma, Santheim is Zamoksva, Papas is Pankraz, Santa Rosa is Whealbrook, Cynthia is Eliza (quest "I Am Eliza"), the Earth Tura is the Torban of Truth. Applied in dialogue, quest texts and speaker plates.
   * Fixed (Sola): the speaker plate "Princess Gwaelin" printed over the dialogue box (it now reads Gwaelin); the cutscene plate "Master Pang" is kept short as well (it was expanded to Grand Master Pang again).
