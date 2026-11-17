@@ -32,7 +32,7 @@ Get **`DQXI_3DS_English_Patch_vX.Y.Z.zip`** from the [Releases](../../releases) 
 **`DQXIEnglishPatcher.exe`**.
 
 ### Android (phone / handheld, no PC)
-Download **`DQXI_English_Patcher_Android_v0.1.44.apk`** from the [Releases](../../releases) page and open it on the device (allow "install unknown apps" when Android asks; it is not from the Play Store, so Play Protect may warn). Choose your decrypted Japanese `.3ds` or `.cia`, choose the output (`.3ds` for emulators such as Azahar, `.cia` for a 3DS) and press **Patch**; it runs in the background and shows a progress notification. About 6 minutes on a Retroid Pocket Duo Lite, arm64 devices only. The source is in [`android_patcher`](android_patcher). Prefer a terminal? `README_ANDROID.txt` in the Linux zip explains the Termux route.
+Download **`DQXI_English_Patcher_Android_v0.1.45.apk`** from the [Releases](../../releases) page and open it on the device (allow "install unknown apps" when Android asks; it is not from the Play Store, so Play Protect may warn). Choose your decrypted Japanese `.3ds` or `.cia`, choose the output (`.3ds` for emulators such as Azahar, `.cia` for a 3DS) and press **Patch**; it runs in the background and shows a progress notification. About 6 minutes on a Retroid Pocket Duo Lite, arm64 devices only. The source is in [`android_patcher`](android_patcher). Prefer a terminal? `README_ANDROID.txt` in the Linux zip explains the Termux route.
 
 ## How to use
 
@@ -101,9 +101,10 @@ encrypted.
 - Developed in the Azahar emulator. **Tested on:** a real New Nintendo 3DS (Luma3DS, patched `.cia`) and a
   Retroid Pocket Duo Lite running Citra MMJ (patched `.3ds`).
 
-## Help us test (v0.1.44)
+## Help us test (v0.1.45)
 These changes pass our automatic text checks but not everything has been seen in the game. If you get there, please post a
 screenshot (or just "OK") with your model or emulator and 2D/3D mode:
+- [ ] **Forge Record, Link tab and battle lists (new in 0.1.45):** Forge Record names are complete (no letter on the next row), the Link tab and the battle Skills / Spells lists stay inside their boxes, and the new names (Mortamammoth, End of Time, Friend of Time) show correctly.
 - [ ] **Ladies First and Adventure Log (new in 0.1.44):** Sylvando's Ladies First shows a readable header (Lady 1st) over the next command menu, the altar statue text fits its box, and the new names (Tenda, Galapagod, Rom Baro, Rodrigo, Nera, ...) show correctly.
 - [ ] **Adventure Log names (new in 0.1.43):** Patty / Erinn / Sellma (Quester's Rest), Pankraz (Whealbrook), Eliza (Hidden Valley), Zamoksva, the Torban of Truth quest, and the Gwaelin speaker plate in Tantegel fit and use the new names.
 - [ ] **Echo Chamber and Adventure Log (new in 0.1.42):** the Tickington map says Echo Chamber and VIP, the altar menu (official altar names, Baramos's Castle II) fits its rows, and the kings' name plates in the adventures are on one line.

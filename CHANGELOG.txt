@@ -12,6 +12,10 @@ DQXI 3DS English patch - changelog
        will be switched off until the project is nearly complete. Code changes can only ever be in the full .cia / .3ds, never in a folder.
     A patched game plus a Luma folder, or several patched versions installed over each other, can crash in battle.
 
+0.1.45
+  * Official names (Sola): Nauman Murdaw is Mortamammoth, Time Destroyer / Destroyer of Time is End of Time, the Guardian of Time is the Friend of Time, The Farthest End of Times Past is the Deepest Recesses of the Past (the menu row reads "Deepest Recesses"), and the battle text Holy Dragon's Protection is Holy Dragon Protection.
+  * Fixed (Sola, checked on a completed save): the Forge Record lists (Weapon / Armor / Accessory) cut off the last letter of long names and printed a ghost letter over the next row (smaller font now); the "no recipe" line of the Forge Record fits ("No recipe for this equipment"); the Monster List habitat names fit their box; the Link tab (skill names, one-line descriptions and the "With X and Y" header, now "X & Y") and the battle skill / spell lists no longer overflow; the long perk lines of the item Perk window are shortened (Death/Spell Seal, Four elements, Fire res., ...); the "MP Cost" line of a spell sits on its own row.
+
 0.1.44
   * Official names in the Adventure Log worlds (Sola): Tura is Torban, Abba is Tenda, Lord Turtle is Galapagod, Ete-Ne is Tenton, Ishmauri is Ishmahri (and the reward Lightsaber is the Shamsir of Light), Rudman is Rodrigo, Flora is Nera, Arosa is Rosalind, Granestado is Estard, Karatchi is Tom, Killer Panther is Sabercat, the Roamers' chief is Rom Baro, Yuval is Roamer(s), Old Pegasus / Faux Pegasus are Grampogriff / Nagasus, Eden's Altar is Forgotten Past Altar.
   * Fixed (Sola): the text of the altar statues ("A statue of the Luminary stands in ...") overprinted its box with the longer altar names; Sylvando's Ladies First showed a garbled header (",s 2z-mt") over the next command menu, an untranslated string in the game program (now "Lady 1st"; the Beast Mode label is "Beast").
