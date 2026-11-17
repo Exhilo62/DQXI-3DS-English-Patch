@@ -21,7 +21,7 @@ and story – using the official PS4/Switch names where they are known.
 ## Community and support
 
 Questions, bug reports, or just want to follow progress? Join the Discord:
-**https://discord.gg/w2DSajEUx**
+**https://discord.gg/xq4H2Dz3ra**
 
 Please report problems with a screenshot, the patch version, where you were in the game, and whether you play on a real 3DS
 or an emulator (2D or 3D mode). Bugs can also be filed as [GitHub issues](../../issues).
