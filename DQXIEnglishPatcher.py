@@ -33,7 +33,7 @@ def load_notes():
         except Exception:pass
     return 'Patch notes are not available in this copy.'
 REPO='https://github.com/Exhilo62/DQXI-3DS-English-Patch'
-DISCORD='https://discord.gg/w2DSajEUx'
+DISCORD='https://discord.gg/xq4H2Dz3ra'
 def fs_name(path):
     """file system of the drive holding `path` (Windows only; '' when unknown)"""
     try:

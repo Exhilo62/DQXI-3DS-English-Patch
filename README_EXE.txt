@@ -83,7 +83,7 @@ NOTES
    a .cia needs signature patches (Luma3DS default).
  * Please report problems with a screenshot and which mode (2D/3D) you were in.
 
-HELP US TEST (v0.1.45)
+HELP US TEST (v0.1.46)
  The current list of things to check (and where to report them) is on the project page:
  https://github.com/Exhilo62/DQXI-3DS-English-Patch  ("Help us test"). A screenshot or just "OK" with your
  model / emulator and 2D/3D mode helps a lot. Most wanted: Havens Above (Watchers, Eegoltap, Temple of Dawn, the arrival banner, Timekeeper's name plate), the casino banners (JACKPOT, ITEM GET!, COIN GET!, FREE SPIN, METAL CHANGE), the Fun-Size Forge technique list, group fights (Sabercub A / B), pick-up messages (ore, berries), the new Repair old save button, menus with shortened labels (camp, shops, Tockle / Labyrinth, battle), Alena and Serenica in dialogue, the Field of Discipline in Angri-La (Gauntlet menus,

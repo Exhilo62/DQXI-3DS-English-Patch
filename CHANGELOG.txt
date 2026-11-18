@@ -12,6 +12,9 @@ DQXI 3DS English patch - changelog
        will be switched off until the project is nearly complete. Code changes can only ever be in the full .cia / .3ds, never in a folder.
     A patched game plus a Luma folder, or several patched versions installed over each other, can crash in battle.
 
+0.1.46
+  * Fixed (Sola, Lv 99 save): the Magic list of the main menu ("Holy Protection" and "Benediction" no longer wrap, the window is wider); the Skills page of the Stats screen (skill names and the description line fit their boxes); the Equipment Effects page; the battle Skills / Spells lists and the bottom-screen skill label ("Holy Dragon Protection" breaks into two lines); the perk line "Dispels buffs on hit"; the "Da and Son's House" map label is smaller so it fits.
+
 0.1.45
   * Official names (Sola): Nauman Murdaw is Mortamammoth, Time Destroyer / Destroyer of Time is End of Time, the Guardian of Time is the Friend of Time, The Farthest End of Times Past is the Deepest Recesses of the Past (the menu row reads "Deepest Recesses"), and the battle text Holy Dragon's Protection is Holy Dragon Protection.
   * Fixed (Sola, checked on a completed save): the Forge Record lists (Weapon / Armor / Accessory) cut off the last letter of long names and printed a ghost letter over the next row (smaller font now); the "no recipe" line of the Forge Record fits ("No recipe for this equipment"); the Monster List habitat names fit their box; the Link tab (skill names, one-line descriptions and the "With X and Y" header, now "X & Y") and the battle skill / spell lists no longer overflow; the long perk lines of the item Perk window are shortened (Death/Spell Seal, Four elements, Fire res., ...); the "MP Cost" line of a spell sits on its own row.
