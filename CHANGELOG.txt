@@ -12,6 +12,11 @@ DQXI 3DS English patch - changelog
        will be switched off until the project is nearly complete. Code changes can only ever be in the full .cia / .3ds, never in a folder.
     A patched game plus a Luma folder, or several patched versions installed over each other, can crash in battle.
 
+0.1.47
+  * Fixed (map labels): the label "Heliodorian Foothills" wrapped as "Heliodorian Footh / ills" on the Manglegrove map; the Heliodor hill map ("Heliodorian Foo") and the exits on the Heliodor castle maps ("To Heliodorian Fo") were cut off since 0.1.37. All show the full name now, in a smaller font (2D and 3D). A few more map labels that were close to their box (Arborian Highlands, Ruins of Nhou Wat, Da and Son's House, and Temple of Tranquility in 2D) use a slightly smaller font too.
+  * Fixed (found by a full scan): the enemy attack "Blasto" is called Banish like the spell everywhere else; the shrine labels on the Hotto Steppe maps read "Wasteland Shrine" / "Departure Shrine" and now say Door of Departure like the text; five 2D labels that were a hair too wide (Other, No Armor, Platinum Cup, Challenge) use a slightly smaller font.
+  * Fixed (reported by Amarlian): in a save started with an old patch version, Vince's name changed to "Humphre" in battle (the party record inside the save still held his old name "Humphrey"; the patch cannot change a name that is stored in the save). "Repair old save" now converts it to Vince.
+
 0.1.46
   * Fixed (Sola, Lv 99 save): the Magic list of the main menu ("Holy Protection" and "Benediction" no longer wrap, the window is wider); the Skills page of the Stats screen (skill names and the description line fit their boxes); the Equipment Effects page; the battle Skills / Spells lists and the bottom-screen skill label ("Holy Dragon Protection" breaks into two lines); the perk line "Dispels buffs on hit"; the "Da and Son's House" map label is smaller so it fits.
 
